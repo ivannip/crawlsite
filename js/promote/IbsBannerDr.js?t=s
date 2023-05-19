@@ -1,0 +1,73 @@
+var wnew_dr_c   = new Array();
+var wnew_dr_e   = new Array();
+var wnew_dr_s   = new Array();
+// dummy =========== start
+wnew_dr_c[0]="系統繁忙"; 
+wnew_dr_e[0]="System busy";
+wnew_dr_s[0]="系统繁忙";
+// dummy =========== end
+wnew_dr_c[1]="系統繁忙";
+wnew_dr_e[1]="System busy";
+wnew_dr_s[1]="系统繁忙";
+wnew_dr_c[2]="系統繁忙";
+wnew_dr_e[2]="System busy";
+wnew_dr_s[2]="系统繁忙";
+
+var whatsnew_dr_content_c =new Array();
+var whatsnew_dr_content_e =new Array();
+var whatsnew_dr_content_s =new Array();
+// dummy =========== start
+whatsnew_dr_content_c[0]="暫時未能提供股票買賣服務。不便之處，敬請原諒。";
+whatsnew_dr_content_e[0]="Stock trading services is temporary unavailable. Sorry for any inconvenience caused.";
+whatsnew_dr_content_s[0]="暂时未能提供股票买卖服务。不便之处，敬请原谅。";
+// dummy =========== end
+whatsnew_dr_content_c[1]="暫時未能提供股票買賣服務。不便之處，敬請原諒。";
+whatsnew_dr_content_e[1]="Stock trading services is temporary unavailable. Sorry for any inconvenience caused.";
+whatsnew_dr_content_s[1]="暂时未能提供股票买卖服务。不便之处，敬请原谅。";
+whatsnew_dr_content_c[2]="由於系統繁忙，請客戶使用本行<a href=\"https://www.bochk.com/web/common/multi_section.xml?section=investment&level_2=securities&fldr_id=233&lang=tw\">其他交易渠道</a>買賣證券。";
+whatsnew_dr_content_e[2]="System busy. Please use <a href=\"https://www.bochk.com/web/common/multi_section.xml?section=investment&level_2=securities&fldr_id=233&lang=en\">other channels</a> for stock trading.";
+whatsnew_dr_content_s[2]="由于系统繁忙，请客户使用本行<a href=\"https://www.bochk.com/web/common/multi_section.xml?section=investment&level_2=securities&fldr_id=233&lang=cn\">其他交易渠道</a>买卖证券。";
+
+
+function getDrTitle(index , lang){
+	 
+	if(lang == 'C')
+	{
+    if (wnew_dr_c == null || wnew_dr_c[index]==null)
+      return "";		 
+		return wnew_dr_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (wnew_dr_s == null || wnew_dr_s[index]==null)
+      return "";		 
+		return wnew_dr_s[index];
+	}
+	else		
+	{
+		if (wnew_dr_e == null || wnew_dr_e[index]==null)
+      return "";		 
+		return wnew_dr_e[index];
+	}
+}
+
+function getDrContent(index , lang){
+	if(lang == 'C')
+	{
+		if (whatsnew_dr_content_c == null || whatsnew_dr_content_c[index]==null)
+      return "";		 
+		return whatsnew_dr_content_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (whatsnew_dr_content_s == null || whatsnew_dr_content_s[index]==null)
+      return "";		 
+		return whatsnew_dr_content_s[index];
+	}
+	else		
+	{
+		if (whatsnew_dr_content_e == null || whatsnew_dr_content_e[index]==null)
+      return "";		 
+		return whatsnew_dr_content_e[index];
+	}
+}

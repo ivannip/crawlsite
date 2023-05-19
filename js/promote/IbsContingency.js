@@ -1,0 +1,1 @@
+function isDR(){return false;}

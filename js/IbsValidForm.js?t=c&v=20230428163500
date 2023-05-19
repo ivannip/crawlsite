@@ -1,0 +1,4007 @@
+function item(attName, name, check, decimalAllow, min, max)
+{
+	this.attName = attName;
+	this.name =  name;
+	this.chkType = check;
+	this.decimal = decimalAllow;
+	this.minLength = min;
+	this.maxLength = max;
+}
+
+var toHTML = 
+{
+    on : function (str)
+	{
+        var a = [], i = 0;
+        for (; i < str.length ;) a[i] = str.charCodeAt(i ++);
+       	 return "&#" + a.join(";&#") + ";";
+    },
+    un : function (str)
+	{
+        return str.replace(/&#(x)?([^&]{1,5});?/g, function (a, b, c) 
+        {
+            return String.fromCharCode(parseInt(c, b ? 16 : 10));
+    	});
+    }
+};
+
+function formatCheckingAmt(ip_Amt)
+{
+	re = /,/g;
+	var wrkAmt = ""+ip_Amt;
+	wrkAmt = wrkAmt.replace(re, "");
+   
+   while (wrkAmt.indexOf(',') > -1)
+   {
+        wrkAmt = wrkAmt.substring(0, ip_Amt.indexOf(',')) + 
+                 wrkAmt.substring(ip_Amt.indexOf(',')+1, ip_Amt.length);
+   }     
+   
+   return (new Number(wrkAmt));
+}
+
+function checkSpace(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value;
+	fieldLen = trimString(fieldValue.toString()).length;
+	
+	if (fieldLen == 0)
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#21487;&#21482;&#36664;&#20837;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#21487;&#21482;&#36755;&#20837;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) should not just enter space. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+ 
+function checkBlank(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 
+	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value;
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function checkSmsNoBlank(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value;
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#35531;&#36664;&#20837;&#27969;&#21205;&#30701;&#35338;&#19968;&#27425;&#24615;&#23494;&#30908;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#35831;&#36755;&#20837;&#27969;&#21160;&#30701;&#35759;&#19968;&#27425;&#24615;&#23494;&#30721;') + '. \n';
+		else
+			errorMsg += '\t- Please enter SMS One Time Password. \n';
+		return errorMsg;		
+} 
+	return errorMsg;
+}
+
+function checkAllSpace(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value;
+	
+	var chkAllSpace = true;
+	if (fieldValue.length <= 0)
+		return errorMsg;
+	for ( i=0; i< fieldValue.length; i++)
+	{
+		if (fieldValue.charAt(i) != ' ') 
+			chkAllSpace = false;
+	}	
+	if (chkAllSpace == true)
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#36664;&#20837;&#20840;&#37096;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#36755;&#20837;&#20840;&#37096;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be all spaces. \n';
+		return errorMsg;
+	}	
+	return errorMsg;
+}
+
+function checkInputSpace(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value;
+	
+	var chkAllSpace = true;
+	if (fieldValue.length <= 0)
+		return errorMsg;
+	for ( i=0; i< fieldValue.length; i++)
+	{
+		if (fieldValue.charAt(i) != ' ') 
+			chkAllSpace = false;
+	}	
+	if (chkAllSpace == true)
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#36664;&#20837;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#36755;&#20837;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be spaces. \n';
+		return errorMsg;
+	}	
+	return errorMsg;
+}
+
+function checkLength(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkSmsNoLength(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkSmsNoBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#35531;&#36664;&#20837;&#26377;&#25928;&#30340;&#27969;&#21205;&#30701;&#35338;&#19968;&#27425;&#24615;&#23494;&#30908;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#35831;&#36755;&#20837;&#26377;&#25928;&#30340;&#27969;&#21160;&#30701;&#35759;&#19968;&#27425;&#24615;&#23494;&#30721;') + '. \n';
+			else
+				errorMsg += '\t- Please enter valid SMS One Time Password. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkLengthAndChn(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var trueLength = 0;
+	
+	for(var lenInt=0;lenInt<lenValue;lenInt++)
+	{
+		var c = fieldValue.toString().charCodeAt(lenInt)>255?2:1;
+		trueLength += c;
+	}
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || trueLength <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(trueLength < ip_minLength || trueLength > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkChnLength(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var trueLength = 0;
+	
+	for(var lenInt=0;lenInt<lenValue;lenInt++)
+	{
+		var c = fieldValue.toString().charCodeAt(lenInt)>255?2:1;
+		trueLength += c;
+	}
+	var errorMsg = ip_errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || trueLength <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(trueLength < ip_minLength || trueLength > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkValid(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or spaces. \n';
+			return errorMsg;
+		}
+	}
+	return errorMsg;
+}
+
+function checkValidTsf(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (i=0; i<lenValue; i++)
+	{	
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	
+			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+			return errorMsg;
+		}
+	}
+	return errorMsg;
+}
+
+function checkTelPwdValid(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_maxLength, ip_errorMsg)
+{
+	var validStr = ip_validStr;
+	var checkPwdFlag = false;
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	if (fieldValue == null || fieldValue == "") 
+	{
+		checkPwdFlag = true;
+	}
+	
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	
+			checkPwdFlag = true;
+			break;
+			
+		}
+	}
+	
+	if(checkPwdFlag == true)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 新密碼未能符合基本條件，請重新輸入. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 新密码未能符合基本条件，请重新输入. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) New password does not meet the basic requirement. Please try again. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function checkSmsNoValid(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	if(ip_langType == "C")
+				errorMsg = '\t' + toHTML.un('&#35531;&#36664;&#20837;&#26377;&#25928;&#30340;&#27969;&#21205;&#30701;&#35338;&#19968;&#27425;&#24615;&#23494;&#30908;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg = '\t' + toHTML.un('&#35831;&#36755;&#20837;&#26377;&#25928;&#30340;&#27969;&#21160;&#30701;&#35759;&#19968;&#27425;&#24615;&#23494;&#30721;') + '. \n';
+			else
+				errorMsg = '\t- Please enter valid SMS One Time Password. \n';
+			return errorMsg;		
+		} 
+	}
+	return errorMsg;
+}
+
+function checkUsTin(ip_langType,ip_formFieldName, ip_fieldName, ip_maxLength, ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	maxLength = fieldValue.length;
+	var errorMsg = ip_errorMsg;
+	var isAllowWord = true;
+	
+	if(maxLength != 9)
+	{
+		isAllowWord = false;
+	}
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	
+			isAllowWord = false;
+			break;
+		}
+	}
+	
+	if(isAllowWord != true)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#31354;&#30333;&#25110;&#57;&#20491;&#20301;&#25976;&#23383;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#31354;&#30333;&#25110;&#57;&#20010;&#20301;&#25968;&#23383;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) could be blank or 9 digit number only. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function checkValidNotSpace(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	
+			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+			return errorMsg;
+		}
+	}
+	return errorMsg;
+}
+
+function checkValidTelNo(ip_langType,ip_formFieldName, ip_fieldName, ip_errorMsg)
+{	 
+	var fieldValue = ip_formFieldName.value;
+	var lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	var telHasDiff = false;
+	var first3Char = '';
+	
+	if(lenValue>=8)
+	{
+		first3Char = fieldValue.substring(0,3);
+		if (first3Char == '999')
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + toHTML.un('&#12290;&#32;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + toHTML.un('&#12290;&#32;') + '\n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. \n';
+			return errorMsg;
+		}
+
+		
+		for (i=1; i<lenValue; i++)
+		{
+		    if (fieldValue.substring(i,i+1) != fieldValue.substring(i-1,i))
+			{
+			
+				telHasDiff = true;
+			}		
+		}
+		
+
+		if (telHasDiff==false)
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301; ') + '( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + toHTML.un('&#12290;&#32;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + toHTML.un('&#12290;&#32;') + '\n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. \n';
+			return errorMsg;
+		}
+	
+	}
+	
+
+	return errorMsg;
+}
+
+function checkAddressTextArea(ip_langType,ip_formFieldName, ip_fieldName, ip_rows, ip_cols, ip_validStr, ip_errorMsg)
+{	
+	var arrayList = new Array();
+	var text      = "";
+	var errorMsg = ip_errorMsg;
+	var agt=navigator.userAgent.toLowerCase();
+	var validStr = ip_validStr.toUpperCase();
+	var tmpTxtArea = ip_formFieldName.value;
+	var first3CharValidStr = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	
+	//if( agt.indexOf("firefox") >= 0 || agt.indexOf("netscape") >= 0 )
+	if ( isNeedNewLineSpecialHandle( agt ) ) 
+	{
+		tmpTxtArea = tmpTxtArea.replace(/[\n]/gi,"\r\n");
+		tmpTxtArea = trimString(trimStringCrLf(tmpTxtArea));
+	//	arrayList     = getTextArea( tmpTxtArea.toUpperCase(), ip_rows, ip_cols);
+	
+	}
+	else
+	{
+	//	arrayList     = getTextArea( ip_formFieldName.value.toUpperCase(), ip_rows, ip_cols);
+	tmpTxtArea = trimString(trimStringCrLf(tmpTxtArea));
+	//arrayList = ip_formFieldName.value.toUpperCase().trim().split("\r\n");
+	} 
+	arrayList = tmpTxtArea.toUpperCase().split("\r\n");
+
+    if (arrayList == null || arrayList.length != ip_rows)
+    {
+        if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#34892;&#25976;&#19981;&#27491;&#30906;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#34892;&#25968;&#19981;&#27491;&#30830;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input number of rows is not correct. \n';
+		return errorMsg;
+    }       
+    fieldValue = ip_formFieldName.value.toString();
+	fieldValue = fieldValue.replace(/[\r\n]/gi,"");
+		
+	for(i=0;i<arrayList.length;i++)
+	{	
+		if(arrayList[i].length > ip_cols || arrayList[i].length < 3)
+		{
+	      	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			break;	
+		}
+		
+		if (arrayList[i]=='NO ADDR' || 
+		   arrayList[i]=='PICK-UP' || 
+		   arrayList[i]=='PICK UP' || 
+		   arrayList[i]=='PICKUP' || 
+		   arrayList[i]=='NO-ADDR')
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;&#65292;&#35531;&#37325;&#26032;&#36664;&#20837;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;&#65292;&#35831;&#37325;&#26032;&#36755;&#20837;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. Please try again. \n';
+				
+			break;	
+		}		
+		
+		for(j=0;j<arrayList[i].length;j++)
+		{
+			if (validStr.indexOf(arrayList[i].charAt(j))==-1 )
+			{	if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or space. \n';
+
+				break;	
+			}
+		}
+		
+		if(i==0)
+		{
+			if(first3CharValidStr.indexOf(arrayList[i].charAt(0))==-1 &&
+			   first3CharValidStr.indexOf(arrayList[i].charAt(1))==-1 &&
+			   first3CharValidStr.indexOf(arrayList[i].charAt(2))==-1)
+			{	
+				if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;&#65292;&#35531;&#37325;&#26032;&#36664;&#20837;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;&#65292;&#35831;&#37325;&#26032;&#36755;&#20837;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. Please try again. \n';
+
+				break;	
+			}				
+		}
+	}
+
+	return errorMsg;		
+}
+
+function checkProfileAddress(ip_langType,ip_formFieldName, ip_fieldName, ip_chiLen, ip_engLen, ip_validStr, ip_errorMsg)
+{	
+	
+	var errorMsg = ip_errorMsg;
+	var validStr = ip_validStr.toUpperCase();
+	var fieldValue = trimString(ip_formFieldName.value);
+	var lenValue = fieldValue.length;
+	var first3CharValidStr = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ()&-/',.@#$%+_=!:;\"?<> ";
+	
+	if (ip_chiLen > 0)
+		errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	fieldValue = fieldValue.toUpperCase();
+	for(var j=0;j<fieldValue.length;j++)
+	{
+		var c = fieldValue.charAt(j);
+		if (!(validStr.indexOf(c)>-1 || c >= String.fromCharCode(128)))
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or space. \n';
+
+			break;
+		}
+	}
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	if (checkSpecialChar2(fieldValue,false) >= 0){
+		chkLen = ip_chiLen;
+	}else
+	{
+		chkLen = ip_engLen;
+	}
+	if(lenValue < 3 || lenValue > chkLen)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 長度超出上限. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 长度超出上限. \n';
+		else
+			errorMsg += '\t- Input characters in ( ' + ip_fieldName + ' ) exceed limit. \n';
+	}
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+
+	if(fieldValue.length > ip_engLen || fieldValue.length < 3)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+		return errorMsg;
+	}
+
+	if (fieldValue=='NO ADDR' || 
+	   fieldValue=='PICK-UP' || 
+	   fieldValue=='PICK UP' || 
+	   fieldValue=='PICKUP' || 
+	   fieldValue=='NO-ADDR')
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;&#65292;&#35531;&#37325;&#26032;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;&#65292;&#35831;&#37325;&#26032;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. Please try again. \n';
+			
+		return errorMsg;
+	}		
+	
+	if(!(first3CharValidStr.indexOf(fieldValue.charAt(0))>-1 || fieldValue.charAt(0) >= String.fromCharCode(128))&&
+	   !(first3CharValidStr.indexOf(fieldValue.charAt(1))>-1 || fieldValue.charAt(1) >= String.fromCharCode(128))&&
+	   !(first3CharValidStr.indexOf(fieldValue.charAt(2))>-1 || fieldValue.charAt(2) >= String.fromCharCode(128)))
+	{	
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;&#65292;&#35531;&#37325;&#26032;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;&#65292;&#35831;&#37325;&#26032;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) is not correct. Please try again. \n';
+
+		return errorMsg;
+	}				
+	
+	return errorMsg;		
+}
+
+
+function getTextArea(ip_s,ip_rows, ip_cols){
+	var arrayList = new Array();
+	var alLength  = 0;
+
+	textAreaString = ip_s.toUpperCase();
+
+	while (textAreaString.length > 0){
+		arrayList[alLength++] = fmtTextAreaLine(ip_cols);
+	}
+	if (arrayList.length > ip_rows){
+		return null;
+	}
+	else
+		return arrayList;
+}
+
+function fmtTextAreaLine (ip_cols){
+	var myWord         = "";
+	var textLine       = "";
+	var remainText     = "";
+	var result         = "";
+	var locator        = 0;
+	var index_0a       = 0;
+	var index_0d       = 0;
+
+	index_0a = textAreaString.indexOf('\n');
+	index_0d = textAreaString.indexOf('\r');
+	//-----Detect 0x0a and 0x0d -----
+	if ((index_0a >= 0) &&
+	    (index_0d >= 0) &&
+	    (index_0d <= ip_cols)){
+		//-----If 0x0a and 0x0d was found within a column-----
+		result         = textAreaString.substring(0,index_0d);
+		textAreaString = textAreaString.substring(index_0a +1,textAreaString.length);
+		return result;
+	}
+	if (textAreaString.length > ip_cols){
+		textLine   = textAreaString.substring(0,ip_cols);
+		remainText = textAreaString.substring(ip_cols,textAreaString.length);
+
+		//------Truncate the wording-----
+		if ((textLine.charAt(ip_cols-1) != ' ')  &&
+		    (textLine.charAt(ip_cols-1) != '\n') &&
+		    (textLine.charAt(ip_cols-1) != '\r') &&
+		    (remainText.length > 0)){
+			if ((locator = textLine.lastIndexOf(" ")) >= 0){
+				result         = textLine.substring(0,locator);
+				myWord         = textLine.substring(locator+1,textLine.length);
+				textAreaString = myWord + remainText;
+				return result;
+			}
+		}
+		textAreaString = remainText;
+
+		//-----If a column is end with 0x0a, trim out 0x0a and 0x0d-----
+		if (textAreaString.charAt(0) == '\r'){
+			textAreaString = textAreaString.substring(2,textAreaString.length);
+		}
+		return textLine;
+	}
+	else{
+		result         = textAreaString;
+		textAreaString = "";
+		return result;
+	}
+}
+
+function checkInteger(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	
+  var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#25972;&#25976;&#25976;&#23383;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#25972;&#25968;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be an integer only. \n';
+			return errorMsg;
+		}
+	}
+	return errorMsg;
+}
+
+
+function checkIntegerEx(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_minLength, ip_maxLength, ip_errorMsg)
+{	
+	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#25972;&#25976;&#25976;&#23383;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;&#25972;&#25968;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be an integer only. \n';
+			return errorMsg;
+		}
+	}
+
+
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+			return errorMsg;		
+		} 
+	}
+
+	return errorMsg;
+}
+
+function checkIsChange(value)
+{
+	var temp = parseFloat(value);
+	if(temp.toString() == value)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function checkIntegerExPvb(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_minLength, ip_maxLength, ip_errorMsg)
+{	
+	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;	
+	var arr = fieldValue.split(".");
+
+	if( arr.length>2 || !checkIsChange(arr[0])  || (!isNaN(fieldValue) && (Number(fieldValue) == 0 || arr[0].length>5 || (arr.length>1 && arr[1].length>2 ))))
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#20320;&#25152;&#36664;&#20837;&#30340;') + '「' +toHTML.un('&#37329;&#34701;&#36039;&#29986;') + '」 ' + toHTML.un('&#36229;&#20986;&#36039;&#26009;&#31684;&#22285;') +' ('+  toHTML.un('&#26368;&#23567;') + '0.01-' + toHTML.un('&#26368;&#22823;') + '99999.99), ' + toHTML.un('&#35531;&#37325;&#26032;&#36664;&#20837;&#25110;&#33287;&#24744;&#30340;&#23458;&#25142;&#32147;&#29702;&#32879;&#32097;') +  '。 \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#20320;&#25152;&#36755;&#20837;&#30340;') + '「' +toHTML.un('&#37329;&#34701;&#36164;&#20135;') + '」 ' + toHTML.un('&#36229;&#20986;&#36164;&#26009;&#33539;&#22260;') +' ('+  toHTML.un('&#26368;&#23567;') + '0.01-' + toHTML.un('&#26368;&#22823;') + '99999.99), ' + toHTML.un('&#35831;&#37325;&#26032;&#36755;&#20837;&#25110;&#19982;&#24744;&#30340;&#23458;&#25143;&#32463;&#29702;&#32852;&#32476;') +  '。 \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Your "Financial Asset" input exceeds the data range (min 0.01 - max 99999.99). Please reinput or contact your Relationship Manager. \n';
+		return errorMsg;
+	}
+	
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#20320;&#25152;&#36664;&#20837;&#30340;') + '「' +toHTML.un('&#37329;&#34701;&#36039;&#29986;') + '」 ' + toHTML.un('&#36229;&#20986;&#36039;&#26009;&#31684;&#22285;') +' ('+  toHTML.un('&#26368;&#23567;') + '0.01-' + toHTML.un('&#26368;&#22823;') + '99999.99), ' + toHTML.un('&#35531;&#37325;&#26032;&#36664;&#20837;&#25110;&#33287;&#24744;&#30340;&#23458;&#25142;&#32147;&#29702;&#32879;&#32097;') +  '。 \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#20320;&#25152;&#36755;&#20837;&#30340;') + '「' +toHTML.un('&#37329;&#34701;&#36164;&#20135;') + '」 ' + toHTML.un('&#36229;&#20986;&#36164;&#26009;&#33539;&#22260;') +' ('+  toHTML.un('&#26368;&#23567;') + '0.01-' + toHTML.un('&#26368;&#22823;') + '99999.99), ' + toHTML.un('&#35831;&#37325;&#26032;&#36755;&#20837;&#25110;&#19982;&#24744;&#30340;&#23458;&#25143;&#32463;&#29702;&#32852;&#32476;') +  '。 \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Your "Financial Asset" input exceeds the data range (min 0.01 - max 99999.99). Please reinput or contact your Relationship Manager. \n';
+			return errorMsg;
+		}
+	}
+
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	
+		if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+			return errorMsg;		
+		} 
+	}
+
+	return errorMsg;
+}
+
+function chkIntegerAndZero(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_minLength, ip_maxLength, ip_errorMsg)
+{	
+	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Must be inputted. \n';
+		return errorMsg;
+	}
+	
+	for (i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#28858;&#27491;&#25972;&#25976;&#25110;&#48;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#20026;&#27491;&#25972;&#25968;&#25110;&#48;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Must be a positive integer or zero. \n';
+			return errorMsg;
+		}
+	}
+
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+			return errorMsg;		
+		} 
+	}
+	return errorMsg;
+}
+
+function checkNumEx(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_minLength, ip_maxLength, ip_errorMsg)
+{	
+	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+
+	for (var i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 )
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) 含有不認可字元或空格. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) 含有不认可字符或空格. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or space. \n';
+			return errorMsg;
+		}
+	}
+	
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+			return errorMsg;		
+		} 
+	}
+	return errorMsg;
+}
+
+function checkValidWithMsg(ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+	for (var i=0; i<lenValue; i++)
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))==-1 || trimString(fieldValue) == '')
+		{	
+			errorMsg += '\t ' + ip_fieldName + ' \n';
+			return errorMsg;
+		}
+	}
+	return errorMsg;
+}
+
+function checkAlias(ip_langType,ip_formFieldName, ip_fieldName,ip_errorMsg)
+{	var validStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	var checkResult	= -1;
+	
+	// check if the alias is all numeric
+	for (i=0; i<lenValue; i++)	
+	{
+		if (validStr.indexOf(fieldValue.charAt(i))!= -1 )
+		{	
+			checkResult = 0;	
+		}
+	}
+	
+	if (checkResult == -1)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#26368;&#23569;&#35201;&#21253;&#21547;&#19968;&#20491;&#33521;&#25991;&#23383;&#27597;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#26368;&#23569;&#35201;&#21253;&#21547;&#19968;&#20010;&#33521;&#25991;&#23383;&#27597;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) should comprise at least one alphabetic character. \n';
+	}		
+	
+	return errorMsg;
+}
+
+
+function checkLengthAndAllSpace(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	var lenValue = trimString(fieldValue.toString()).length;
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;	
+		
+	//errorMsg = checkSpace(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	errorMsg = checkAllSpace(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+		
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else 
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkLengthForStockName(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	var lenValue = trimString(fieldValue.toString()).length;
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;	
+		
+	errorMsg = checkAllSpace(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+		
+	if ( (ip_minLength <= 0 && ip_maxLength <= 0) || lenValue <= 0)
+		return errorMsg;
+
+	if(lenValue < ip_minLength )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25033;&#36664;&#20837;&#26368;&#23569;') + ip_minLength + toHTML.un('&#23383;&#20803;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24212;&#36755;&#20837;&#26368;&#23569;') + ip_minLength + toHTML.un('&#23383;&#20803;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) should input minimum ' + ip_minLength + ' characters. \n';
+		return errorMsg;		
+	} else if (lenValue > ip_maxLength )
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301; ') + '( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 			
+
+	return errorMsg;		
+}
+
+function trimString(x)
+{
+	while (x.substring(0,1) == " " )
+	{	templength=x.length;
+		x = x.substring(1,templength);
+	}
+
+	while (x.substring(x.length-1,x.length) == " " )
+	{	x=x.substring(0,x.length-1);
+	}
+	return x
+}
+function trimStringCrLf(x)
+{
+	while (x.substring(0,2) == "\r\n" )
+	{	templength=x.length;
+		x = x.substring(2,templength);
+	}
+
+	while (x.substring(x.length-2,x.length) == "\r\n" )
+	{	x=x.substring(0,x.length-2);
+	}
+	return x
+}
+
+function filterCommas(ip_string) 
+{
+//	re = /^\$|,/g;
+	re = /,/g;
+// remove ","
+	return ip_string.replace(re, "");
+}
+
+function filterLeadingZero(ip_string)
+{
+	re = /^0+/g;
+	
+	return ip_string.replace(re, "");
+}
+
+function checkDecimal(ip_langType, ip_formFieldName, ip_fieldName, ip_decAllowed,ip_minLength, ip_maxLength,ip_errorMsg,ip_allowZero)
+{
+var decallowed = ip_decAllowed;  // how many decimals are allowed?
+var langType = ip_langType;
+var fieldValue =  ip_formFieldName.value;
+var errorMsg,tmpErrorMsg;
+
+	errorMsg = ip_errorMsg;
+	
+	fieldValue = filterCommas(fieldValue);
+//	alert("After removing commas 3:" + fieldValue);
+
+	lenValue = fieldValue.toString().length;	
+	var errorMsg = ip_errorMsg;
+
+	// max length - deciaml allowed - commas
+	var IntLenght;
+	if (fieldValue.indexOf('.') == -1 && decallowed == 0)
+		IntLenght = ip_maxLength - ip_decAllowed;
+	else 
+		IntLenght = ip_maxLength - ip_decAllowed - 1;
+	
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	
+	if (isNaN(fieldValue))
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or spaces. \n';
+		return errorMsg;
+	}
+	else
+	{	var chkAllZero = true;
+		for ( i=0; i< fieldValue.length; i++)
+		{
+			if (fieldValue.charAt(i) != '0') 
+				chkAllZero = false;
+		}
+	    if(!ip_allowZero)
+		if (chkAllZero || fieldValue <= 0)
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不能輸入少於零的數值. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不能输入少于零的数值. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) . must be positive.\n';
+			return errorMsg;	
+		}
+
+     		if (fieldValue.indexOf(' ') != -1)
+     		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) should not contain spaces. \n';
+			return errorMsg;
+     		}
+		
+		if (fieldValue.indexOf('.') > IntLenght || (fieldValue.indexOf('.') == -1 && lenValue > IntLenght))
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25976;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20491;&#20301;&#25976;&#23383;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25968;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20010;&#20301;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be a number with up to ' + IntLenght + ' places integer only. \n';
+			return errorMsg;		
+		}
+
+		
+		if (fieldValue.indexOf('.') == -1) fieldValue += ".";
+		dectext = fieldValue.substring(fieldValue.indexOf('.')+1, fieldValue.length);
+
+		if (dectext.length > decallowed)
+		{	if(langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;') + decallowed + toHTML.un('&#20491;&#20301;&#23567;&#25976;&#25976;&#23383;') + '. \n';
+			else if(langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;') + decallowed + toHTML.un('&#20010;&#20301;&#23567;&#25968;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be a number with up to ' + decallowed + ' decimal places only. \n';
+			return errorMsg;
+      		}
+
+		if ( ip_minLength >= 0 && ip_maxLength >= 0)
+		{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+			{	if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+				return errorMsg;		
+			} 
+		}
+
+		
+     	}
+
+	return errorMsg;
+}
+
+function checkDecimal1(ip_langType, ip_formFieldName, ip_fieldName, ip_decAllowed,ip_minLength, ip_maxLength,ip_errorMsg,ip_allowZero)
+{
+var decallowed = ip_decAllowed;  // how many decimals are allowed?
+var langType = ip_langType;
+var fieldValue =  ip_formFieldName.value;
+var errorMsg,tmpErrorMsg;
+
+	errorMsg = ip_errorMsg;
+	
+	fieldValue = filterCommas(fieldValue);
+//	alert("After removing commas 3:" + fieldValue);
+
+	lenValue = fieldValue.toString().length;	
+	var errorMsg = ip_errorMsg;
+
+	// max length - deciaml allowed - commas
+	var IntLenght;
+	if (fieldValue.indexOf('.') == -1 && decallowed == 0)
+		IntLenght = ip_maxLength - ip_decAllowed;
+	else 
+		IntLenght = ip_maxLength - ip_decAllowed - 1;
+	
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	
+	if (isNaN(fieldValue))
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or spaces. \n';
+		return errorMsg;
+	}
+	else
+	{	var chkAllZero = true;
+		for ( i=0; i< fieldValue.length; i++)
+		{
+			if (fieldValue.charAt(i) != '0') 
+				chkAllZero = false;
+		}
+	    if(!ip_allowZero)
+		if (chkAllZero || fieldValue <= 0)
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不能輸入少於零的數值. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不能输入少于零的数值. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) . must be positive.\n';
+			return errorMsg;	
+		}
+
+     		if (fieldValue.indexOf(' ') != -1)
+     		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) should not contain spaces. \n';
+			return errorMsg;
+     		}
+		
+		if (fieldValue.indexOf('.') > IntLenght || (fieldValue.indexOf('.') == -1 && lenValue > IntLenght))
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25976;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20491;&#20301;&#25976;&#23383;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25968;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20010;&#20301;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) should only be a number with up to ' + IntLenght + ' digits. \n';
+			return errorMsg;		
+		}
+
+		
+		if (fieldValue.indexOf('.') == -1) fieldValue += ".";
+		dectext = fieldValue.substring(fieldValue.indexOf('.')+1, fieldValue.length);
+
+		if (dectext.length > decallowed)
+		{	if(langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;') + decallowed + toHTML.un('&#20491;&#20301;&#23567;&#25976;&#25976;&#23383;') + '. \n';
+			else if(langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21482;&#33021;&#25509;&#21463;') + decallowed + toHTML.un('&#20010;&#20301;&#23567;&#25968;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be a number with up to ' + decallowed + ' decimal places only. \n';
+			return errorMsg;
+      		}
+
+		if ( ip_minLength >= 0 && ip_maxLength >= 0)
+		{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+			{	if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+				return errorMsg;		
+			} 
+		}
+
+		
+     	}
+
+	return errorMsg;
+}
+
+function checkPrice(ip_langType, ip_formFieldName, ip_fieldName, ip_decAllowed,ip_minLength, ip_maxLength,ip_errorMsg,ip_allowZero)
+{
+var decallowed = ip_decAllowed;  // how many decimals are allowed?
+var langType = ip_langType;
+var fieldValue =  ip_formFieldName.value;
+var errorMsg,tmpErrorMsg;
+
+	errorMsg = ip_errorMsg;
+	
+	fieldValue = filterCommas(fieldValue);
+//	alert("After removing commas 3:" + fieldValue);
+
+	lenValue = fieldValue.toString().length;	
+	var errorMsg = ip_errorMsg;
+
+	// max length - deciaml allowed - commas
+	var IntLenght;
+	if (fieldValue.indexOf('.') == -1 && decallowed == 0)
+		IntLenght = ip_maxLength - ip_decAllowed;
+	else 
+		IntLenght = ip_maxLength - ip_decAllowed - 1;
+	
+	if( fieldValue == null || fieldValue == "" )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Must be inputted. \n';
+		return errorMsg;
+	}
+	
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	
+	if (isNaN(fieldValue))
+	{	if(langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#28858;&#26368;&#22810;') + decallowed + toHTML.un('&#20301;&#23567;&#25976;&#30340;&#25976;&#23383;') + '. \n';
+		else if(langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#20026;&#26368;&#22810;') + decallowed + toHTML.un('&#20301;&#23567;&#25968;&#30340;&#25968;&#23383;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Must be a number no more than ' + decallowed + ' decimal places. \n';
+		return errorMsg;
+	}
+	else
+	{	var chkAllZero = true;
+		for ( i=0; i< fieldValue.length; i++)
+		{
+			if (fieldValue.charAt(i) != '0') 
+				chkAllZero = false;
+		}
+	    if(!ip_allowZero)
+		if (chkAllZero || fieldValue <= 0)
+		{
+			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不能輸入少於零的數值. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不能输入少于零的数值. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) . must be positive.\n';
+			return errorMsg;	
+		}
+
+     		if (fieldValue.indexOf(' ') != -1)
+     		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21547;&#26377;&#31354;&#26684;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) should not contain spaces. \n';
+			return errorMsg;
+     		}
+		
+		if (fieldValue.indexOf('.') > IntLenght || (fieldValue.indexOf('.') == -1 && lenValue > IntLenght))
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25976;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20491;&#20301;&#25976;&#23383;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#25972;&#25968;&#21482;&#33021;&#25509;&#21463;') + IntLenght + toHTML.un('&#20010;&#20301;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) could be a number with up to ' + IntLenght + ' places integer only. \n';
+			return errorMsg;		
+		}
+
+		
+		if (fieldValue.indexOf('.') == -1) fieldValue += ".";
+		dectext = fieldValue.substring(fieldValue.indexOf('.')+1, fieldValue.length);
+
+		if (dectext.length > decallowed)
+		{	if(langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#28858;&#26368;&#22810;') + decallowed + toHTML.un('&#20301;&#23567;&#25976;&#30340;&#25976;&#23383;') + '. \n';
+			else if(langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#20026;&#26368;&#22810;') + decallowed + toHTML.un('&#20301;&#23567;&#25968;&#30340;&#25968;&#23383;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Must be a number no more than ' + decallowed + ' decimal places. \n';
+			return errorMsg;
+      		}
+
+		if ( ip_minLength >= 0 && ip_maxLength >= 0)
+		{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+			{	if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) input\'s length not correct. \n';
+				return errorMsg;		
+			} 
+		}
+
+		
+     	}
+
+	return errorMsg;
+}
+
+
+function checkEmail(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{
+	var errorMsg = ip_errorMsg;
+	var fieldValue = ip_formFieldName.value;
+
+  	var supported = false;
+  	var wrongInput = true;
+  	
+  	if (window.RegExp) {
+		var tempStr = "a";
+		var tempReg = new RegExp(tempStr);
+		if (tempReg.test(tempStr))
+			supported = true;
+	}
+
+	if (!supported) {
+
+		//return fieldValue.indexOf(".") > 2 && s.indexOf("@") > 0 ? 1 : alertErr(o, m)
+		if(fieldValue.indexOf(".") > 2 && s.indexOf("@") > 0) 
+			wrongInput = false;
+	}
+
+	var r1 = new RegExp("(@.*@)|(\\.\\.)|(@\\.)|(^\\.)")
+	var r2 = new RegExp("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,}|[0-9]{1,3})(\\]?)$")
+	if ((!r1.test(fieldValue) && r2.test(fieldValue)))
+		wrongInput = false;
+
+  	if(wrongInput)
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35469;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#21547;&#26377;&#19981;&#35748;&#21487;&#23383;&#20803;&#25110;&#31354;&#26684;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or spaces. \n';
+	}
+	return errorMsg;
+}
+function checkChgEmail (ip_langType, ip_formFieldName, ip_specialMsg, ip_errorMsg, ip_auxname)
+{
+	var ip_langType = ip_langType.toUpperCase();
+	var emailStr = ip_formFieldName.value;
+	emailStr = emailStr.toLowerCase();
+	var errorMsg = ip_errorMsg;
+	if (emailStr == null || emailStr =="")
+	{	
+		if (ip_specialMsg.substring(0,3) == "{s}") {
+			if(ip_langType == "C")
+				errorMsg += toHTML.un('&#35531;&#36664;&#20837;&#38651;&#37109;&#22320;&#22336;&#12290;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg += toHTML.un('&#35831;&#36755;&#20837;&#30005;&#37038;&#22320;&#22336;&#12290;') + '\n';
+			else
+				errorMsg += 'Please enter your email address.\n';
+		} else if (ip_specialMsg.substring(0,3) == "{a}") {
+			if(ip_langType == "C")
+				errorMsg += toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32080;&#26524;&#36890;&#30693;&#65292;&#35531;&#36664;&#20837;&#38651;&#37109;&#22320;&#22336;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg += toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32467;&#26524;&#36890;&#30693;&#65292;&#35831;&#36755;&#20837;&#30005;&#37038;&#22320;&#22336;') + '\n';
+			else
+				errorMsg += 'Please enter e-mail address to receive the transaction result.\n';
+		} else if (ip_specialMsg.substring(0,3) == "{b}") {
+			if(ip_langType == "C")
+				errorMsg += toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32080;&#26524;&#36890;&#30693;&#65292;&#35531;&#26356;&#26032;&#38651;&#37109;&#22320;&#22336;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg += toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32467;&#26524;&#36890;&#30693;&#65292;&#35831;&#26356;&#26032;&#30005;&#37038;&#22320;&#22336;') + '\n';
+			else
+				errorMsg += 'Please update e-mail address to receive the transaction result.\n';
+		}
+		
+		return errorMsg;
+	}
+	errorMsg = checkEmail(ip_langType, ip_formFieldName, ip_auxname ,ip_errorMsg);
+	return errorMsg;
+}
+
+function checkRadio(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	var fieldValue=false;
+  	for (var i = 0; i< ip_formFieldName.length; i++) {
+        	if (ip_formFieldName[i].checked == true)
+			fieldValue=true;
+        }      
+	
+	
+	if( !fieldValue )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function checkSelect(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	var fieldValue=false;
+
+  	for (var i = 0; i< ip_formFieldName.length; i++) {
+        	if (ip_formFieldName[i].selected == true)
+			fieldValue=true;
+        }      
+
+	if( !fieldValue || ip_formFieldName.options[ip_formFieldName.selectedIndex].value == '')
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function compareString(ip_langType,ip_formFieldName, ip_fieldName,ip_string1, ip_string2, ip_case, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var isError  = false;
+	
+	if ( ip_string1 == '' || ip_string1 == null || ip_string2 == '' || ip_string2 == null)
+		return errorMsg;
+	switch( ip_case )
+	{	
+		case 0:	if ( ip_string1 == ip_string2 )
+				isError	= true;	break; 
+			//else if ( ip_string1.match(ip_string2))
+			//	isError	= true;	break;
+		case -1: if ( ip_string1 < ip_string2 )
+				isError	= true;	break;
+		case 1: if ( ip_string1 > ip_string2 )
+				isError	= true;	break;
+		default: break;
+	}
+	if( isError )
+	{
+		if(ip_langType == "C")
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#30456;&#21516;') + '.\n';
+			else
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '.\n';
+		}
+		else if (ip_langType == "S")
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#30456;&#21516;') + '.\n';
+			else
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '.\n';			
+		}
+		else 
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t- ( ' + ip_fieldName + ' )  should not be equal.\n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' )  invalid input.\n';
+		}
+	}
+	return errorMsg;		
+}
+
+function compareCurrency(ip_langType, ip_fieldName,ip_string1, ip_string2, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var isError  = false;
+	
+	if ( ip_string1 == '' || ip_string1 == null || ip_string2 == '' || ip_string2 == null)
+		return errorMsg;
+
+	if(  ip_string1 == ip_string2 )
+	{
+		if(ip_langType == "C")
+		{
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#36984;&#30456;&#21516;&#30340;&#36008;&#24163;') + '.\n';
+		}
+		if(ip_langType == "S")
+		{
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#36873;&#30456;&#21516;&#30340;&#36135;&#24065;') + '.\n';
+		}
+		if(ip_langType == "E")
+		{
+			errorMsg += '\t- ( ' + ip_fieldName + ' )  should not be same as the deposited currency.\n';
+		}
+		
+	}
+	
+	return errorMsg;		
+}
+
+function MACompareString(ip_langType,ip_formFieldName, ip_fieldName,ip_string1, ip_string2, ip_case, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var isError  = false;
+	
+	if ( ip_string1 == '' || ip_string1 == null || ip_string2 == '' || ip_string2 == null)
+		return errorMsg;
+	switch( ip_case )
+	{	
+		case 0:	if ( parseFloat(ip_string1) == parseFloat(ip_string2) )
+				isError	= true;	break; 
+			//else if ( ip_string1.match(ip_string2))
+			//	isError	= true;	break;
+		case -1: if ( parseFloat(ip_string1) < parseFloat(ip_string2) )
+				isError	= true;	break;
+		case 1: if ( parseFloat(ip_string1) > parseFloat(ip_string2) )
+				isError	= true;	break;
+		default: break;
+	}
+	if( isError )
+	{
+		if(ip_langType == "C")
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#30456;&#21516;') + '.\n';
+			else
+				errorMsg += '\t ' + ip_fieldName + ' \n';
+		}
+		else if (ip_langType == "S")
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' )  ' + toHTML.un('&#19981;&#33021;&#30456;&#21516;') + '.\n';
+			else
+				errorMsg += '\t ' + ip_fieldName + ' \n';			
+		}
+		else 
+		{
+			if( ip_case == 0 )
+				errorMsg += '\t- ( ' + ip_fieldName + ' )  should not be equal.\n';
+			else
+				errorMsg += '\t- ' + ip_fieldName + ' \n';
+		}
+	}
+	return errorMsg;		
+}
+
+function checkRadioWithCustomMessage(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	var fieldValue=false;
+	
+	if (ip_formFieldName.length)
+	{
+	  	for (var i = 0; i< ip_formFieldName.length; i++) {
+	        	if (ip_formFieldName[i].checked == true)
+				fieldValue=true;
+	        }      
+	}
+	else
+	{
+    	if (ip_formFieldName.checked == true)
+		fieldValue=true;
+	}
+	
+	
+	if( !fieldValue )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + ip_fieldName + '\n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + ip_fieldName + '\n';
+		else
+			errorMsg += '\t' + ip_fieldName + '\n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+
+function checkCheckBox(ip_langType, ip_formFieldName, ip_fieldName, ip_errorMsg )
+{ 	var errorMsg = ip_errorMsg;
+	var fieldValue=false;
+	if (ip_formFieldName.length)
+	{
+	  	for (var i = 0; i< ip_formFieldName.length; i++) {
+	        	if (ip_formFieldName[i].checked == true)
+				fieldValue=true;
+	        }      
+	}
+	else
+	{
+    	if (ip_formFieldName.checked == true)
+			fieldValue=true;
+	}
+	
+	
+	if( !fieldValue )
+	{	if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+	return errorMsg;
+}
+function compareDecimal(ip_langType,ip_formFieldName, ip_fieldName,ip_float1, ip_float2, ip_compareFlag, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var isError  = false;
+	
+	float1 = parseFloat(ip_float1);
+	float2 = parseFloat(ip_float2);
+	
+	switch( ip_compareFlag )
+	{	
+		case 0:	if ( float1 != float2 )
+				isError	= true;	break;
+		case -1: if ( float1 > float2 )
+				isError	= true;	break;
+		case -2: if ( float1 >= float2 )
+				isError	= true;	break;
+		case 1: if ( float1 < float2 )
+				isError	= true;	break;
+		case 2: if ( float1 <= float2 )
+				isError	= true;	break;
+		default: break;
+	}
+
+	if( isError )
+	{
+		errorMsg += '\t' + ip_fieldName + '.\n';
+	}
+	return errorMsg;		
+}
+
+function validForm(ip_langType, ip_chkItems)
+{
+var chkType;
+var attName;
+var name;
+var decAllow = 2;
+checkType = null;
+var errorMsg = "  \n";
+var initErrorMsg = errorMsg;
+var selectMakerErrorMsg = errorMsg;
+
+var langType = ip_langType.toUpperCase();
+var selectMaker;
+var selectChkType = '';
+var minLength=0;
+var maxLength=0;
+var flag = false;
+var secOddQtyFlag = false;
+var secOddQtyErrorMsg = '';
+var ignoreHeader = false;
+
+	for (var i=0; i< ip_chkItems.length; i ++)
+	{	chkType 	= ip_chkItems[i].chkType;
+		attName 	= ip_chkItems[i].attName;				
+		name		= ip_chkItems[i].name;		
+		name		= checkBrowserType( name, langType);
+		minLength =	ip_chkItems[i].minLength;
+		maxLength =	ip_chkItems[i].maxLength;
+		
+		switch (chkType)
+		{	case 'A' :
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+			case 'Aa' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+				errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}
+				break;
+			case 'Aas' :
+				errorMsg = checkLengthAndAllSpace(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
+				errorMsg = checkValidNotSpace(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}
+				break;
+			case 'D' :
+			case 'SmsNo':
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+					
+			case 'SmsNoForResetPwd':
+				errorMsg = checkSmsNoLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789";
+				errorMsg = checkSmsNoValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}
+				break;
+
+			case 'DateWithSlash':
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789/";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg == errorMsg)
+					{
+						errorMsg = checkValidDate(langType, attName, name, validString, errorMsg);
+					}
+					
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+			
+			case 'DateEpDayWithSlash':
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789/";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg == errorMsg)
+					{
+						errorMsg = checkValidDateEpDay(langType, attName, name, validString, errorMsg);
+					}
+					
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+					
+			case 'DWithoutZero' :
+					prevErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+
+					}
+					
+					if (prevErrorMsg == errorMsg)
+					{
+						// check if the user input zero
+						fieldValue = filterCommas(attName.value);
+						
+						var chkAllZero = true;
+						for ( allZeroIndex=0; allZeroIndex < fieldValue.length; allZeroIndex++)
+						{
+							if (fieldValue.charAt(allZeroIndex) != '0')
+							{	 
+								chkAllZero = false;
+							}	
+						}
+											
+						if (chkAllZero || fieldValue <= 0)
+						{
+							if(langType == "C")
+							{
+								errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#19981;&#33021;&#36664;&#20837;&#23569;&#26044;&#38646;&#30340;&#25976;&#20540;') + '. \n';
+							}	
+							else if(langType == "S")
+							{
+								errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#19981;&#33021;&#36755;&#20837;&#23569;&#26044;&#38646;&#30340;&#25968;&#20540;') + '. \n';
+							}	
+							else
+							{
+								errorMsg += '\t- ( ' + name + ' ) . must be positive.\n';
+							}	
+						}
+	
+						if (selectMakerErrorMsg != errorMsg && flag == false)
+						{ selectMaker = attName; flag = true; 
+							selectChkType = chkType;
+						}
+					}
+					break;
+					
+			case 'DigitForResetPwd' :
+				validString = "0123456789";
+				errorMsg = checkTelPwdValid(langType, attName, name, validString, maxLength, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}
+				break;
+					
+			case 'Sms' :
+					if (name.substring(0,3) == "{a}" || name.substring(0,3) == "{b}")
+						ignoreHeader = true; 
+					if (ignoreHeader) //special message format
+						errorMsg = checkSmsPhone(langType, attName, name, errorMsg);
+					else
+						errorMsg = checkSmsPhone(langType, attName, name.substring(3,name.length), errorMsg); //special message format, ignore the special message marker
+					selectMakerErrorMsg = errorMsg;						
+					break;					
+			case 'DnA' :
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}				
+					break;
+					
+			case 'DnAa' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+				errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}				
+				break;
+				
+			case 'BillNum' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+~{}|:\"<>?`-=[]\\;',./";
+				errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}				
+				break;
+
+			case 'AuthPwd' :
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}				
+					break;
+
+			case 'stockName' :
+					errorMsg = checkLengthForStockName(langType,attName, name, minLength, maxLength, errorMsg);
+					//errorMsg = checkLengthAndAllSpace(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'&.()@- ";					
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}				
+					break;
+			case 'Tmpl' :
+					tmpErrorMsg = errorMsg;
+					//errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					//errorMsg = checkAllSpace(langType, attName, name, errorMsg );
+					errorMsg = checkLengthAndAllSpace(langType,attName, name, minLength, maxLength, errorMsg);
+					
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					}
+					
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}				
+					break;
+
+			case 'alias' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-.";
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					}
+
+					if (tmpErrorMsg == errorMsg)
+					{
+						errorMsg = checkAlias(langType, attName, name, errorMsg);
+					}
+
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}				
+					break;
+			case 'aliasBn' :
+				tmpErrorMsg = errorMsg;
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				
+				if (tmpErrorMsg == errorMsg)
+				{
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-.@";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				}
+
+				if (tmpErrorMsg == errorMsg)
+				{
+					errorMsg = checkAlias(langType, attName, name, errorMsg);
+				}
+
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}				
+				break;
+					
+			case 'acAlias' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					}
+					selectMakerErrorMsg = errorMsg;						
+					break;
+
+			case 'acAliasWMsg2' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+						errorMsg = checkValidWithMsg(langType, attName, name, validString, errorMsg);
+					}
+					selectMakerErrorMsg = errorMsg;						
+					break;
+					
+			case 'acAliasWMsg' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+						errorMsg = checkValidWithMsg(langType, attName, name, validString, errorMsg);
+					}
+					selectMakerErrorMsg = errorMsg;						
+					break;
+
+			case 'loginID' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-.";
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					}
+
+										
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}				
+					break;
+
+			case 'N' :
+					decAllow 	= ip_chkItems[i].decimal;
+					tmpErrorMsg = errorMsg;
+					fieldValue = filterCommas(attName.value);
+					
+					errorMsg = checkDecimal(langType,attName, name, decAllow, minLength, maxLength, errorMsg,false);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					// remove commas
+					attName.value	= filterCommas(attName.value);
+					break;
+					
+			case 'N1' :
+				decAllow 	= ip_chkItems[i].decimal;
+				tmpErrorMsg = errorMsg;
+				fieldValue = filterCommas(attName.value);
+				
+				errorMsg = checkDecimal1(langType,attName, name, decAllow, minLength, maxLength, errorMsg,false);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+				selectChkType = chkType;					
+				}
+				// remove commas
+				attName.value	= filterCommas(attName.value);
+				break;
+				
+			case 'Z' :
+					decAllow 	= ip_chkItems[i].decimal;
+					tmpErrorMsg = errorMsg;
+					fieldValue = filterCommas(attName.value);
+					
+					errorMsg = checkDecimal(langType,attName, name, decAllow, minLength, maxLength, errorMsg,true);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					// remove commas
+					attName.value	= filterCommas(attName.value);
+					break;
+
+
+			case 'Pwd' :					
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*()-+_=:;<>,.?";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;
+					
+			case 'newPwd' :
+					var validValues = attName.value;
+					var Modes = 0;
+					var num = 0;
+					for ( var k = 0; k < validValues.length; k++) {
+						var charValue = validValues.charCodeAt(k);
+						Modes |= checkChar(charValue);
+					}
+					for (k = 0; k < 4; k++) {
+						if (Modes & 1)
+							num++;
+						Modes >>>= 1;
+					}
+					errorMsg = checkNum(langType, num, name, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;
+			
+			case 'regPwd' :
+				var validValues = attName.value;
+				var Modes = 0;
+				var num = 0;
+				for ( var k = 0; k < validValues.length; k++) {
+					var charValue = validValues.charCodeAt(k);
+					Modes |= checkChar(charValue);
+				}
+				for (k = 0; k < 4; k++) {
+					if (Modes & 1)
+						num++;
+					Modes >>>= 1;
+				}
+				errorMsg = checkRegNum(langType, num, name, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}
+				break;
+				
+			case 'setBocPwd':
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+					
+			case 'Passport' :
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ()-+\',./?";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;
+
+			case 'HKPassbook' :
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (tmpErrorMsg == errorMsg){
+						errorMsg = checkHKPassbook(langType, attName, name, errorMsg);
+					}
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;	
+									
+			case 'Radio' :
+					errorMsg = checkRadio(langType, attName, name, errorMsg );
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;
+					
+			case 'ChkBox' :
+					errorMsg = checkRadio(langType, attName, name, errorMsg );
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;
+
+			case 'Select' :
+					errorMsg = checkSelect(langType, attName, name, errorMsg );
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;
+			
+			case 'Compare' :
+					// minLength: string 1  maxLength: string2 to be compared (decimal: 0-equal, -1 smaller, 1 larger)
+					errorMsg = compareString(langType,attName, name, minLength, maxLength, ip_chkItems[i].decimal, errorMsg);
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;  
+					
+			case 'CompareDecimal' :
+					// minLength: totalLimit, maxLength Account Limit (decimal: 0-equal, -1 <=, -2, <, 1 >=, 2 >)
+					errorMsg = compareDecimal(langType,attName, name, minLength, maxLength, 1, errorMsg);
+					selectMakerErrorMsg = errorMsg;
+					break;  
+
+			case 'Tel' :		
+					validString = "0123456789.-,";			
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+			case 'Profile_Tel' :		
+					validString = "0123456789.-,";			
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					errorMsg = checkValidTelNo(langType, attName, name, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+			case 'Profile_Address' :
+					validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 |@#$%&*()_+-=!:;\"',.?/<>";
+					errorMsg = checkProfileAddress(langType,attName, name, minLength, maxLength, validString, errorMsg);
+					break;			
+			case 'MACompare' :
+					// minLength: string 1  maxLength: string2 to be compared (decimal: 0-equal, -1 smaller, 1 larger)
+					errorMsg = MACompareString(langType,attName, name, minLength, maxLength, ip_chkItems[i].decimal, errorMsg);
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;  
+					
+			case 'Email' :
+					tmpErrorMsg = errorMsg;
+
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*()-+_=:;<>,.?";
+					if (name.substring(0,3) == "{s}" || name.substring(0,3) == "{a}" || name.substring(0,3) == "{b}")
+						ignoreHeader = true; //special message format
+
+					if (!ignoreHeader)
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					else
+						errorMsg = checkValid(langType, attName, name.substring(3,name.length), validString, errorMsg); //special message format, ignore the special message marker
+					if (tmpErrorMsg == errorMsg) {
+									
+						if (!ignoreHeader)
+							errorMsg = checkEmail(langType, attName, name, errorMsg);
+						else
+							errorMsg = checkChgEmail(langType, attName, name.substring(0,3), errorMsg ,name.substring(3));
+					}
+					else
+						ignoreHeader = false; //cannot pass through the checkvalid, show normal message format
+
+					
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;
+
+			case 'eIPOFinLoanAmt' :
+	                var orgErrorMsg = errorMsg;
+
+					decAllow 	= ip_chkItems[i].decimal;
+					fieldValue = filterCommas(attName.value);
+					
+					errorMsg = checkDecimal(langType,attName, name, decAllow, minLength, maxLength, errorMsg,false);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					// remove commas
+					attName.value	= filterCommas(attName.value);
+			        
+					if (errorMsg.length == orgErrorMsg.length)
+					{
+						errorMsg = errorMsg + checkLoanAmt();        
+                   }
+                   if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}				
+			                                        
+					break;					  
+
+			case 'eIPOBroadLot' :
+			                var orgErrorMsg = errorMsg;
+			                
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg, true);
+					validString = "0123456789";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (errorMsg.length == orgErrorMsg.length)
+					{
+						errorMsg = errorMsg + checkBroadLot();        
+                   }
+                   if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}				
+			                                        
+					break;					  
+			case 'Address' :
+					attName.value = attName.value.toUpperCase();
+					errorMsg = checkLengthOptional(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 |@#$%&*()_+-=!:;\"',.?/<>";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+
+					selectMakerErrorMsg = errorMsg;						
+
+					break;
+					
+			case 'DecWDot':
+					tmpErrorMsg = errorMsg;
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789.";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					
+					if (tmpErrorMsg == errorMsg)
+					{
+						decAllow 	= ip_chkItems[i].decimal;
+						// remove commas
+						fieldValue = filterCommas(attName.value);
+						errorMsg = checkDecimal(langType,attName, name, decAllow, minLength, maxLength, errorMsg,false);
+					}
+					
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; }
+
+					// remove commas
+					attName.value	= filterCommas(attName.value);
+
+					break;
+			case 'RadioCustMsg' :
+					errorMsg = checkRadioWithCustomMessage(langType, attName, name, errorMsg );
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;
+			case 'ChkBoxWLengthCheck' :
+					errorMsg = checkCheckBox(langType, attName, name, errorMsg );
+
+					selectMakerErrorMsg = errorMsg;						
+					
+					break;
+			case 'ConsecutiveCharPass':
+			    
+					errorMsg = checkConsecutiveChar(langType,attName, name, minLength, maxLength, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;					
+					}
+					break;
+					
+			case 'Vbsid':
+					errorMsg = compareVbsid(langType, attName, name, minLength, maxLength, errorMsg);
+					break;
+
+			case 'secOddSell' :
+				fieldValue = attName.value;
+				if( fieldValue == null || fieldValue == "" )				
+				{	
+					if (secOddQtyErrorMsg == null || secOddQtyErrorMsg == "" )
+					{
+						if(langType == "C")				
+							secOddQtyErrorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' )';
+						else if(ip_langType == "S")
+							secOddQtyErrorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' )';
+						else
+							secOddQtyErrorMsg += '\t- ( ' + name + ' )';
+							
+					}
+					else
+					{	
+						if(langType == "C")				
+							secOddQtyErrorMsg += toHTML.un('&#25110;') + '( ' + name + ' )';
+						else if(ip_langType == "S")
+							secOddQtyErrorMsg += toHTML.un('&#25110;') + '( ' + name + ' )';
+						else
+							secOddQtyErrorMsg += ' or ( ' + name + ' )';
+					}
+				 }
+				 else
+				 {
+				 	secOddQtyFlag	= true;					
+				 }	
+				 break;
+				 
+			case 'bankName' :
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ (),.-/+&\\[]#\'";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ 
+						selectMaker = attName; 
+						flag = true; 
+						selectChkType = chkType;
+					}
+					break;
+
+			case 'Blank':
+					errorMsg = checkBlank(langType, attName, name, errorMsg);
+					break;
+					
+			case 'CompareCur' :
+				
+					errorMsg = compareCurrency(langType,name, minLength, maxLength,  errorMsg);
+															
+					break;  
+					
+			case 'Integer' :
+					errorMsg = checkIntegerEx (langType,attName, name, "0123456789",  minLength, maxLength,  errorMsg);
+					break;
+			case 'IntegerPvbAmount':
+					errorMsg = checkIntegerExPvb(langType,attName, name, "0123456789.",  minLength, maxLength,  errorMsg);
+					break;
+			case 'PositiveInteger' :
+					errorMsg = chkIntegerAndZero (langType,attName, name, "0123456789",  minLength, maxLength,  errorMsg);
+					break;
+			case 'Num' :
+				errorMsg = checkNumEx (langType,attName, name, "0123456789",  minLength, maxLength,  errorMsg);
+				break;
+			case 'TokenOtp':
+					errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+					validString = "0123456789";
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if (selectMakerErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; 
+						selectChkType = chkType;
+					}
+		  			break;
+			case 'newAccountName' :
+					break;
+		  	case 'accountName' :
+		  			errorMsg = checkLengthOptional(langType,attName, name, minLength, maxLength, errorMsg);
+		  			validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @#$%&*()_+-=!:;\"',.?/<>";
+		  			errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if(attName.value.charAt(0) == " " || attName.value.indexOf("--") != -1){
+						if(langType == "C")
+						{
+							errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+						}	
+						else if(langType == "S")
+						{
+							errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+						}	
+						else
+						{
+							errorMsg += '\t- ( ' + name + ' ) invalid input. \n';
+						}	
+					}
+					if(selectMakerErrorMsg != errorMsg && flag == false)
+					{
+						selectMaker = attName; 
+						flag = true;
+						selectChkType = chkType;
+					}
+					
+					selectMakerErrorMsg = errorMsg;
+					break;
+			case 'DebtorRef' :
+		  			errorMsg = checkLengthOptional(langType,attName, name, minLength, maxLength, errorMsg);
+		  			validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 $&*()-=+',./";
+		  			errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if(attName.value.charAt(0) == " " || attName.value.indexOf("  ") != -1){
+						if(langType == "C")
+						{
+							errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+						}	
+						else if(langType == "S")
+						{
+							errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+						}	
+						else
+						{
+							errorMsg += '\t- ( ' + name + ' ) invalid input. \n';
+						}	
+					}
+					if(selectMakerErrorMsg != errorMsg && flag == false)
+					{
+						selectMaker = attName; 
+						flag = true;
+						selectChkType = chkType;
+					}
+					
+					selectMakerErrorMsg = errorMsg;
+					break;
+			case 'MerchantRec' :
+		  			errorMsg = checkLengthOptional(langType,attName, name, minLength, maxLength, errorMsg);
+		  			validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 $&*()-=+',./";
+		  			errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if(attName.value.charAt(0) == " " || attName.value.indexOf("  ") != -1){
+						if(langType == "C")
+						{
+							errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+						}	
+						else if(langType == "S")
+						{
+							errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+						}	
+						else
+						{
+							errorMsg += '\t- ( ' + name + ' ) invalid input. \n';
+						}	
+					}
+					if(selectMakerErrorMsg != errorMsg && flag == false)
+					{
+						selectMaker = attName; 
+						flag = true;
+						selectChkType = chkType;
+					}
+					
+					selectMakerErrorMsg = errorMsg;
+					break;
+			case 'PayType' :
+		  			errorMsg = checkLengthOptional(langType,attName, name, minLength, maxLength, errorMsg);
+		  			validString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 $&*()-=+',./";
+		  			errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					if(attName.value.charAt(0) == " " || attName.value.indexOf("  ") != -1){
+						if(langType == "C")
+						{
+							errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+						}	
+						else if(langType == "S")
+						{
+							errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + name + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+						}	
+						else
+						{
+							errorMsg += '\t- ( ' + name + ' ) invalid input. \n';
+						}	
+					}
+					if(selectMakerErrorMsg != errorMsg && flag == false)
+					{
+						selectMaker = attName; 
+						flag = true;
+						selectChkType = chkType;
+					}
+					
+					selectMakerErrorMsg = errorMsg;
+					break;		
+			case 'DonorName' :
+					tmpErrorMsg = errorMsg;
+					attName.value = attName.value.toUpperCase();
+					errorMsg = checkLengthAndAllSpace(langType, attName, name, minLength, maxLength, errorMsg);
+					if (tmpErrorMsg == errorMsg)
+					{
+						validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ()&-/',.@#$%*+_=!:;\"?<>";
+						errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+					}
+					if (initErrorMsg != errorMsg && flag == false)
+					{ selectMaker = attName; flag = true; }				
+					break;
+			case 'Input' :
+					errorMsg = checkLengthAndChn(langType,attName, name, minLength, maxLength, errorMsg);
+		  			break;
+			case 'InputOptional' :
+				errorMsg = checkChnLength(langType,attName, name, minLength, maxLength, errorMsg);
+	  			break;
+			case 'chqTAChi':
+				decAllow 	= ip_chkItems[i].decimal;
+				errorMsg = checkCHQTextArea(langType,attName, name, decAllow, minLength, maxLength, errorMsg, true, true, false);
+				break;
+			case 'chqTAChiMsg':
+				decAllow 	= ip_chkItems[i].decimal;
+				errorMsg = checkCHQTextArea(langType,attName, name, decAllow, minLength, maxLength, errorMsg, true, true, true);
+				break;
+			case 'chqTAChiLine':
+				decAllow 	= ip_chkItems[i].decimal;
+				errorMsg = checkCHQTextLine(langType,attName, name, decAllow, minLength, maxLength, errorMsg, true, true, true);
+				break;
+			case 'chkText':
+				errorMsg = checkText(langType,attName, name, minLength, maxLength, errorMsg, true, true);
+				break;
+			case 'chkTextWithoutWrap':
+				errorMsg = chkTextWithoutWrap(langType,attName, name, minLength, maxLength, errorMsg, true, true);
+				break;
+			case 'chkTextWithoutSymbolAndSpace':
+				errorMsg = checkTextWithoutSymbolAndSpace(langType,attName, name, minLength, maxLength, errorMsg, true, true);
+				break;
+			case 'verCode' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}				
+				break;
+			case 'TaxTin' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+=-`|}\\{[]\';:\"/.,<>? ";
+				errorMsg = checkValidNotSpace(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}				
+				break;
+			case 'USTaxTin':
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789";
+				errorMsg = checkUsTin(langType, attName, name, maxLength, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}
+				break;
+			case 'OnlineRegRecpName' :
+                attName.value = attName.value.toUpperCase();
+				decAllow = ip_chkItems[i].decimal; // use as min len
+				errorMsg = checkRecpNameTextArea(langType,attName, name, decAllow, minLength, maxLength, errorMsg, true, false);
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }				
+				break;
+			case 'Name' :
+				tmpErrorMsg = errorMsg;
+				attName.value = attName.value.toUpperCase();
+				errorMsg = checkLengthAndAllSpace(langType,attName, name, minLength, maxLength, errorMsg);
+				
+				if (tmpErrorMsg == errorMsg)
+				{
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ()&-/',.@#$%*+_=:;\"?<>";
+					errorMsg = checkValidTsf(langType, attName, name, validString, errorMsg);
+				}
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }				
+				break;
+			case 'regName' :
+				tmpErrorMsg = errorMsg;
+				attName.value = attName.value.toUpperCase();
+				errorMsg = checkLengthAndAllSpace(langType,attName, name, minLength, maxLength, errorMsg);
+				
+				if (tmpErrorMsg == errorMsg)
+				{
+					validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ /-?:().,'+";
+					errorMsg = checkValidTsf(langType, attName, name, validString, errorMsg);
+				}
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }				
+				break;
+			case 'EmailReg' :
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*()-+_=:;<>,.?";
+				if (name.substring(0,3) == "{s}" || name.substring(0,3) == "{a}" || name.substring(0,3) == "{b}")
+					ignoreHeader = true; //special message format
+
+				if (!ignoreHeader)
+					errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				else
+					errorMsg = checkValid(langType, attName, name.substring(3,name.length), validString, errorMsg); //special message format, ignore the special message marker
+				if (tmpErrorMsg == errorMsg) {
+								
+					if (!ignoreHeader)
+						errorMsg = checkEmail(langType, attName, name, errorMsg);
+					else
+						errorMsg = checkChgEmail(langType, attName, name.substring(0,3), errorMsg ,name.substring(3));
+				}
+				else
+					ignoreHeader = false; //cannot pass through the checkvalid, show normal message format
+
+				
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}
+				break;
+			case 'TsfAccount':
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789";
+				errorMsg = checkValidTsf(langType, attName, name, validString, errorMsg);
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }
+				break;
+			case 'ChtAccount':
+				errorMsg = checkLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				errorMsg = checkValidTsf(langType, attName, name, validString, errorMsg);
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }
+				break;
+			case 'TA' :
+				decAllow = ip_chkItems[i].decimal; // use as min len
+				errorMsg = checkTextArea(langType,attName, name, decAllow, minLength, maxLength, errorMsg, true, false);
+				if (initErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; }				
+				break;
+			case 'Price' :
+				decAllow 	= ip_chkItems[i].decimal;
+				tmpErrorMsg = errorMsg;
+				fieldValue = filterCommas(attName.value);
+				
+				errorMsg = checkPrice(langType,attName, name, decAllow, minLength, maxLength, errorMsg,false);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;					
+				}
+				// remove commas
+				attName.value	= filterCommas(attName.value);
+				break;
+			case 'OtherInput' :
+				errorMsg = checkOtherText(langType, attName, name, minLength, maxLength, errorMsg);
+				break;
+			case 'OpenSelect' :
+				errorMsg = checkOpenSelect(langType, attName, name, errorMsg);
+				break;
+			case 'serialNoInput' :
+				errorMsg = checkInputSpace(langType, attName, name, errorMsg);
+				break;
+			case 'CheckTotalLmt' :
+				errorMsg = checkTotalLmt(langType,minLength,maxLength,errorMsg);  
+                break;
+			case 'CheckFPSID' :
+				errorMsg = checkFPSIDLength(langType,attName, name, minLength, maxLength, errorMsg);
+				validString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+				errorMsg = checkValid(langType, attName, name, validString, errorMsg);
+				if (selectMakerErrorMsg != errorMsg && flag == false)
+				{ selectMaker = attName; flag = true; 
+					selectChkType = chkType;
+				}
+				break;
+			default:
+					break;
+		}
+	}
+
+	if (!secOddQtyFlag && secOddQtyErrorMsg != null && secOddQtyErrorMsg != "" )
+	{
+		if(langType == "C")
+			secOddQtyErrorMsg += toHTML.un('&#24517;&#38920;&#36664;&#20837;') + '. \n';
+		else if(ip_langType == "S")
+			secOddQtyErrorMsg += toHTML.un('&#24517;&#39035;&#36755;&#20837;') + '. \n';
+		else
+			secOddQtyErrorMsg += ' cannot be blank. \n';
+		errorMsg += secOddQtyErrorMsg;		
+
+		if (selectMakerErrorMsg != errorMsg && flag == false)
+		{ selectMaker = attName; flag = true; 
+			selectChkType = chkType;
+		}
+
+	}
+
+	if(initErrorMsg != errorMsg )
+	{	
+		if (langType == "C")
+			alert(toHTML.un('&#30332;&#29983;&#20197;&#19979;&#37679;&#35492;') + ':\n' + errorMsg);
+		else if (langType == "S")
+			alert(toHTML.un('&#21457;&#29983;&#20197;&#19979;&#38169;&#35823;') + ':\n' + errorMsg);
+		else
+			alert("The following error(s) occurred:\n" + errorMsg);
+
+		if(selectChkType!= '' && selectChkType!='Radio' && selectChkType!='Agree' && selectChkType!='ChkBox' && selectChkType!='Select' && selectChkType!='Compare' && selectChkType!='MACompare'){
+			selectMaker.select();
+			selectMaker.focus();
+		} 
+
+		return false;
+	} 
+	else 
+	{
+		return true;
+	}
+}
+
+function checkFPSIDLength(ip_langType,ip_formFieldName, ip_fieldName,lengthOnlySeven, lengthOnlyNine, ip_errorMsg)
+{	
+	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (lengthOnlySeven == 0 && lengthOnlyNine == 0) || lenValue <= 0)
+		return errorMsg;
+	if ( lengthOnlySeven >= 0 && lengthOnlyNine >= 0)
+	{	
+		var reg = /^(\d){7,34}$/;
+		if((lenValue == 8) || !reg.test(fieldValue))
+		{	
+			if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;&#65292;&#35531;&#37325;&#26032;&#36664;&#20837;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;&#65292;&#35831;&#37325;&#26032;&#36755;&#20837;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. Please try again. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+
+function checkBrowserType(ip_name,ip_langType) 
+{
+	return ip_name;
+	/*
+	var agt=navigator.userAgent.toLowerCase();
+	
+	var is_nav  = ((agt.indexOf('mozilla')!=-1) && (agt.indexOf('spoofer')==-1)
+	            && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera')==-1)
+	            && (agt.indexOf('webtv')==-1) && (agt.indexOf('hotjava')==-1));
+	
+	var unesp_name = unescape( ip_name );
+	var browser_lang = navigator.language;
+	
+	
+	
+	if ( ip_langType == "S" && is_nav && browser_lang.indexOf( "cn" ) ==-1 )
+	{
+		return unesp_name;
+	}
+	
+	if( ip_langType == "C" && is_nav && (ip_name.length/2 == unesp_name.length) )
+	{
+		return unesp_name;
+	}
+	else
+		return ip_name;		*/
+	
+}
+
+function IbsAlert(ip_message,ip_langType)
+{
+	var loc_message = ip_message;
+	loc_message = checkBrowserType(ip_message,ip_langType);
+	alert(loc_message);
+}
+
+
+function checkHKPassbook(ip_langType,ip_formFieldName, ip_fieldName, ip_errorMsg)
+{	
+	var validStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";	
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();	
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;	
+	fieldFirstChar = fieldValue.substring(0,1);	
+	if (validStr.indexOf(fieldValue.charAt(0)) == -1 ) {
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) invalid input. \n';
+		return errorMsg;
+	}
+	else {
+		validStrA = "0123456789";
+		validStrB = "0123456789 ";		
+		for (i=1; i < 9; i++){
+			if ( (i <= 6 ) && (validStrA.indexOf(fieldValue.charAt(i))==-1) ){	
+				if(ip_langType == "C")
+					errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) invalid input. \n';
+				return errorMsg;
+			}
+			else {
+				if ( (i > 6 ) && (validStrB.indexOf(fieldValue.charAt(i))==-1) ) {
+					if(ip_langType == "C")
+						errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+					else if(ip_langType == "S")
+						errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+					else
+						errorMsg += '\t- ( ' + ip_fieldName + ' ) invalid input. \n';
+					return errorMsg;										
+				}				
+			}
+		}			
+	}
+	return errorMsg;
+}
+function checkSmsPhone(ip_langType, ip_formFieldName, ip_specialMsg, ip_errorMsg)
+{
+	var ip_langType = ip_langType.toUpperCase();
+	var smsStr = ip_formFieldName.value;
+	var errorMsg = ip_errorMsg;
+	
+	if (smsStr == null || smsStr == "")
+	{	
+		if (ip_specialMsg.substring(0,3) == "{a}") {
+			if(ip_langType == "C")
+				errorMsg = toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32080;&#26524;&#36890;&#30693;&#65292;&#35531;&#36664;&#20837;&#27969;&#21205;&#38651;&#35441;&#34399;&#30908;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg = toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32467;&#26524;&#36890;&#30693;&#65292;&#35831;&#36755;&#20837;&#27969;&#21160;&#30005;&#35805;&#21495;&#30721;') + '\n';
+			else
+				errorMsg = 'Please enter mobile phone number to receive the transaction result.\n';
+		}
+		if (ip_specialMsg.substring(0,3) == "{b}") {
+			if(ip_langType == "C")
+				errorMsg = toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32080;&#26524;&#36890;&#30693;&#65292;&#35531;&#26356;&#26032;&#27969;&#21205;&#38651;&#35441;&#34399;&#30908;') + '\n';
+			else if(ip_langType == "S")
+				errorMsg = toHTML.un('&#33509;&#35201;&#25509;&#25910;&#20132;&#26131;&#32467;&#26524;&#36890;&#30693;&#65292;&#35831;&#26356;&#26032;&#27969;&#21160;&#30005;&#35805;&#21495;&#30721;') + '\n';
+			else
+				errorMsg = 'Please update mobile phone number to receive the transaction result.\n';
+		}
+		return errorMsg;
+	}	
+	return errorMsg;	
+}
+                             
+function checkConsecutiveChar(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{
+	var ip_langType = ip_langType.toUpperCase();
+	var passwordStr = ip_formFieldName.value;
+	var errorMsg = ip_errorMsg;
+	var errorFlag=false;
+	
+  if (passwordStr.length<3)
+    return errorMsg;
+  
+  var temp = new Array(3);
+	for(i=0;i<passwordStr.length-2;i++)
+	{
+		
+		temp[1] = passwordStr.charCodeAt(i);
+		temp[2] = passwordStr.charCodeAt(i+1);
+		temp[3] = passwordStr.charCodeAt(i+2);
+		if(temp[1]==temp[2] && temp[2]==temp[3])
+		{
+			errorFlag=true;
+		}
+		
+	}
+	
+	if (errorFlag==true){
+		if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21253;&#25324;&#19977;&#20491;&#25110;&#20197;&#19978;&#36899;&#32396;&#30456;&#21516;&#30340;&#23383;&#20803;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#33021;&#21253;&#25324;&#19977;&#20010;&#25110;&#20197;&#19978;&#36830;&#32493;&#30456;&#21516;&#30340;&#23383;&#20803;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Should not contain 3 or more consecutive identical characters \n';
+		 }
+	
+	return errorMsg;
+	
+}
+
+function compareVbsid(ip_langType, ip_formFieldName, ip_fieldName, ip_string1, ip_string2, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var isError  = false;
+
+	if ( ip_string1 == '' || ip_string1 == null || ip_string2 == '' || ip_string2 == null)
+		return errorMsg;
+	if ( trimString(ip_string1.toUpperCase()) == trimString(ip_string2.toUpperCase()) )
+		isError	= true;
+
+	if (isError)
+	{
+		if (ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#21487;&#33287;&#29992;&#25142;&#21517;&#31281;') + '/' + toHTML.un('&#34399;&#30908;&#30456;&#21516;') + '. \n';
+		else if (ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#19981;&#21487;&#19982;&#29992;&#25143;&#21517;&#31216;') + '/' + toHTML.un('&#21495;&#30721;&#30456;&#21516;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) must be different from User Name/No. \n';
+	}
+	return errorMsg;		
+}
+
+
+function checkValidDate (ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+
+
+	if ( !isValidDate(fieldValue) )
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) invalid input. \n';
+		
+		return errorMsg;
+	}
+	
+	return errorMsg;
+}
+
+function checkValidDateEpDay (ip_langType,ip_formFieldName, ip_fieldName,ip_validStr, ip_errorMsg)
+{	var validStr = ip_validStr.toUpperCase();
+	fieldValue = ip_formFieldName.value;
+	fieldValue = fieldValue.toUpperCase();
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	
+	
+	if ( !isValidDateEpDay(fieldValue) )
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#19981;&#27491;&#30906;') + '. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#19981;&#27491;&#30830;') + '. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) invalid input. \n';
+		
+		return errorMsg;
+	}
+	
+	return errorMsg;
+}
+
+function checkLengthOptional(ip_langType,ip_formFieldName, ip_fieldName,ip_minLength, ip_maxLength, ip_errorMsg)
+{	fieldValue = ip_formFieldName.value;
+	lenValue = fieldValue.toString().length;
+	var errorMsg = ip_errorMsg;
+	if (ip_minLength > 0)
+		errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_minLength == 0 && ip_maxLength == 0) || lenValue <= 0)
+		return errorMsg;
+	if ( ip_minLength >= 0 && ip_maxLength >= 0)
+	{	if(lenValue < ip_minLength || lenValue > ip_maxLength)
+		{	if(ip_langType == "C")
+				errorMsg += '\t' + toHTML.un('&#27396;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36664;&#20837;&#38263;&#24230;&#19981;&#27491;&#30906;') + '. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t' + toHTML.un('&#26639;&#20301;') + ' ( ' + ip_fieldName + ' ) ' + toHTML.un('&#36755;&#20837;&#38271;&#24230;&#19981;&#27491;&#30830;') + '. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+			return errorMsg;		
+		} 
+	}			
+	return errorMsg;		
+}
+function isValidDateEpDay( dateStr, format)
+{
+	if( format == null)
+	{
+		format = "YM";
+	}
+	format = format.toUpperCase();
+	if(format.substring(0, 1) == "Y")
+	{	// If the year is first
+		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}$/
+		var reg1 = /^\d{4}(\-|\/|\.)\d{1,2}$/
+	}
+	else if(format.substring(1, 2) == "Y")
+	{	//If the year is second
+		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}$/
+		var reg1 = /^\d{1,2}(\-|\/|\.)\d{4}$/
+	}
+	// If it doesn't conform to the right format (with either a 2 digit year or 4 digit year), fail
+	if ( (reg1.test(dateStr) == false) ) 
+	{ 
+		return false; 
+	}
+	var parts = dateStr.split(RegExp.$1); // Split into 3 parts based on what the divider was
+	if(format.substring(0, 1) == "Y")
+	{
+		var yy  = parts[0];
+	}
+	else
+	{
+		var yy = parts[1];
+	}
+	if(format.substring(0, 1) == "M")
+	{
+		var mm = parts[0];
+	}
+	else
+	{
+		var mm = parts[1]
+	}
+//	if (parseFloat(yy) <= 50) 
+//	{
+//		yy = (parseFloat(yy) + 2000).toString(); 
+//	}
+//	if (parseFloat(yy) <= 99) 
+//	{ 
+//		yy = (parseFloat(yy) + 1900).toString(); 
+//	}
+	var dt = new Date(parseFloat(yy), parseFloat(mm)-1, parseFloat(01), 0, 0, 0, 0);
+	if( parseFloat(yy) != dt.getFullYear() )
+	{
+		return false;
+	}
+	
+	if (parseFloat(mm)-1 != dt.getMonth()) 
+	{ 
+		return false; 
+	}
+	return true;
+}
+function isValidDate( dateStr, format) 
+{
+	if (format == null) 
+	{ 
+		format = "YMD"; 
+	}
+	format = format.toUpperCase();
+	if (format.length != 3) 
+	{ 
+		format = "MDY"; 
+	}
+	if ( (format.indexOf("M") == -1) || (format.indexOf("D") == -1) ||  (format.indexOf("Y") == -1) ) 
+	{ 
+		format = "MDY"; 
+	}
+	if (format.substring(0, 1) == "Y") 
+	{ // If the year is first
+		var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/
+		var reg2 = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/
+	} 
+	else if (format.substring(1, 2) == "Y") 
+	{ // If the year is second
+		var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
+		var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
+	} 
+	else 
+	{ // The year must be third
+		var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
+		var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
+	}
+	// If it doesn't conform to the right format (with either a 2 digit year or 4 digit year), fail
+	if ( (reg1.test(dateStr) == false) && (reg2.test(dateStr) == false) ) 
+	{ 
+		return false; 
+	}
+	var parts = dateStr.split(RegExp.$1); // Split into 3 parts based on what the divider was
+	// Check to see if the 3 parts end up making a valid date
+	if (format.substring(0, 1) == "M") 
+	{ 
+		var mm = parts[0]; 
+	} 
+	else if (format.substring(1, 2) == "M") 
+	{ 
+		var mm = parts[1]; 
+	} 
+	else
+	{ 
+		var mm = parts[2]; 
+	}
+
+	if (format.substring(0, 1) == "D") 
+	{ 
+		var dd = parts[0]; 
+	} 
+	else if (format.substring(1, 2) == "D") 
+	{ 
+		var dd = parts[1]; 
+	} 
+	else 
+	{ 
+		var dd = parts[2]; 
+	}
+	
+	if (format.substring(0, 1) == "Y") 
+	{ 
+		var yy = parts[0]; 
+	} 
+	else if (format.substring(1, 2) == "Y") 
+	{ 
+		var yy = parts[1]; 
+	} 
+	else 
+	{
+	 	var yy = parts[2]; }
+	if (parseFloat(yy) <= 50) 
+	{
+		yy = (parseFloat(yy) + 2000).toString(); 
+	}
+	if (parseFloat(yy) <= 99) 
+	{ 
+		yy = (parseFloat(yy) + 1900).toString(); 
+	}
+	var dt = new Date(parseFloat(yy), parseFloat(mm)-1, parseFloat(dd), 0, 0, 0, 0);
+	if (parseFloat(dd) != dt.getDate()) 
+	{ 
+		return false; 
+	}
+	if (parseFloat(mm)-1 != dt.getMonth()) 
+	{ 
+		return false; 
+	}
+	return true;
+}
+
+function checkCHQTextLine(ip_langType,ip_formFieldName, ip_fieldName, ip_QinLen, ip_rows, ip_cols, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese, ip_needCheckChnCount)
+{	
+	var arrayList = new Array();
+	var errorMsg = ip_errorMsg;
+	var agt=navigator.userAgent.toLowerCase();
+	
+	//if( agt.indexOf("firefox") >= 0 || agt.indexOf("netscape") >= 0 )
+	if ( isNeedNewLineSpecialHandle( agt ) ) 
+	{
+		var tmpTxtArea = ip_formFieldName.value;
+		tmpTxtArea = tmpTxtArea.replace(/[\n]/gi,"\r\n");
+		arrayList     = getTextArea( tmpTxtArea.toUpperCase(), ip_rows, ip_cols);
+	}
+	else
+	{
+		arrayList     = getTextArea( ip_formFieldName.value.toUpperCase(), ip_rows, ip_cols);
+	}      
+        if (arrayList == null)
+        {
+                if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入行數不正確. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入行数不正确. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input number of rows is not correct. \n';
+		return errorMsg;
+        }       
+	return errorMsg;		
+}
+
+function checkCHQTextArea(ip_langType,ip_formFieldName, ip_fieldName, ip_QinLen, ip_rows, ip_cols, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese, ip_needCheckChnCount)
+{	
+	var arrayList = new Array();
+	var text      = "";
+	var errorMsg = ip_errorMsg;
+	var agt=navigator.userAgent.toLowerCase();
+	
+	//if( agt.indexOf("firefox") >= 0 || agt.indexOf("netscape") >= 0 )
+	if ( isNeedNewLineSpecialHandle( agt ) ) 
+	{
+		var tmpTxtArea = ip_formFieldName.value;
+		tmpTxtArea = tmpTxtArea.replace(/[\n]/gi,"\r\n");
+		arrayList     = getTextArea( tmpTxtArea.toUpperCase(), ip_rows, ip_cols);
+	}
+	else
+	{
+		arrayList     = getTextArea( ip_formFieldName.value.toUpperCase(), ip_rows, ip_cols);
+	}      
+        if (arrayList == null)
+        {
+	        if(ip_langType == "C")
+        	{
+	        	if(ip_rows == 1)
+        		{
+	        		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入長度超出上限. \n';
+        		}else{
+        			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入行數不正確. \n';
+        		}
+        	}
+			else if(ip_langType == "S")
+			{
+				if(ip_rows == 1)
+        		{
+					errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入长度超出上限. \n';
+        		}else{
+        			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入行数不正确. \n';
+        		}
+			}
+			else
+			{
+				if(ip_rows == 1)
+        		{
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) input characters exceed limit. \n';
+        		}else{
+        			errorMsg += '\t- ( ' + ip_fieldName + ' ) input number of rows is not correct. \n';
+        		}
+			}
+			return errorMsg;
+        }       
+        fieldValue = ip_formFieldName.value.toString();
+	fieldValue = fieldValue.replace(/[\r\n]/gi,"");
+	lenValue = fieldValue.length;
+	if( ip_QinLen!= 0 )
+		errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_rows == 0 && ip_cols == 0) || lenValue <= 0)
+		return errorMsg;
+	return errorMsg;		
+}
+
+function checkText(ip_langType,ip_formFieldName, ip_fieldName, ip_chiLen, ip_engLen, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese)
+{	
+	var errorMsg = ip_errorMsg;
+	var chkLen = 0;
+    fieldValue = ip_formFieldName.value.toString();
+	lenValue = fieldValue.length;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	if (ip_isChkFirstChar && !isValidFirstChar(fieldValue) ){
+		if(ip_langType == "C")
+		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 第一個字符輸入不正確. \n';
+	else if(ip_langType == "S")
+		errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 第一个字符输入不正确. \n';
+	else
+		errorMsg += '\t- ( ' + ip_fieldName + ' ) input first character is not correct. \n';
+		return errorMsg;
+	}
+	fieldValue = fieldValue.toUpperCase();
+	if (checkSpecialChar2(fieldValue,false) >= 0){
+		chkLen = ip_chiLen;
+	}else
+	{
+		chkLen = ip_engLen;
+	}
+	if(lenValue < 1 || lenValue > chkLen)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 長度超出上限. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 长度超出上限. \n';
+		else
+			errorMsg += '\tInput characters in ( ' + ip_fieldName + ' ) exceed limit. \n';
+	}
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	fieldValue = fieldValue.toUpperCase();
+	if (checkSpecialChar2(fieldValue,ip_isContainChinese) >= 0){
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+	return errorMsg;
+    }
+	return errorMsg;		
+}
+function chkTextWithoutWrap(ip_langType,ip_formFieldName, ip_fieldName, ip_chiLen, ip_engLen, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese)
+{	
+	var errorMsg = ip_errorMsg;
+	var chkLen = 0;
+    fieldValue = ip_formFieldName.value.toString();
+	lenValue = fieldValue.length;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+
+	if (ip_isChkFirstChar && !isValidFirstChar(fieldValue) ){
+		if(ip_langType == "C")
+		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 第一個字符輸入不正確. \n';
+	else if(ip_langType == "S")
+		errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 第一个字符输入不正确. \n';
+	else
+		errorMsg += '\t- ( ' + ip_fieldName + ' ) input first character is not correct. \n';
+		return errorMsg;
+	}
+	
+	fieldValue = fieldValue.replace(/[\r\n]/gi,"");
+	fieldValue = fieldValue.toUpperCase();
+	
+	if (checkSpecialChar(fieldValue,false) >= 0){
+		chkLen = ip_chiLen;
+	}else
+	{
+		chkLen = ip_engLen;
+	}
+	if(lenValue < 1 || lenValue > chkLen)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 長度超出上限. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 长度超出上限. \n';
+		else
+			errorMsg += '\tInput characters in ( ' + ip_fieldName + ' ) exceed limit. \n';
+	}
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	fieldValue = fieldValue.toUpperCase();
+	if (checkSpecialChar(fieldValue,ip_isContainChinese) >= 0){
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+	return errorMsg;
+	}
+	return errorMsg;		
+}
+function checkTextWithoutSymbolAndSpace(ip_langType,ip_formFieldName, ip_fieldName, ip_chiLen, ip_engLen, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese)
+{	
+	var errorMsg = ip_errorMsg;
+	var chkLen = 0;
+    fieldValue = ip_formFieldName.value.toString();
+	lenValue = fieldValue.length;
+	errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	errorMsg = checkAllSpace(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	if (ip_isChkFirstChar && !isValidFirstChar(fieldValue) ){
+		if(ip_langType == "C")
+		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 第一個字符輸入不正確. \n';
+	else if(ip_langType == "S")
+		errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 第一个字符输入不正确. \n';
+	else
+		errorMsg += '\t- ( ' + ip_fieldName + ' ) input first character is not correct. \n';
+		return errorMsg;
+	}
+	fieldValue = fieldValue.toUpperCase();
+	if (checkCharWithoutSymbolAndSpace(fieldValue,false) >= 0){
+		chkLen = ip_chiLen;
+	}else
+	{
+		chkLen = ip_engLen;
+	}
+	if(lenValue < 1 || lenValue > chkLen)
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 長度超出上限. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 长度超出上限. \n';
+		else
+			errorMsg += '\tInput characters in ( ' + ip_fieldName + ' ) exceed limit. \n';
+	}
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	
+	fieldValue = fieldValue.toUpperCase();
+	if (checkCharWithoutSymbolAndSpace(fieldValue,ip_isContainChinese) >= 0){
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元或空格. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元或空格. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character or space. \n';
+	return errorMsg;
+    }
+	return errorMsg;		
+}
+
+function isValidFirstChar(s)
+{
+        if ((s.charAt(0) == '-') || (s.charAt(0) == ':') || (s.charAt(0) == '/') )
+                return false;
+        return true;
+}
+
+function checkSpecialChar(ip_string, ip_hasChinese)
+{
+	for (var i=0;i<ip_string.length;i++){
+                c      = ip_string.charAt(i);
+                result = isAS3(c.toUpperCase());
+                if (ip_hasChinese){
+                	//-----Chinese Character ends at 128 ACII code-----
+                   	if (c=='*' || (!result && c < String.fromCharCode(128)) || ( "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ/-?:().,'+ ".indexOf(c)==-1 && c < String.fromCharCode(128)))
+                		return i;
+                } else {
+                    if (!result)
+                	return i;
+                }
+        }
+        return -1;
+}
+function checkSpecialChar2(ip_string, ip_hasChinese)
+{
+	for (var i=0;i<ip_string.length;i++){
+                c      = ip_string.charAt(i);
+                result = isAS3(c.toUpperCase());
+                if (ip_hasChinese){
+                	//-----Chinese Character ends at 128 ACII code-----
+                   	if (c=='*' || (!result && c < String.fromCharCode(128)) || ( "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ()&-/',.@#$%+_=!:;\"?<> ".indexOf(c)==-1 && c < String.fromCharCode(128)))
+                		return i;
+                } else {
+                    if (!result)
+                	return i;
+                }
+        }
+        return -1;
+}
+
+function checkCharWithoutSymbolAndSpace(ip_string, ip_hasChinese)
+{
+	for (var i=0;i<ip_string.length;i++){
+                c      = ip_string.charAt(i);
+                result = isAS2(c.toUpperCase());
+                if (ip_hasChinese){
+                	//-----Chinese Character ends at 128 ACII code-----
+                   	if (c=='*' || (!result && c < String.fromCharCode(128)) || ( "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ ".indexOf(c)==-1 && c < String.fromCharCode(128)))
+                		return i;
+                } else {
+                    if (!result)
+                	return i;
+                }
+        }
+        return -1;
+}
+function isAS(c) {
+    if (!((c >= ' ' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_') || c == '<' || c == '>' || c=='"') {
+            return false;
+    }
+    return true;
+}
+function isAS2(c) {
+    if (!((c >= ' ' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')) {
+            return false;
+    }
+    return true;
+}
+function isAS3(c) {
+	 if (!((c >= '0' && c <= '9') ||(c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c==' ' || c=='/' || c=='-' || c=='?' || c==':' || c=='(' || c==')' || c=='.' || c==',' || c=='\'' || c=='+' )) {	
+			return false;
+     }
+    return true;
+}
+function checkChar(ip_charValue)
+{
+	if(ip_charValue >= 48 && ip_charValue<=57)
+	{
+		return 1;
+	}
+	if(ip_charValue >= 65 && ip_charValue<=90)
+	{
+		return 2;
+	}
+	if(ip_charValue >= 97 && ip_charValue<=122)
+	{
+		return 4;
+	}
+	else
+	{
+		return 8;
+	}
+}
+function checkNum(ip_langType, ip_num, ip_name, ip_errorMsg)
+{
+	var errorMsg = ip_errorMsg;
+	if (ip_num == 1 || ip_num < 1) 
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_name + ' ) 新密碼未能符合基本條件，請重新輸入. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_name + ' ) 新密码未能符合基本条件，请重新输入. \n';
+		else
+			errorMsg += '\t- ( ' + ip_name + ' ) New password does not meet the basic requirement. Please try again. \n';
+		
+	}	
+	return errorMsg;
+}
+function checkRegNum(ip_langType, ip_num, ip_name, ip_errorMsg)
+{
+	var errorMsg = ip_errorMsg;
+	if (ip_num == 1 || ip_num < 1) 
+	{
+		if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_name + ' ) 密碼未能符合基本條件，請重新輸入. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_name + ' ) 密码未能符合基本条件，请重新输入. \n';
+		else
+			errorMsg += '\t- ( ' + ip_name + ' ) Password does not meet the basic requirement. Please try again. \n';
+		
+	}	
+	return errorMsg;
+}
+function checkRecpNameTextArea(ip_langType,ip_formFieldName, ip_fieldName, ip_QinLen, ip_rows, ip_cols, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese)
+{	
+        //var validNameChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ @#$%&*()-+_=:;<>,.?/\'\"|!";
+        // var validNameChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ @#$%&*()-+_=:;<>,.?/|!";
+    
+    // Only accpet SWIFT char set, 20090530
+    var validNameChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ /-?:().,'+";
+	var arrayList = new Array();
+	var text      = "";
+	var errorMsg = ip_errorMsg;
+	var allSpaceFlag = true;
+	var agt=navigator.userAgent.toLowerCase();
+	
+	var tmpTxtArea = ip_formFieldName.value;
+	//if( agt.indexOf("firefox") >= 0 || agt.indexOf("netscape") >= 0 )
+	if ( isNeedNewLineSpecialHandle( agt ) ) 	
+	{
+		tmpTxtArea = tmpTxtArea.replace(/[\n]/gi,"\r\n");
+		arrayList     = getTextArea( tmpTxtArea.toUpperCase(), ip_rows, ip_cols);
+	}
+	else
+	{	
+		arrayList     = getTextArea( ip_formFieldName.value.toUpperCase(), ip_rows, ip_cols);
+	}
+
+        if (arrayList == null)
+        {
+                if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入行數不正確. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入行数不正确. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input number of rows is not correct. \n';
+		return errorMsg;
+        }       
+        if (arrayList.length == 0)
+	{	
+	        if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 必須輸入. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 必须输入. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) cannot be blank. \n';
+		return errorMsg;
+	}
+	
+	// check blank lines before other checking
+  if (tmpTxtArea.length > 0) {
+  	if (tmpTxtArea.indexOf("\r\n") == 0 || tmpTxtArea.indexOf("\r\n\r\n") != -1 ) {
+ 			if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不允許空行. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不允许空行. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Blank lines are not accepted. \n';
+			return errorMsg;
+  	}
+	} 
+
+        fieldValue = ip_formFieldName.value.toString();
+	fieldValue = fieldValue.replace(/[\r\n]/gi,"");
+	lenValue = fieldValue.length;
+	
+	if( ip_QinLen!= 0 )
+		errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_rows == 0 && ip_cols == 0) || lenValue <= 0)
+		return errorMsg;
+	for(i=0;i<arrayList.length;i++)
+	{	
+        	text += arrayList[i];
+        	//Check First Character 
+        	if (ip_isChkFirstChar && !isValidFirstChar(arrayList[i]) ){
+        		if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 第一個字符輸入不正確. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 第一个字符输入不正确. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input first character is not correct. \n';
+        		return errorMsg;
+        	}
+        	
+        	//if (checkSpecialChar(arrayList[i],ip_isContainChinese) >= 0){
+        	//	if(ip_langType == "C")
+		//		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+		//	else if(ip_langType == "S")
+		//		errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+		//	else
+		//		errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+		//	return errorMsg;
+                //}
+                
+                if (trimString(arrayList[i]).length != 0)
+                {
+                    allSpaceFlag = false;        
+                }
+                
+                for (k = 0; k < arrayList[i].length; k++)
+                {
+                  if ((validNameChar.indexOf(arrayList[i].charAt(k))==-1))
+                  {
+        		if(ip_langType == "C")
+				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+			return errorMsg;
+                  }  
+                }
+	}
+	
+        if (text.length > (parseInt(ip_rows) * parseInt(ip_cols))) 
+        {
+        	if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入長度不正確. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入长度不正确. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+		return errorMsg;
+        }
+        
+        if (allSpaceFlag == true)
+        {
+        	if(ip_formFieldName.name=="cdcRecpName"){
+        		if(ip_langType == "C")
+        			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不能輸入全部空格. \n';
+        		else if(ip_langType == "S")
+        			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不能输入全部空格. \n';
+        		else
+        			errorMsg += '\t- ( ' + ip_fieldName + ' )  cannot be all spaces. \n';
+        		return errorMsg;
+        	}else{
+        		if(ip_langType == "C")
+        			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不可只輸入空格. \n';
+        		else if(ip_langType == "S")
+        			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不可只输入空格. \n';
+        		else
+        			errorMsg += '\t- ( ' + ip_fieldName + ' ) should not just enter space. \n';
+        		return errorMsg;
+        	}
+        }
+
+  //if (trimString(text).indexOf("  ") != -1) {
+  /*
+   * Auto remove duplicated space in server side, 20090628
+  if (text.indexOf("  ") != -1) {
+  	if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不允許使用連續性空格. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不允许使用连续性空格. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Consecutive spaces are not accepted. \n';
+		return errorMsg;
+  }
+  */
+
+
+        
+	return errorMsg;		
+}
+
+function checkTextArea(ip_langType,ip_formFieldName, ip_fieldName, ip_QinLen, ip_rows, ip_cols, ip_errorMsg, ip_isChkFirstChar, ip_isContainChinese)
+{	
+	var arrayList = new Array();
+	var text      = "";
+	var errorMsg = ip_errorMsg;
+	var agt=navigator.userAgent.toLowerCase();
+	
+	var tmpTxtArea = ip_formFieldName.value;
+	//if( agt.indexOf("firefox") >= 0 || agt.indexOf("netscape") >= 0 )
+	if ( isNeedNewLineSpecialHandle( agt ) ) 
+	{
+		tmpTxtArea = tmpTxtArea.replace(/[\n]/gi,"\r\n");
+		arrayList     = getTextArea( tmpTxtArea.toUpperCase(), ip_rows, ip_cols);
+	}
+	else
+	{
+		arrayList     = getTextArea( ip_formFieldName.value.toUpperCase(), ip_rows, ip_cols);
+  }    
+        if (arrayList == null)
+        {
+                if(ip_langType == "C")
+            errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入行數不正確. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入行数不正确. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input number of rows is not correct. \n';
+		return errorMsg;
+        }       
+  fieldValue = ip_formFieldName.value.toString();
+  
+  // check blank lines before other checking
+  if (tmpTxtArea.length > 0) {
+  	if (tmpTxtArea.indexOf("\r\n") == 0 || tmpTxtArea.indexOf("\r\n\r\n") != -1 ) {
+ 			if(ip_langType == "C")
+ 				errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不允許空行. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不允许空行. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) Blank lines are not accepted. \n';
+			return errorMsg;
+  	}
+  	
+  	for(i=0;i<arrayList.length;i++)
+		{	
+			if (trimString(arrayList[i]).length == 0) {
+				if(ip_langType == "C")
+					errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不允許空行. \n';
+				else if(ip_langType == "S")
+					errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不允许空行. \n';
+				else
+					errorMsg += '\t- ( ' + ip_fieldName + ' ) Blank lines are not accepted. \n';
+				return errorMsg;
+			}
+    }
+	} 
+  
+	fieldValue = fieldValue.replace(/[\r\n]/gi,"");
+	lenValue = fieldValue.length;
+	if( ip_QinLen!= 0 )
+		errorMsg = checkBlank(ip_langType, ip_formFieldName, ip_fieldName, errorMsg);
+	if (errorMsg != ip_errorMsg)
+		return errorMsg;
+	if ( (ip_rows == 0 && ip_cols == 0) || lenValue <= 0)
+		return errorMsg;
+	for(i=0;i<arrayList.length;i++)
+	{	
+        	text += arrayList[i];
+        	//Check First Character 
+        	if (ip_isChkFirstChar && !isValidFirstChar(arrayList[i]) ){
+        		if(ip_langType == "C")
+        			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 第一個字符輸入不正確. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 第一个字符输入不正确. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) input first character is not correct. \n';
+        		return errorMsg;
+        	}
+        	
+        	if (checkSpecialChar(arrayList[i],ip_isContainChinese) >= 0){
+        		if(ip_langType == "C")
+        		errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 含有不認可字元. \n';
+			else if(ip_langType == "S")
+				errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 含有不认可字元. \n';
+			else
+				errorMsg += '\t- ( ' + ip_fieldName + ' ) contains invalid character. \n';
+			return errorMsg;
+                }
+        	
+	}
+        if (text.length > (parseInt(ip_rows) * parseInt(ip_cols))) 
+        {
+        	if(ip_langType == "C")
+        	errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 輸入長度不正確. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 输入长度不正确. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) input length is not correct. \n';
+		return errorMsg;
+        }
+  //if (trimString(text).indexOf("  ") != -1) {
+  // Auto remove duplicate space in server side
+  /*
+  if (text.indexOf("  ") != -1) {
+  	if(ip_langType == "C")
+			errorMsg += '\t欄位 ( ' + ip_fieldName + ' ) 不允許使用連續性空格. \n';
+		else if(ip_langType == "S")
+			errorMsg += '\t栏位 ( ' + ip_fieldName + ' ) 不允许使用连续性空格. \n';
+		else
+			errorMsg += '\t- ( ' + ip_fieldName + ' ) Consecutive spaces are not accepted. \n';
+		return errorMsg;
+  }
+  */
+        
+	return errorMsg;		
+}
+
+function checkOpenSelect(ip_langType,ip_formFieldName,ip_fieldName,ip_errorMsg)
+{
+	var errorMsg = ip_errorMsg;
+	fieldValue = ip_formFieldName.value.toString();
+	
+	if(fieldValue == "" || fieldValue == null)
+	{
+		if(ip_langType == "C")
+		{
+			errorMsg += '\t欄位 ( '+ip_fieldName+' ) 必須選擇關係. \n';
+		}
+		else if(ip_langType == "S")
+		{
+			errorMsg += '\t栏位 ( '+ip_fieldName+' ) 必须选择关系. \n';
+		}
+		else
+		{
+			errorMsg += '\t- ( '+ip_fieldName+' ) : Must select a relationship. \n';
+		}
+			
+		return errorMsg;
+	}
+	
+	return errorMsg;
+}
+
+function checkTotalLmt(ip_langType,minLength,maxLength,ip_errorMsg)
+{
+	var errorMsg = ip_errorMsg;
+	
+       if (parseFloat(formatCheckingAmt(minLength)) < parseFloat(formatCheckingAmt(maxLength)))
+       {
+           if(ip_langType == "C")
+               errorMsg += "登記賬戶時只能提升「每天撥款總限額」。\n如需下調額度，請使用「額度管理」。\n";
+               else if(ip_langType == "S")
+              errorMsg += "登记账户时只能提升「每天拨款总限额」。\n如需下调额度，请使用「额度管理」。\n";
+               else
+              errorMsg += "You can only increase the \"Daily Fund Transfer Total Limit\" during account registration. \nYou can decrease the limit via \"Account Limit Management\". \n";;     
+       }
+	return errorMsg;
+}
+	
+
+function checkOtherText(ip_langType, ip_formFieldName, ip_fieldName, ip_chiLen, ip_engLen, ip_errorMsg)
+{	
+	var errorMsg = ip_errorMsg;
+	var chkLen = 0;
+    fieldValue = ip_formFieldName.value.toString();
+	lenValue = fieldValue.length;
+	fieldValue = fieldValue.toUpperCase();
+	
+	if(checkCharWithoutSymbolAndSpace(fieldValue,false) >= 0)
+	{
+		chkLen = ip_chiLen;
+	}
+	else
+	{
+		chkLen = ip_engLen;
+	}
+	
+	if(fieldValue == "")
+	{
+		if(ip_langType == "C")
+		{
+			errorMsg += '\t欄位 ( '+ip_fieldName+' ) 必須填寫關係. \n';
+		}
+		else if(ip_langType == "S")
+		{
+			errorMsg += '\t栏位 ( '+ip_fieldName+' ) 必须填写关系. \n';
+		}
+		else
+		{
+			errorMsg += '\t- ( '+ip_fieldName+' ) : Must input a relationship. \n';
+		}
+			
+		return errorMsg;
+	}
+	else if( !isNaN(fieldValue)
+			|| checkCharWithoutSymbolAndSpace(fieldValue,true) >= 0 )
+	{
+		if(ip_langType == "C")
+		{
+			errorMsg += '\t欄位 ( '+ip_fieldName+' ) 必須為英文或中文字. \n';
+		}
+		else if(ip_langType == "S")
+		{
+			errorMsg += '\t栏位 ( '+ip_fieldName+' ) 必须为英文或中文字. \n';
+		}
+		else
+		{
+			errorMsg += '\t- ( '+ip_fieldName+' ) : Must be English or Chinese letters. \n';
+		}
+			
+		return errorMsg;
+	}
+	else if(lenValue < 1 || lenValue > chkLen)
+	{
+		if(ip_langType == "C")
+		{
+			errorMsg += '\t欄位 ( '+ip_fieldName+' ) 如包括中文字，只能輸入最多14位. \n';
+		}
+		else if(ip_langType == "S")
+		{
+			errorMsg += '\t栏位 ( '+ip_fieldName+' ) 如包括中文字，只能输入最多14位. \n';
+		}
+		else
+		{
+			errorMsg += '\t- ( '+ip_fieldName+' ) : A maximum of 14 digits are allowed if Chinese letters are included. \n';
+		}
+			
+		return errorMsg;
+	}
+	
+	return errorMsg;
+}

@@ -1,0 +1,315 @@
+﻿var MaxWidth=1380;
+var navigatorName = "Microsoft Internet Explorer";
+
+$(document).ready(function() {
+	HeaderMain();
+	LoginBoxResize();
+});
+$(window).resize(function() {
+	Separator();
+});
+
+/* ========== Header Function ========== */
+function HeaderMain() {
+	FontSize();
+	Separator();
+}
+function FontSize() {
+	$("#fontsize>a").click(function() {
+		$("#fontsize>a").removeClass("selected");
+		$(this).addClass("selected");
+		size=$(this).index();
+		switch(size) {
+			case 0:
+				$("#content").css({ "font-size": "100%" });
+				$("#importInfo").css({ "font-size": "100%" });
+				$("#iconbtn>li:nth-child(1)").width(270);
+				if($("html").hasClass("en"))
+				{
+					$("#iconbtn>li:nth-child(2)").width(340);
+				}
+				else
+				{
+					$("#iconbtn>li:nth-child(2)").width(270);	
+				}
+				$("#iconbtn>li:nth-child(3)").width(270);
+				$("#iconbtn>li").css("margin-left","40px");
+				$("#iconbtn>li:first-child").css("margin-left","0");
+				$("#loginbox-nav").css("margin-left","290px").width(200);
+				if($("html").hasClass("en")){
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","274px").width(200);
+					}
+				}else{
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","254px").width(200);
+					}
+				}
+			break;
+			case 1:
+				$("#content").css({ "font-size": "120%" });
+				$("#importInfo").css({ "font-size": "120%" });
+				$("#iconbtn>li:nth-child(1)").width(250);
+				$("#iconbtn>li:nth-child(2)").width(320);
+				$("#iconbtn>li:nth-child(3)").width(280);
+				$("#iconbtn>li").css("margin-left","20px");
+				$("#iconbtn>li:first-child").css("margin-left","0");
+				$("#loginbox-nav").css("margin-left","290px").width(200);
+				if($("html").hasClass("en")){
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","274px").width(200);
+					}
+				}else{
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","254px").width(200);
+					}
+				}
+			break;
+			case 2:
+				$("#content").css({ "font-size": "130%" });
+				$("#importInfo").css({ "font-size": "130%" });
+				$("#iconbtn>li:nth-child(1)").width(220);
+				$("#iconbtn>li:nth-child(2)").width(350);
+				$("#iconbtn>li:nth-child(3)").width(300);
+				$("#iconbtn>li").css("margin-left","10px");
+				$("#iconbtn>li:first-child").css("margin-left","0");
+				if($("html").hasClass("en")){
+					if($("#loginbox-nav").length>0)
+					{
+						$("#loginbox-nav").css("margin-left","260px").width(230);
+					}
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","245px").width(230);
+					}
+					
+				}else{
+					if($("#loginbox-nav").length>0)
+					{
+						$("#loginbox-nav").css("margin-left","290px").width(200);
+					}
+					if($("#loginbox-nav-bn").length>0)
+					{
+						$("#loginbox-nav-bn").css("margin-left","254px").width(200);
+					}
+				}
+			break;
+		}
+		setCookie1("FontSize="+size,60*60*24*365*99);
+		LoginBoxResize();
+		return false;
+	});
+	$("#fontsize>a:nth-child(1)").css({ "font-size": "80%" });
+	$("#fontsize>a:nth-child(2)").css({ "font-size": "100%" });
+	$("#fontsize>a:nth-child(3)").css({ "font-size": "130%" });
+
+	if(getCookie("FontSize")) {
+		checkfont=document.cookie.split(";");
+		for(i=0;i<checkfont.length;i++) {
+			if(checkfont[i].indexOf("FontSize")!=-1) {
+				cookiefontsize=checkfont[i].split("=");
+			}
+		}
+		size=parseInt(cookiefontsize[1])+1;
+		$("#fontsize>a:nth-child("+size+")").click();
+	} else {
+		$("#fontsize>a:nth-child(1)").click();
+	}
+}
+function setCookie1(name,time) {
+	now=new Date();
+	now.setTime(now.getTime()+1000*time);
+	document.cookie=name+"; expires="+now.toGMTString()+"; path=/";
+}
+function getCookie(name) {
+	if(document.cookie.indexOf(name)!=-1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+function Separator() {
+	Center=85;
+	if($(window).width()<MaxWidth) {
+		$("#separator-red").css("margin-left",Center);
+	} else {
+		$("#separator-red").css("margin-left",Center+(($(window).width()-MaxWidth)/2));
+	}
+}
+function LoginBoxResize() {
+	var LoginBoxHeight=335;
+	var f = document.form_sct_login;
+	$(".right").height("");
+	if($(".right").height()<$(".left").height()) {
+		$(".right").height($(".left").height());
+	} else if($(".right").height()>$(".left").height()) {
+		if($(".right").height()<LoginBoxHeight) {
+			$(".right").height(LoginBoxHeight);
+		} else {
+			$(".right").height("");
+		}
+	}
+	if($(".right").height()<LoginBoxHeight) {
+		$(".right").height(LoginBoxHeight);
+	}
+	if(f != null)
+	{
+		$("#loginbox").height("auto");
+		
+	}else
+	{
+		if($("#loginbox-content").length>0)
+		{
+			$("#loginbox").height($("#loginbox-content").height());
+		}
+		if($("#loginbox-content-bn").length>0)
+		{
+			$("#loginbox").height($("#loginbox-content-bn").height());
+		}
+	}
+}
+function defaultSize()
+{
+	if(currentLang == "en")
+	{
+		if(navigator.appName == navigatorName)
+		{	
+			$("#otp-softToken").css("top","220px");
+			$("#otp-softToken").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p:not(:first)").css("height","128px");
+			$("#loginbox-content-container").css("height","602px");
+			$("#Important-Reminder").css("height","220px");
+			$("#Important-Reminder").find("p").css("font-size","13px");
+			$("#importRem").css("height","155px");
+			$("#importRem").css("width","270px");
+		}
+		else
+		{
+			$("#otp-softToken").css("top","220px");
+			$("#otp-softToken").css("max-width","600px");
+			$("#otp-softToken").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p:not(:first)").css("height","135px");
+			$("#loginbox-content-container").css("height","582px");
+			$("#Important-Reminder").css("height","220px");
+			$("#Important-Reminder").find("p").css("font-size","13px");
+			$("#importRem").css("height","162px");
+		}
+	}
+	else
+	{
+		if(navigator.appName == navigatorName)
+		{
+			$("#loginbox-content-container").css("height","541px");
+			$(".right").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p:not(:first)").css("height","90px");
+			$("#otp-softToken").css("margin-top","-303px");
+		}
+		else
+		{
+			$("#loginbox-content-container").css("height","528px");
+			$(".right").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p").css("font-size","12px");
+			$("#otp-softToken").find("p:not(:first)").css("height","90px");
+			$("#otp-softToken").css("margin-top","-289px");
+		}
+	}
+}
+function largerSize()
+{
+	if(currentLang == "en")
+	{
+		if(navigator.appName == navigatorName)
+		{	
+			$("#otp-softToken").css("top","230px");
+			$("#otp-softToken").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p:not(:first)").css("height","180px");
+			$("#loginbox-content-container").css("height","670px");
+			$("#Important-Reminder").css("height","230px");
+			$("#Important-Reminder").find("p").css("font-size","15px");
+			$("#importRem").css("height","168px");
+			$("#importRem").css("width","270px");
+		}
+		else
+		{
+			$("#otp-softToken").css("top","230px");
+			$("#otp-softToken").css("max-width","627px");
+			$("#otp-softToken").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p:not(:first)").css("height","180px");
+			$("#loginbox-content-container").css("height","642px");
+			$("#Important-Reminder").css("height","230px");
+			$("#Important-Reminder").find("p").css("font-size","15px");
+			$("#importRem").css("height","165px");
+		}
+	}
+	else
+	{
+		if(navigator.appName == navigatorName)
+		{
+			$("#loginbox-content-container").css("height","579px");
+			$(".right").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p:not(:first)").css("height","90px");
+			$("#otp-softToken").css("margin-top","-271px");
+		}
+		else
+		{
+			$("#loginbox-content-container").css("height","593px");
+			$(".right").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p").css("font-size","14px");
+			$("#otp-softToken").find("p:not(:first)").css("height","105px");
+			$("#otp-softToken").css("margin-top","-244px");
+		}
+	}
+}
+function largestSize()
+{
+	if(currentLang == "en")
+	{
+		if(navigator.appName == navigatorName)
+		{
+			$("#otp-softToken").css("top","270px");
+			$("#otp-softToken").find("p").css("font-size","15px");
+			$("#otp-softToken").find("p:not(:first)").css("height","190px");
+			$("#loginbox-content-container").css("height","724px");	
+			$("#Important-Reminder").css("height","260px");
+			$("#Important-Reminder").find("p").css("font-size","18px");
+			$("#importRem").css("height","206px");
+			$("#importRem").css("width","270px");
+		}
+		else
+		{
+			$("#otp-softToken").css("top","270px");
+			$("#otp-softToken").css("max-width","672px");
+			$("#otp-softToken").find("p").css("font-size","15px");
+			$("#otp-softToken").find("p:not(:first)").css("height","210px");
+			$("#loginbox-content-container").css("height","714px");	
+			$("#Important-Reminder").css("height","260px");
+			$("#Important-Reminder").find("p").css("font-size","18px");
+			$("#importRem").css("height","200px");
+		}
+	}
+	else
+	{
+		if(navigator.appName == navigatorName)
+		{
+			$("#loginbox-content-container").css("height","654px");
+			$(".right").find("p").css("font-size","16px");
+			$("#otp-softToken").find("p").css("font-size","16px");
+			$("#otp-softToken").find("p:not(:first)").css("height","120px");
+			$("#otp-softToken").css("margin-top","-231px");
+		}
+		else
+		{
+			$("#loginbox-content-container").css("height","682px");
+			$(".right").find("p").css("font-size","16px");
+			$("#otp-softToken").find("p").css("font-size","16px");
+			$("#otp-softToken").find("p:not(:first)").css("height","139px");
+			$("#otp-softToken").css("margin-top","-194px");
+		}
+	}
+}

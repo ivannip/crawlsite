@@ -1,0 +1,189 @@
+<!--
+var hyper,pic;
+var pic_c    = new Array();
+var pic_e    = new Array();
+var pic_s    = new Array();
+var wnew_c   = new Array();
+var wnew_e   = new Array();
+var wnew_s   = new Array();
+var whatsnew_content_c =new Array();
+var whatsnew_content_e =new Array();
+var whatsnew_content_s =new Array();
+var hyper_c  = new Array();
+var hyper_e  = new Array();
+var hyper_s  = new Array();
+var features = new Array();
+var base    = "/images/promote/";
+var randomSeed;
+
+wnew_c[0]="";
+wnew_c[1]="";
+wnew_e[0]="";
+wnew_e[1]="";
+wnew_s[0]="";
+wnew_s[1]="";
+
+whatsnew_content_c[0]="<P><STRONG><U>「轉數快」於9月11日及18日進行系統維護</U></STRONG><BR>由於「轉數快」進行系統維護，「轉數快」服務包括實時資金轉賬、直接付款授權及賬戶代號登記將於9月11日（星期日）凌晨3:00至凌晨5:00及18日（星期日）凌晨3:00至早上6:00暫停，如有需要，客戶請提前安排相關繳付。</P><br><P>防範「網絡釣魚」攻擊：數碼 KEY 睇緊&#21874;，撳 LINK 前要三思！ <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220906_Notice_TC.pdf\">詳情</A></P><br><P>有關偽冒銀行職員來電或電話訊息的重要提示 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220901_Notice_TC.pdf\">詳情</A></P><br><P>提防網上投資騙案 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220831_Notice_TC.pdf\">詳情</A></P><br><P>便宜莫貪 勿賣Account <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220808_Notice_TC.pdf\">詳情</A></P><br><P>有關客戶遺失或被盜銀行密碼及支票而衍生被冒用風險的重要提示 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220712_Notice_TC.pdf\">詳情</A></P><br><P>有關外匯掛&#37390;投資的電子結單及電子通知書服務通知 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220718_Notice_TC.pdf\">詳情</A></P><br><P>中國銀行（香港）殷切提醒客戶：慎防領取消費券相關詐騙 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220622_Notice_TC.pdf\">詳情</A></P><br><P>提防虛假招聘廣告詐騙手法 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220524_alert_tc.pdf\">詳情</A></P><br><P>關於中銀卡收費調整通知 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220406_notice_tc.pdf\">詳情</A></P><br><P>鑒於俄羅斯及烏克蘭局勢升級，市場波動性大幅增加，敬請閣下密切留意相關投資項目及其風險。投資涉及風險，如欲知悉最新市況，歡迎與本行職員聯絡。資料只供參考。</P><br><P>提防新近詐騙手法 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220321_Alert_Beware_of_Prevalent_Types_of_Frauds_TC.pdf\">詳情</A></P><br><P>有關偽冒電郵的聲明 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220129_Statement_TC.pdf\">詳情</A></P><br><P>切勿借/賣戶口 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211230_Notice_TC.pdf\">詳情</A></P><br><P>貴金屬及外匯孖展版面優化維護通知 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211122_Notice_TC.pdf\') \" ><font color=\"#0000CC\">詳情</font></a>  </P><br><P>切勿貪心搵快錢 戶口借人洗黑錢 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210910_Notice_TC.pdf\') \" ><font color=\"#0000CC\">詳情</font></a> </P><br><P>提防受騙小貼士<BR><br><LI>切勿下載來歷不明的應用程式。</LI><br><LI>切勿開啟來歷不明的電郵及短訊&#20869;的超連結或附件。</LI><br><LI>切勿向他人透露個人及銀行賬戶資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、單次密碼或信用卡號碼。</LI><BR><br><P>中銀香港<BR><br><LI>不會以電話、電話錄音、電郵、短訊、網上超連結、二維條碼或附件等方式，索取客戶的敏感個人資料。 <br><P align=\"center\">銀行戶口咪亂借 銀行密碼切勿Share</P><br><P>如有懷疑，請致電中銀香港客戶服務熱線(852) 3988 2388或警方「防騙易」熱線 (852) 18222。 </P><br><P>防範「網絡釣魚」攻擊：數碼KEY 睇緊&#21874;，撳LINK 前要三思！ <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210707_Notice_TC.pdf\') \" ><font color=\"#0000CC\">詳情</font></a> </P><br><P>2021年6月20日起本行將停止支援TLS1.1加密通訊協議的瀏覽器。請檢查所使用的瀏覽器版本；如有需要，請儘快安排更新，以確保可繼續使用本行的個人網上/手機銀行服務。 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210521_Notice_TC.pdf\') \" ><font color=\"#0000CC\">詳情</font></a> </P><br><P>有關虛假短訊及偽冒網站的聲明 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/tc/aboutus/fraudalert.html\') \" ><font color=\"#0000CC\">詳情</font></a> </P><br><P><STRONG><U>溫馨提示</U></STRONG><BR>按內地最新政策，一般港澳居民匯往內地的個人人民幣匯款可用於儲蓄及消費性支出，但不可購買有價證券、金融衍生品、資產管理產品等金融產品。有關疑問，請向您的開戶行查詢。</P><br><P>由2020年7月19日起，於網上/手機銀行進行指定交易 (包括登記第三者收款賬戶、繳付指定商戶賬單、調升交易額度、簽發電子支票/本票及其他指定交易等)，您必須持有有效流動電話號碼及電郵地址。請時刻向我們提供您最新的流動電話號碼及電郵地址，讓您能順利於網上/手機銀行完成指定交易之餘，也讓我們能與您緊密聯繫。</P><br><P>請勿相信任何聲稱執法部門人員或政府機構職員來電向您要求交出網上/手機銀行賬戶資料及密碼或賬戶&#20869;款項以證清白/協助調查。</P><br><P>請對可疑電郵或電話保持警覺，切勿向任何人(例如聲稱為 快遞公司、電訊公司、公營機構等)透露您的個人資料及網上/手機銀行賬戶資料、密碼或一次性密碼。</P><br><P>如接獲自稱銀行職員來電推介貸款或投資服務等，應先確認該職員身份，切勿輕信來電者，不要隨意向他人透露敏感個人資料。</P><br><P>請時刻緊記遇有懷疑/異常情況立即收線、核實、及致電香港警方「防騙易18222」熱線求助，有需要時亦可致電中銀香港客戶服務熱&#32171; +852 3988 2388查詢。</P><br><P>為保障客戶，中銀香港手機銀行及 BoC Pay 暫時不支援於 Samsung Galaxy S10 、 Galaxy S10+ 、 Galaxy Note 10 、 Galaxy Note 10+ 的指紋認證及流動保安編碼功能，直至另行通知。客戶仍可繼續使用保安編碼器辦理指定交易。</P><br><P>請定期更改並使用保安程度較高的登入密碼，避免使用與其他網站相同的密碼作為登入密碼。請妥善保管密碼，切勿向任何人透露網上銀行用戶名稱及密碼，亦不應隨便向任何人透露任何個人資料（例如：香港身份證/護照號碼、出生日期等）。如懷疑密碼或雙重認證工具遭盜用或發現賬戶有未經授權的交易，請即與本公司聯絡。 </P><br><P>切勿透過任何電子郵件提供的超連結登入網上銀行。避免使用公用電腦或公用無線網絡登入網上銀行。如有懷疑，切勿按照可疑網頁上的指示操作或輸入任何資料，並請即與本公司聯絡。 </P><br><P>有關防範偽冒電郵的重要提示：客戶應先核實任何聲稱由中銀香港發出的電子郵件，切勿開啟可疑電郵及其附件，並應即時將其刪除，以防止惡意程式或病毒盜取個人資料。 </P><br><P>客戶請通過賬戶所屬銀行的網上銀行辦理交易。<BR>南洋商業銀行網址：<A target=\"blank\" href=\"http://www.ncb.com.hk/\">http://www.ncb.com.hk</A><BR>集友銀行網址：<A target=\"blank\" href=\"http://www.chiyubank.com/\">http://www.chiyubank.com</A></P><br><P>客戶如使用流動電話登入網上/手機銀行，請定期透過官方軟件應用商店或本行網站下載並安裝流動應用程式、手機操作系統及瀏覽器的最新版本。切勿嘗試安裝來源不明的軟件/應用程式。如發現任何可疑的程式，切勿嘗試下載、登入及應即時停止操作。同時，切勿使用已被破解的iPhone或Android流動電話嘗試登入網上/手機銀行，以防潛在保安漏洞。 <A target=\"_newwindow\" href=\"http://www.bochk.com/tc/security/mobile.html\">詳情</A></P></LI></B></B>";
+whatsnew_content_c[1]="";
+whatsnew_content_e[0]="<P><STRONG><U>System Maintenance for FPS on 11 and 18 Sep 2022</U></STRONG><BR>Due to FPS system maintenance, FPS-related services including fund transfer, direct debit authorisation and addressing registration will not be available from 3:00 a.m. to 5:00 a.m. on 11 Sep 2022 (Sunday) and from 3:00 a.m. to 6:00 a.m. on 18 Sep 2022 (Sunday). Customer may wish to make advance arrangements for their payment activities if necessary.</P><br><P>To Raise Awareness against Phishing Risks: Protect your Personal Digital Keys; Beware of Fraudulent Links! <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220906_Notice_EN.pdf\">Details</A></P><br><P>Important Notes on Bogus Phone Calls and Phone Messages <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220901_Notice_EN.pdf\">Details</A></P><br><P>Beware of Internet Investment Fraud <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220831_Notice_EN.pdf\">Details</A></P><br><P>Don\'t be tempted by quick money. Don\'t sell your account. <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220808_Notice_EN.pdf\">Details</A></P><br><P>Important Notes on fraud risk of passwords and cheques have been lost or stolen <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220712_Notice_EN.pdf\">Details</A></P><br><P>Notice on Currency Linked Investments eStatement and eAdvice Service <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220718_Notice_EN.pdf\">Details</A></P><br><P>Courtesy Reminder to BOCHK Customers : Beware of Consumption Vouchers related Scams <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220622_Notice_EN.pdf\">Details</A></P><br><P>Beware of Employment Fraud <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220524_alert_en.pdf\">Details</A></P><br><P>Notice of Revision of BOC Card Service Charges <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220406_notice_en.pdf\">Details</A></P><br><P>In view of the escalation of the situation in Russia and Ukraine, market volatility has increased significantly. You are reminded to pay close attention to your investment with related risk exposure. Investment involves risks, please contact our staff for the latest market situation. The information is for reference only.</P><br><P>Beware of Prevalent Types of Frauds <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220321_Alert_Beware_of_Prevalent_Types_of_Frauds_EN.pdf\">Details</A></P><br><P>Statement on phishing email <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220129_Statement_EN.pdf\">Details</A></P><br><P>Don\'t Lend/Sell Your Account <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211230_Notice_EN.pdf\">Details</A></P><br><P>Notice of Maintenance and Enhancement Margin Information page of Precious Metal / FX Margin Trading <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211122_Notice_EN.pdf\') \" ><font color=\"#0000CC\">Details</font></a></P><br><P>Do not Lend Your Bank Account to Anyone to Launder Money <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210910_Notice_EN.pdf\') \" ><font color=\"#0000CC\">Details</font></a></P><br><P>Customers are reminded to be vigilant against possible scams:<BR><br><LI>Do not download mobile applications from unknown sources.</LI><br><LI>Do not open hyperlinks or attachments embedded in unknown emails or SMS messages.</LI><br><LI>Do not disclose your personal and banking information to third parties.</LI><BR><br><P>BOCHK:<BR><br><LI>would not ask for sensitive personal information such as bank account details, Internet Banking usernames, login passwords, one-time passwords or credit card numbers through phone calls, phone voice messages, or hyperlinks, QR codes or attachments embedded in emails or SMS messages. <br><P align=\"center\">Dont share bank account Dont share bank password</P><br><P>Should you have any query, please call BOCHKs Customer Service Hotline at (852) 3988 2388 or the Polices Anti-Scam Helpline 18222 </P><br><P>To Raise Awareness against Phishing Risks: Protect your Personal Digital Keys. Beware of Fraudulent Links! <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210707_Notice_EN.pdf\') \" ><font color=\"#0000CC\">Details</font></a></P><br><P>Effective from 20 June 2021, we will stop supporting TLS1.1 protocol enabled browsers. Please check the browser version. If necessary, please arrange system upgrade as soon as possible to ensure you can access to the Personal Internet/ Mobile Banking services. <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210521_Notice_EN.pdf\') \" ><font color=\"#0000CC\">Details</font></a></P><br><P>Statement on phishing SMS messages and fraudulent websites. <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/en/aboutus/fraudalert.html\') \" ><font color=\"#0000CC\">Details</font></a> </P><br><P><STRONG><U>Gentle reminder</U></STRONG><BR>According to latest policies in the Mainland, the personal remittance of Hong Kong & Macao residents to the Mainland can be used for savings and consumer expenditures, but cannot be used to subscribe financial products such as bonds, derivatives products and asset management products. In case of doubt, please refer to your account opening bank.</P><br><P>Starting from 19 July 2020, you are necessary to hold valid mobile phone number and e-mail address in our record when you conduct designated transactions in Internet / Mobile Banking (designated transactions including but not limited to beneficiarys account registration, bill payment to designated merchants, raising transaction limit, issuing e-Cheque/Cashiers Order). You are always recommended to provide us updated mobile phone number and e-mail address, in order to let you completing designated transactions in Internet / Mobile Banking smoothly and for us to contact you conveniently.</P><br><P>Please do not trust any caller claimed to be law enforcement officers or staff of government organisations for requesting you to provide online / mobile banking account information and passwords or make a bank transfer in order to prove your innocence or assistance in case investigation.</P><br><P>Remain vigilant against suspicious emails or phone calls. Do not disclose to any stranger (e.g. claimed as logistics companies, telecommunications companies, government organisations etc) your personal information, online / mobile banking account information and passwords or the one-time password.</P><br><P>Always verify the staffs identity if you receive a cold call from someone claiming to be a bank staff who promotes loan, investment, and other services. Dont be credulous to the cold callers and dont disclose sensitive personal information to others at will.</P><br><P>Remember to Hang Up, Verify, and Call the Polices Anti-Scam Helpline 18222for any doubt, you may also call the BOCHK Customer Service hotline +852 3988 2388 for enquiry.</P><br><P>For security reasons, BOCHK Mobile Banking and BoC Pay have temporarily suspended Fingerprint Authentication and Mobile Token functions on Samsung Galaxy S10, Galaxy S10+, Galaxy Note 10 and Galaxy Note 10+, until further notice. Customers can use the Security Device for designated transactions.</P><br><P>Please change your password regularly and set a strong password, avoid selecting the same password that you have used for accessing other web services. Please keep your password properly. Do not disclose your Internet Banking username and password to anyone. You should also avoid disclosing your personal information to anyone(e.g. HKID/passport number and date of birth, etc.). If you suspect that your passwords or two-factor authentication tools have been used by an unauthorised party, or find any unauthorised transactions associated with your account, please contact us immediately</P><br><P>Do not log in Internet Banking through hyperlinks in any email. Do not access Internet Banking through a shared computer or public wireless network. In case of doubt, please do not follow the instructions of the suspicious web page or input any data, and contact us immediately.</P><br><P>Important Notes on Precautions of Phishing E-mails: Customers are advised to verify any e-mails that claim to be sent from BOCHK. Please delete suspicious e-mails and attachments immediately without opening them, to prevent personal data from being stolen by malicious programmes or viruses. </P><br><P>Transactions via Internet Banking should be conducted through the corresponding bank where the account is maintained.<BR>NCB website: <A target=\"blank\" href=\"http://www.ncb.com.hk/\">http://www.ncb.com.hk</A><BR>Chiyu Bank website: <A target=\"blank\" href=\"http://www.chiyubank.com/\">http://www.chiyubank.com</A></P><br><P>If you login Internet / Mobile Banking through mobile phone, please download and install the latest version of mobile Apps, operating systems and browsers regularly in the official App stores or our website. Do not install mobile Apps from mistrusted sources. If there is any suspicious App, please do not download, login and should stop operation immediately. Do not login Internet / Mobile Banking via any jailbroken iPhone or rooted Android mobile phone to avoid any potential security loophole. <A target=\"_newwindow\" href=\"http://www.bochk.com/en/security/mobile.html\">Details</A></P></LI>";
+whatsnew_content_e[1]="";
+whatsnew_content_s[0]="<P><STRONG><U>「转数快」于9月11日及18日进行系统维护</U></STRONG><BR>由于「转数快」进行系统维护，「转数快」服务包括实时资金转账、直接付款授权及账户代号登记将于9月11日（星期日）凌晨3:00至凌晨5:00及18日（星期日）凌晨3:00至早上6:00暂停，如有需要，客户请提前安排相关缴付。</P><br><P>防范「网络钓鱼」攻击：数码KEY 睇紧��，揿LINK 前要三思！ <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220906_Notice_SC.pdf\">详情</A></P><br><P>有关伪冒银行职员来电或电话讯息的重要提示 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220901_Notice_SC.pdf\">详情</A></P><br><P>提防网上投资骗案 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220831_Notice_SC.pdf\">详情</A></P><br><P></P><br><P>便宜莫贪 勿卖Account <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220808_Notice_SC.pdf\">�情</A></P><br><P>有关客户遗失或被盗银行密码及支票而衍生被冒用风险的重要提示 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220712_Notice_SC.pdf\">详情</A></P><br><P>有关外汇挂钩投资的电子结单及电子通知书服务通知 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220718_Notice_SC.pdf\">详情</A></P><br><P>中国银行（香港）殷切提醒客户：慎防领取消费券相关诈骗 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220622_Notice_SC.pdf\">详情</A></P><br><P>提防虚假招聘广告诈骗手法 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220524_alert_sc.pdf\">详情</A></P><br><P>关于中银卡收费调整通知 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/2022/20220406_notice_sc.pdf\">详情</A></P><br><P>鉴于俄罗斯及乌克兰局势升级，市场波动性大幅增加，敬请阁下密切留意相关投资项目及其风险。投资涉及风险，如欲知悉最新市况，欢迎与本行职员联络。数据只供参考。</P><br><P>提防新近诈骗手法 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220321_Alert_Beware_of_Prevalent_Types_of_Frauds_SC.pdf\">详情</A></P><br><P>有关伪冒电邮的声明 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20220129_Statement_SC.pdf\">详情</A></P><br><P>切勿借/卖户口 <A target=\"_newwindow\" href=\"https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211230_Notice_SC.pdf\">详情</A></P><br><P>贵金属及外汇&#23382;展版面优化维护通知 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20211122_Notice_SC.pdf\') \" ><font color=\"#0000CC\">详情</font></a></P><br><P>切勿贪心��快钱 户口借人洗黑钱 <a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210910_Notice_SC.pdf\') \" ><font color=\"#0000CC\">详情</font></a></P><br><P>提防受骗小贴士<BR><br><LI>切勿下载来历不明的应用程式。</LI><br><LI>切勿开启来历不明的电邮及短讯内的超链结或附件。</LI><br><LI>切勿向他人透露个人及银行账户资料，包括银行账户资料、网上银行用户名称、登入密码、单次密码或信用卡号码。</LI><BR><br><P>中银香港<BR><br><LI>不会以电话、电话录音、电邮、短讯、网上超链结、二维条码或附件等方式，索取客户的敏感个人资料。 <br><P align=\"center\">银行户口咪乱借 银行密码切勿Share</P><br><P>如有怀疑，请致电中银香港客户服务热线(852) 3988 2388或警方「防骗易」热线 (852) 18222。</P><br><P>防范「网络钓鱼」攻击：<a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210707_Notice_SC.pdf\') \" ><font color=\"#0000CC\">详情</font></a> </P><br><P>2021年6月20日起本行将停止支援TLS1.1加密通讯协议的浏览器。请检查所使用的浏览器版本；如有需要，请尽快安排更新，以确保可继续使用本行的个人网上/手机银行服务。<a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/dam/bochk/desktop/top/aboutus/notice/20210521_Notice_SC.pdf\') \" ><font color=\"#0000CC\">详情</font></a> </P><br><P>有关虚假短讯及伪冒网站的声明<a href=\'#\' onclick=\"javascript:openPromote(\'https://www.bochk.com/sc/aboutus/fraudalert.html\') \" ><font color=\"#0000CC\">详情</font></a> </P><br><P><STRONG><U>温馨提示</U></STRONG><BR>按内地最新政策，一般港澳居民汇往内地的个人人民币汇款可用于储蓄及消费性支出，但不可购买有价证券、金融衍生品、资产管理产品等金融产品。有关疑问，请向您的开户行查询。 </P><br><P>由2020年7月19日起，于网上/手机银行进行指定交易 (包括登记第三者收款账户、缴付指定商户账单、调升交易额度、签发电子支票/本票及其他指定交易等)，您必须持有有效流动电话号码及电邮地址。请时刻向我们提供您最新的流动电话号码及电邮地址，让您能顺利于网上/手机银行完成指定交易之余，也让我们能与您紧密联系。</P><br><P>请勿相信任何声称执法部门人员或政府机构职员来电向您要求交出网上/手机银行账户资料及密码或账户内款项以证清白/协助调查。</P><br><P>请对可疑电邮或电话保持警觉，切勿向任何人(例如声称为 快递公司丶电讯公司丶公营机构等)透露您的个人资料及网上/手机银行账户资料丶密码或一次性密码。</P><br><P>如接获自称银行职员来电推介贷款或投资服务等，应先确认该职员身份，切勿轻信来电者，不要随意向他人透露敏感个人资料。</P><br><P>请时刻紧记遇有怀疑/异常情况立即收线丶核实丶及致电香港警方「防骗易18222」热线求助，有需要时亦可致电中银香港客户服务热线 +852 3988 2388查询。</P><br><P>为保障客户，中银香港手机银行及 BoC Pay 暂时不支援於 Samsung Galaxy S10 丶 Galaxy S10+ 丶 Galaxy Note 10 丶 Galaxy Note 10+ 的指纹认证及流动保安编码功能，直至另行通知。客户仍可继续使用保安编码器办理指定交易。</P><br><P>请定期更改并使用保安程度较高的登入密码，避免使用与其他网站相同的密码作为登入密码。请妥善保管密码，切勿向任何人透露网上银行用户名称及密码，亦不应随便向任何人透露任何个人资料（例如：香港身份证/护照号码、出生日期等）。如怀疑密码或双重认证工具遭盗用或发现账户有未经授权的交易，请即与本公司联络</P><br><P>切勿透过任何电子邮件提供的超连结登入网上银行。避免使用公用电脑或公用无线网络登入网上银行。如有怀疑，切勿按照可疑网页上的指示操作或输入任何资料，并请即与本公司联络。</P><br><P>有关防范伪冒电邮的重要提示：客户应先核实任何声称由中银香港发出的电子邮件，切勿开启可疑电邮及其附件，并应即时将其删除，以防止恶意程式或病毒盗取个人资料。 </P><br><P>客户请通过账户所属银行的网上银行办理交易。<BR>南洋商业银行网址：<A target=\"blank\" href=\"http://www.ncb.com.hk/\">http://www.ncb.com.hk</A><BR>集友银行网址：<A target=\"blank\" href=\"http://www.chiyubank.com/\">http://www.chiyubank.com</A></P><br><P>客户如使用流动电话登入网上/手机银行，请定期透过官方软件应用商店或本行网站下载并安装流动应用程式、手机操作系统及浏览器的最新版本。切勿尝试安装来源不明的软件/应用程式。如发现任何可疑的程式，切勿尝试下载、登入及应即时停止操作。同时，切勿使用已被破解的iPhone或Android流动电话尝试登入网上/手机银行，以防潜在保安漏洞。 <A target=\"_newwindow\" href=\"http://www.bochk.com/sc/security/mobile.html\">详情</A></P></LI>";
+whatsnew_content_s[1]=""; 
+
+pic_c[0]="shim.gif";
+pic_c[1]="shim.gif";
+pic_c[2]="shim.gif";
+
+pic_e[0]="shim.gif";
+pic_e[1]="shim.gif";
+pic_e[2]="shim.gif";
+
+pic_s[0]="shim.gif";
+pic_s[1]="shim.gif";
+pic_s[2]="shim.gif";
+
+hyper_c[0]="";
+hyper_c[1]="";
+hyper_c[2]="";
+
+
+hyper_e[0]="";
+hyper_e[1]="";
+hyper_e[2]="";
+
+
+hyper_s[0]="";
+hyper_s[1]="";
+hyper_s[2]="";
+
+ 
+features[0]="toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=750,height=550";
+features[1]="toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=750,height=550";
+features[2]="toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=750,height=550";
+
+
+function getTitle(index , lang){
+	 
+	if(lang == 'C')
+	{
+    if (wnew_c == null || wnew_c[index]==null)
+      return "";		 
+		return wnew_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (wnew_s == null || wnew_s[index]==null)
+      return "";		 
+		return wnew_s[index];
+	}
+	else		
+	{
+		if (wnew_e == null || wnew_e[index]==null)
+      return "";		 
+		return wnew_e[index];
+	}
+}
+
+function getContent(index , lang){
+	if(lang == 'C')
+	{
+		if (whatsnew_content_c == null || whatsnew_content_c[index]==null)
+      return "";		 
+		return whatsnew_content_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (whatsnew_content_s == null || whatsnew_content_s[index]==null)
+      return "";		 
+		return whatsnew_content_s[index];
+	}
+	else		
+	{
+		if (whatsnew_content_e == null || whatsnew_content_e[index]==null)
+      return "";		 
+		return whatsnew_content_e[index];
+	}
+}
+
+function getImage(index , lang){
+	if(lang == 'C')
+	{
+		if (pic_c == null || pic_c[index]==null)
+      return "";		 
+		return base+pic_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (pic_s == null || pic_s[index]==null)
+      return "";		 
+		return base+pic_s[index];
+	}
+	else		
+	{
+		if (pic_e == null || pic_e[index]==null)
+      return "";		 
+		return base+pic_e[index];
+	}
+}
+
+function getLink(index , lang){
+	if(lang == 'C')
+	{
+		if (hyper_c == null || hyper_c[index]==null)
+      return "";		 
+		return hyper_c[index];
+	}
+	else if(lang == 'S')
+	{
+		if (hyper_s == null || hyper_s[index]==null)
+      return "";		 
+		return hyper_s[index];
+	}
+	else		
+	{
+		if (hyper_e == null || hyper_e[index]==null)
+      return "";		 
+		return hyper_e[index];
+	}
+}
+
+
+function init(lang)
+{
+	if(lang == 'C')
+	{
+		pic = pic_c;
+		hyper = hyper_c;
+	}
+	else if(lang == 'S')
+	{
+		pic = pic_s;
+		hyper = hyper_s;
+	}
+	else		
+	{
+		pic = pic_e;
+		hyper = hyper_e;
+	}
+
+	document.pic0.src=base + pic[0];
+	document.pic1.src=base + pic[1];
+	document.pic2.src=base + pic[2];
+}
+
+function openBanner(i)
+{	
+	if (openBanner.arguments.length != 0)
+	{
+		if (pic[i] == "shim.gif" || hyper[i]=="")
+		{
+			var bannerWindow = "";
+		}
+		else
+		{
+			var bannerWindow = window.open(hyper[i],'its_banner',features[i]);
+		}
+	}
+}
+
+//-->

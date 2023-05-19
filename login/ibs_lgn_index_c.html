@@ -1,0 +1,3875 @@
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" class="zh-hk">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>中銀香港網上銀行</title>
+<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9,IE=EmulateIE10,IE=EmulateIE11,IE=Edge">
+<link href="../css/IbsLgn.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/linkui.css" type="text/css"/>
+<link rel="shortcut icon" href="data:," >
+<link rel="apple-touch-icon" href="data:," >
+<link rel="apple-touch-icon" sizes="120x120" href="data:," >
+<link rel="apple-touch-icon" sizes="152x152" href="data:," >
+<script type="text/javascript" src="../js/IbsDelay.js"></script>
+<script type="text/javascript" src="../js/IbsCommon.js?t=c&amp;v=20230428163500"></script>
+<script type="text/javascript" src="../js/IbsValidForm.js?t=c&amp;v=20230428163500"></script>
+<script type="text/javascript" src="../js/promote/IbsBanner.js?t=c"></script>
+<script type="text/javascript" src="../js/browser_detect.js?v=20230428163500"></script>
+<script type="text/javascript" src="../js/promote/IbsMaint.js?t=c"></script>
+<script type="text/javascript" src="../js/promote/IbsContingency.js"></script>
+<script type="text/javascript" src="../js/promote/IbsBannerDr.js?t=c"></script>
+<script type="text/javascript" src="../js/e2ee/ame2eea.js?t=c"></script>
+<script src="../js/jquery-2.2.4.js" type="text/javascript"></script>
+<script src="../js/IbsLgnFontSize.js?t=c&amp;v=20230428163500"></script>
+<script type="text/javascript" src="../js/e2ee/ame2eea.js?t=c"></script>
+<script type="text/javascript" src="../js/audio.js"></script>
+<script type="text/javascript" src="../js/LinkUiKit.js"></script>
+<script type="text/javascript" src="../js/IbsFmpDeviceFingerprint.js"></script>
+<script type="text/javascript" src="../js/IbsLogin_c.js"></script>
+<script type="text/javascript">
+var doFocus = true;
+var bName = navigator.appName;
+var bVer = parseInt(navigator.appVersion);
+document.onkeypress =trigger;
+
+if(document.location.protocol && document.location.protocol=="http:")
+{
+	var sslpath="https://"+document.location.host+document.location.pathname;
+	document.location.replace(sslpath);
+}
+
+
+if ( bName == "Netscape" && bVer >= 4 ) {
+        window.captureEvents(Event.KEYPRESS);
+        window.onKeyPress = trigger;
+   }
+
+if(screen.width <=640 || screen.height<=480)
+	window.resizeTo(625,425);
+	
+function isCookieSupported() {
+	document.cookie = "cookie=enable";
+	if (document.cookie.length > 0)
+		return true;
+	else
+		alert("閣下的瀏覽器並不允許存取及使用Cookies，請重新設定。");
+
+	return false;
+}
+
+function MM_findObj(n, d) { //v3.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document); return x;
+}
+
+function getFocus(ip_field) { //v3.0
+ 
+  self.focus();
+  loc_field = MM_findObj(ip_field);
+  loc_pass= MM_findObj("text_str_dispPass");
+
+  if(doFocus)
+  {	
+   if(loc_pass.value.length==0)
+    loc_field.focus();
+  }
+}
+
+function trigger(e){
+
+   var code ;
+   var name ;  
+
+   if ( bName == "Netscape" )
+   {
+      code = e.which;
+      name = e.target.name;  
+   }
+   else
+   {
+      e = window.event;
+      code = e.keyCode;
+      name = e.srcElement.name; 
+   }
+
+   if( name=="text_str_dispPass"){ 
+	   if ( code == 13 )
+       		  sub_step();
+   }
+   
+   if( name=="verCodeInput"){ 
+	   if ( code == 13 )
+       		  sub_step();
+   }
+   
+   if( name=="text_str_dispID" || name=="text_str_dispPass")
+   {
+	   	if( code == 13)
+	   	{
+	   		return false;
+	   	}
+   }
+   	
+   return true ;
+}
+
+function chk()
+{
+	var f = document.form_login;
+	items 	 = new Array();
+	items[0] = new item(f.text_str_dispID, "網上銀行號碼/用戶名稱", "loginID", 0,8,16);
+	
+		items[1] = new item(f.text_str_dispPass, "  密碼  ", "Blank", 0,6,12);
+	
+	
+	
+		items[2] = new item(f.verCodeInput, "驗證碼", "verCode", 0,4,4);
+	 
+	result   = validForm("C", items);
+	
+	if (!result)
+		return false;	 	
+	else
+		return true;	
+}
+
+function getScreenWidth()
+{
+	if(screen && screen.width && MM_findObj("screenWidth"))
+	{
+		MM_findObj("screenWidth").value=screen.width;
+	}
+}
+
+function sub_step() {
+
+	if(!isCookieSupported())
+		return ;
+
+	doFocus=false;  
+	var f =  document.form_login;
+	var f1 = f.text_str_dispID;
+	var f2 = f.txt_loginID;
+	var f3 = f.text_str_dispPass;
+	var f4 = f.txt_loginPass;
+	
+		var f5 = f.verCodeInput;
+		var f6 = f.txt_verCodeInput;
+	
+	
+	var deviceNumber = getEncryptionDeviceNumber();
+	f.deviceNumber.value = deviceNumber;
+	
+	if( delay('1') )
+	{
+		if(chk())
+		{
+			
+			f4.value=f3.value;
+			f2.value=f1.value;
+			f3.value="";
+			f1.value="";
+			
+				f6.value=f5.value;
+				f5.value="";
+			
+			
+			var e2eeSid = '00017D8FZCmzcyOsjCJVGDNsr9R25bYCants7d7RpSSktQBxxStmae4c2faRsXtCYrp9IcYSO72TDVvrOlw9PiJF72syjF0xta-XNQxiHnKKotgMcA';
+			var pubKey = 'C221C4F011A2343AD9CD54E906DEF16F3DB7E0757721506A2F0DC23277D74D40C57B63BD5543DAF91E37B856C209A62B0646E4C3330762F6BF73875E6603367921099A9DFF7F86D80BB702F9B33F17188AF15152DDE6E233050E4529CB0AECB335D130BE3780B22D8BE1E41A082CAD98CFF036D17DC25CC6FB150B6AF70657808E4F92E7FFE8965BB674306456444BF69EF8C0A41212A8D247E1C165DEB8162EF8F8B10A5CA7962A504631561D776D8F2DE86A1051D52E4522456E50C38A5CC74470A6DE5861EC116F43D855FB5B1163EDE5E22105C816B2EF786C6CFB56BDC9C64FF658188C86C943EBB9D37750055B4796684880C96821666E846827F3D281,0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FD5D,NO_KCV';
+			var randomNumber = '04393F2F02FFB74AC15904BEC1C4E7BE';
+			var oaepHashAlgo = 'SHA-256';
+
+			
+			f.E2EE_RPIN.value = ame2eea.encryptPinForAM(e2eeSid, pubKey, randomNumber, f4.value , oaepHashAlgo);
+			
+			
+			
+				f4.value = "ENCRYPT" ;
+			
+			
+			f.submit();
+			setTimeout("gb_delayFlag = true;",5000);
+		}
+		else
+			gb_delayFlag=true;
+	}
+}
+
+function isDenyAccess() 
+{
+	var isDenyAccess = false;
+	var ua = navigator.userAgent.toLowerCase();
+	var BrowserTypeList = [ 
+	{name : 'mobile',type : /(android|iphone|ipad|mobile|phone|windows phone|ipod|midp|ucweb|symbianos)/i}
+	 ];
+	for ( var key in BrowserTypeList) {
+		var b = BrowserTypeList[key];
+		var m = b.type.exec(ua);
+		if (m) {
+			if(b.name == "mobile")
+			{
+			   isDenyAccess = true;
+			}
+			else
+			{
+			   isDenyAccess = false;
+			}
+			break;
+		}
+	}
+	
+	if(navigator.platform == 'MacIntel' && navigator.maxTouchPoints>1)
+	{
+		isDenyAccess = true;
+	}
+	if(isDenyAccess)
+	{
+		alert('如透過流動裝置登入網上銀行，請您注意必須加強安全設定。\n詳情請參閱本行網頁內之保安資訊。');
+		return false;
+	}	
+}
+
+function online() {
+		var width = 540;
+		var height = 420;
+		var left = window.screen.availWidth/2 - width/2;
+		var top = window.screen.availHeight/2 - height/2;
+		var subWin = window.open('https://onc.bochk.com/infoweb/uentry/UEntry.aspx?lang=C','webchat','width='+width+',height='+height+',left='+left+',top='+top+',status=no,scrollbars=yes,resizable=yes,menubar=0,location=0,directories=0');
+		subWin.focus();
+	}
+
+</script>
+
+<script type="text/javascript">var wrt_request_id='0000F3850005fc0e8eea6bcf001CF047';var wrt_request_url='https://its.bochk.com/login/ibs_lgn_index_c.jsp';var wrt_correlator='0000F3850005fc0e8d97ed62001CF025';</script>
+<script language="JavaScript" src="wrt_perf_timing.js" type="text/javascript"></script>
+</head>
+
+<body id="login" onload="setCookie('from','012',null,'/');document.form_login.text_str_dispID.focus();getScreenWidth();isDenyAccess();tipsAlert();">
+
+<div id="header">
+	<div id="header-top">
+		<a id="logo"title="中國銀行(香港)有限公司"><img src="images/ie6/logo.jpg" alt="中國銀行(香港)有限公司" /></a>
+		<ul id="nav-top">
+			<li><a class="en-text" href="ibs_lgn_index_e.jsp">ENG</a></li>
+			<li><a href="ibs_lgn_index_s.jsp">简体</a></li>
+			<li><div id="fontsize"><a href="ibs_lgn_index_c.jsp#" class="en-text" title="字體大小：原設定"><span class="access">字體大小：原設定 (</span>A<span class="access">)</span></a><a class="en-text" href="ibs_lgn_index_c.jsp#" title="字體大小：較大"><span class="access">字體大小：較大 (</span>A<span class="access">)</span></a><a class="en-text" href="ibs_lgn_index_c.jsp#" title="字體大小：最大"><span class="access">字體大小：最大 (</span>A<span class="access">)</span></a></div></li>
+			<li><a href="javascript:openHelp('/cmm.cnuMainBeforeLogin.do?langType=C&bkCode=012',600,670)">聯絡我們</a></li>
+		</ul>
+	</div>
+	<div id="separator"><div id="separator-red"></div></div>
+</div>
+<div id="importInfo">
+	<div id="importInfo_box"> 
+
+		<div class="style-b_boc">
+			<div class="its_news" >
+				<div class="its_news_header">重要訊息</div>
+				
+				
+					<div class="its_news_body">
+						<p class="its_news_subheader">
+							<ul><li type="disc">香港投資者識別碼制度（「港股實名制」）已於2023年3月20日實施，請立即提交同意授權</li></ul>
+						</p>
+						<div class="importInfo_content" id ="importInfo_content_0">
+							投資者如未就港股實名制向銀行提交同意授權，請立即遞交，否則於實施日後將無法買入或存入港股。<br>
+<br>
+請即登入網上銀行 (選擇：投資 &gt; 港股證券&gt; 香港投資者識別碼制度 個人資料使用授權) 提交同意授權！請留意，投資者所提交的同意授權，需於兩個交易日內才能生效。<br>
+<br>
+投資涉及風險。受條款約束。
+						</div>
+					</div>
+				
+			</div>
+		</div>
+	
+	</div>
+</div>
+<div id="content">
+	<div id="content-div">
+		<div id="loginbox">
+			<div id="loginbox-content">
+				<img id="boc-building" src="images/ie6/building.jpg" alt="" />
+				<div id="loginbox-content-container">
+					<div class="left">
+						<h1>登入香港網上銀行</h1>
+						<p>已登記 / 辦理網上銀行服務</p>
+						<form name="form_login" method="post" action="https://its.bochk.com/lgn.default.do"	target="_top">
+							<span><label for="username">網上銀行號碼 / 用戶名稱
+							<div id="tips">
+					  			<div id="tips_mark">
+									<img id="tips_image" src="srp/images/tips.jpg" alt="">
+								</div>
+								<!-- must use embedded display for tips_box show/hide -->
+								<div id="tips_box" style="display: none;">
+									<div id="tips_box_statement">
+										<h3>忘記網上銀行號碼/用戶名稱</h3>
+										<div id="images_Statement">
+											<img src="images/e-Statement-TW.png"/>
+										</div>
+										<h4>綜合月結單首頁</h4>
+										<p>您的客戶號碼即是網上銀行號碼。</p>
+									</div>
+									<div id="tips_box_creditCard">
+										<div id="images_creditCardBackside">
+											<img src="images/creditCardBackside.png"/>
+										</div>
+										<h4>中銀卡(提款卡)</h4>
+										<p>如屬私人財富或中銀理財客戶，您可於中銀卡(提款卡)卡背上查閱您的客戶號碼。</p>
+									</div>
+								</div>
+							</div>
+							</label>
+							<input id="username" name="text_str_dispID" type="text" maxlength="16"/></span>
+							<span><label for="password">網上銀行密碼</label><input type="password" id="password" name="text_str_dispPass" maxlength="12" autocomplete="off"/></span>
+							
+								<span style="display:inline">
+								<label for="checkCode">驗證碼<div style="display:inline"><img style="height:30px; width:80px" id="verifyImg2" src="../portal/images/captra.jpg" onclick="changeImage()" title='更新圖像'/></div>
+								</label><input id="checkCode" name="verCodeInput" size="4" maxlength="4" autocomplete="off"/>
+								<input type="hidden" name="txt_verCodeInput" value="">
+								<br/>
+								<label><div style="display:inline-block; margin-left:49px"><a class="apply" href="javascript:changeImage();" style="border-bottom:0px;text-decoration:underline; vertical-align:2.5px; padding-right:10px" tabindex="-1">更新圖像</a>
+								<script type="text/javascript" language="javascript">
+			                    play('ch',false);
+								</script></div></label>
+								</span>	
+							
+							<input type="hidden" name="b_login" value="true">             				
+	          				<input type="hidden" name="txt_loginID" value="">
+	          				<input type="hidden" name="langType" value="C">
+	          				<input type="hidden" name="bkCode" value="012">   
+	          				<input type="hidden" name="txt_loginPass" value="">
+	          				<input type="hidden" name="txt_loginValue" value="0.174587798841221">
+	          				<input type="hidden" name="screenWidth" value="0">
+	          				<input type="hidden" name="empnum" value="null">
+	          				<input type="hidden" name="empbankCode" value="null">
+	          				
+	          				<input type="hidden" name="ssolink" value="null">          				
+	          				<input name="E2EE_RPIN" type="hidden" >
+	          				<input type="hidden" name="referer" value="https://its.bochk.com/login/ibs_lgn_index_e.jsp">
+	          				<input type="hidden" name="deviceNumber" value=""> 
+						</form>
+						<p id="loginbox-nav">
+							<a class="more" href="javascript:alert('This is phishing')"><span class="more-left"></span><span>登入 (phishing)</span><span class="more-right"></span></a>
+							<a class="apply" href="javascript:openHelp('/information/apply/ibs_hta_main_c.html')" style="border-bottom:0px;text-decoration:underline;">申請辦法</a>
+						</p>
+						<p id="forgotpwd">若閣下<a href="javascript:openHelp('/login/srp/help/ibs_srp_help_boc_c.html')">忘記網上銀行號碼 / 用戶名稱</a>，<a href="https://its.bochk.com/srp.resettingPass.do?langType=C&amp;bkCode=012">重設網上銀行密碼</a>。</p>
+					</div>
+					<div class="right">
+						<h2></h2>
+						
+							<div class="important_notes"><img src="images/greyExclamationMark.png">&nbsp;重要提示</div>
+							<p class="shortDesc"><p>經此渠道提供的服務之相關條款及細則將以電子形式提供，查詢請聯絡在線客服。</p>
+<p>客戶在登入網上銀行時，請注意登入版面有否出現任何異常情況(例如：不正常的彈出版面、視窗運作緩慢、重覆要求客戶輸入密碼等)。如有懷疑，切勿按照可疑網頁上的指示操作或輸入任何資料，並請即致電本行客戶服務熱線(852) 3988 2388。詳情請參閱<a></a><a href="https://www.bochk.com/tc/security.html">保安資訊</a></p>
+</p>
+							
+								<p class="moreCount" ><a class="more-right" href="javascript:openHelp('/cmm.loginPageNotice.do?langType=C&bkCode=012',600,670)">更多</a></p>
+							
+						
+						</br><p>若您想了解網上銀行操作，請瀏覽<a style="border-bottom:0px;text-decoration:underline;" href="javascript:openHelp('https://www.bochk.com/dam/more/ibs/operational_guidelines_TC.pdf')">操作指引</a>。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="style-a_boc">
+			<div>
+				<div>
+				
+					<div class="its_news" >
+						<div class="its_news_header">最新消息</div>
+						
+							<div class="its_news_subheader" id = "subheader_1" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_1','content_1','images_up_1','images_down_1')">
+								<div class="its_news_title" id="title_1">提防釣魚訊息 保障支付卡安全</div>
+								<div class="publishDate" id="publishDate_1">
+										2023-05-16
+								</div>
+								<div class="images_up" id = "images_up_1" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_1" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_1" style="display:none;">
+								中國銀行（香港）（「本行」）提醒客戶及公眾人士，慎防意圖騙取個人資料及支付卡(包括中銀信用卡及中銀卡)資料的釣魚電郵/短訊。<br>
+<br>
+近日有騙徒偽冒網購平台/積分獎賞平台/郵政服務/速遞公司/政府部門/銀行發出釣魚電郵或短訊，以不同藉口要求客戶點擊電郵或短訊內的超連結進行驗證、換領積分、退款、付費或個人資料更新，例如訛稱平台需客戶更新資料才能繼續提供服務，或客戶有包裹因故無法派遞而需更新資料及/或額外付費，或客戶賬戶被多收款項可申請退款或自動扣賬失敗需提供信用卡資料作即時處理等，誘騙客戶在該超連結的偽冒網站內輸入個人及支付卡資料。<br>
+<br>
+這些虛假電郵、短訊及偽冒網站的超連結會以不同組合，甚至仿似相關機構真正網址的網域名稱（如以類似的英文字母、數字或符號取代）出現，而虛假短的發送人名稱有機會與真實商戶名稱相同，導致虛假短訊與過往來自真實商戶的短訊共同顯示，企圖誤導客戶及盜取客戶的個人及支付卡資料，從而用於非法用途，包括綁定流動支付及服務後，在本地或海外進行未經訊授權簽賬，或直接以盜取的資料進行未經授權的網上交易。<br>
+<br>
+本行重申不會以電話、電話錄音、電郵、短訊、超連結、二維碼或附件等方式，索取客戶的敏感個人資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、一次性密碼或支付卡號碼/保安碼。<br>
+<br>
+本行呼籲客戶提高警覺，慎防受騙:<br>
+• 請妥善保管支付卡、個人資料和支付卡資料(包括卡號、有效日期、卡背面的驗證碼、短訊一次性密碼)，切勿向任何人透露敏感個人資料、支付卡資料、及任何密碼，包括短訊一次性密碼。<br>
+• 儘管現時流動裝置具備自動填寫一次性密碼的功能(AutoFill)，請於輸入有關一次性密碼以進行任何交易授權前，小心核對一次性密碼短訊的內容及交易資料(例如︰商戶名稱、交易類別、交易金額及貨幣)是否與實際進行的用途或交易相符。<br>
+• 輸入任何資料或進行交易前，須檢視該網頁地址是否真確與可信。<br>
+• 切勿打開來歷不明的電郵、短訊、附件或超連結及下載可疑的應用程式。如有懷疑，請即停止操作，切勿輸入任何資料，關閉視窗，並向本行查詢，或透過真實商戶的官方聯絡途徑核實。<br>
+• 如客戶曾向懷疑偽冒網站提供資料，請即致電客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2），並向警方舉報。<br>
+• 如客戶收到有關綁定流動支付及服務或網上交易的可疑訊息，請立即報警求助及與本行聯絡。<br>
+• 經常透過網上銀行、手機銀行或月結單檢查中銀信用卡/中銀卡交易紀錄以檢查是否有任何可疑或未經授權的交易。<br>
+• 客戶若未有妥善保管中銀信用卡/中銀卡、個人資料和支付卡資料(包括卡號、有效日期、卡背面的驗證碼及/或短訊一次性密碼)，或忽略本行發出的交易通知，有可能需要按信用卡合約/信用卡持卡人合約、條款及細則/中銀提款卡重要通知和服務條款對該等招致的交易及/或損失負責。<br>
+<br>
+本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+							</div>
+							<div class="its_news_line" id = "line_1"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_2" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_2','content_2','images_up_2','images_down_2')">
+								<div class="its_news_title" id="title_2">2023年5月21日系統維護通知</div>
+								<div class="publishDate" id="publishDate_2">
+										2023-05-16
+								</div>
+								<div class="images_up" id = "images_up_2" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_2" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_2" style="display:none;">
+								由於本行進行系統維護，「轉數快」服務包括實時資金轉賬、直接付款授權及賬戶代號登記將於2023年5月21日（星期日）凌晨3:20至早上7:00暫停，如有需要，客戶請提前安排相關繳付。
+							</div>
+							<div class="its_news_line" id = "line_2"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_3" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_3','content_3','images_up_3','images_down_3')">
+								<div class="its_news_title" id="title_3">有關終止分行「智盈理財」品牌專窗服務通知</div>
+								<div class="publishDate" id="publishDate_3">
+										2023-05-15
+								</div>
+								<div class="images_up" id = "images_up_3" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_3" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_3" style="display:none;">
+								茲通知中國銀行（香港）分行，由2023年6月19日(星期一) 起，將分階段進行裝修及終止分行「智盈理財」品牌專窗，完成裝修後以全新面貌提供更便捷、優質的銀行服務。期間分行將照常營業及維持服務。「智盈理財」客戶如需享用一般銀行服務，可使用我行自助設備或其他櫃檯辦理。<br>
+<br>
+客戶亦可透過本行網上銀行、手機銀行、電話銀行及自動櫃員機等多元化的電子渠道，享用便捷的銀行服務。<br>
+<br>
+如有查詢，請致電「智盈理財」客戶服務熱綫（852）3988 2988。<br>
+<br>
+如本客戶通知的中、英文版本有歧異，概以中文版本為準。<br>
+							</div>
+							<div class="its_news_line" id = "line_3"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_4" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_4','content_4','images_up_4','images_down_4')">
+								<div class="its_news_title" id="title_4">信用卡交易/活動雙向提示短訊</div>
+								<div class="publishDate" id="publishDate_4">
+										2023-05-14
+								</div>
+								<div class="images_up" id = "images_up_4" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_4" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_4" style="display:none;">
+								當發現您的信用卡出現異常交易/活動時，中國銀行(香港)(「本行」)會發送雙向提示短訊至您已登記的流動電話號碼，請您回覆該交易/活動是否由您本人授權/發動。在回覆該短訊前，請您小心核對短訊內所顯示的詳情 (例如商戶名稱、交易時間、交易貨幣和金額)。<br>
+<br>
+如您曾授權該交易/發動該活動，請於確認該短訊內的資料正確後回覆「1」。如您並無授權/發動，或短訊內的資料有誤，請回覆「9」。本行會因應您的回覆而作出跟進，包括在收到回覆「9」後即時停止您的信用卡，並於稍後與您聯絡了解詳情。<br>
+<br>
+請注意：<br>
+1. 回覆該短訊時，切勿分享任何個人及信用卡資料。您亦有可能被電訊服務供應商收取發送短訊費用。<br>
+<br>
+2. 如您錯誤回覆該短訊，請立即致電與本行聯絡。<br>
+<br>
+3. 如您身處海外時收到該短訊，請立即致電與本行聯絡，無須回覆該短訊。<br>
+<br>
+							</div>
+							<div class="its_news_line" id = "line_4"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_5" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_5','content_5','images_up_5','images_down_5')">
+								<div class="its_news_title" id="title_5">有關「中銀財互通」服務終止通知</div>
+								<div class="publishDate" id="publishDate_5">
+										2023-04-20
+								</div>
+								<div class="images_up" id = "images_up_5" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_5" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_5" style="display:none;">
+								<p>茲通知由2023年6月20日(「生效日期」)起，中國銀行（香港）有限公司（「中銀香港」）及中國銀行股份有限公司（「中國銀行」）將終止「中銀財互通」服務，包括「中銀財互通」卡﹑網上銀行「中銀財互通」相關功能等。</p>
+<p>&nbsp;</p>
+<p>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 「中銀財互通」將由生效日終止以下服務(適用於中銀香港發卡)：</p>
+<p>－「中銀財互通」卡，包括:於自動櫃員機、消費服務終端機辦理的聯動扣賬服務及餘額查詢等交易；</p>
+<p>－中銀香港個人網上銀行「中銀財互通」項下服務，包括:賬戶概覽、賬戶交易紀錄、匯款至內地、匯款至香港和匯款交易紀錄<sup>1</sup>等交易；及</p>
+<p>－中國銀行深圳市分行的櫃檯服務和自助設施所提供的「中銀財互通」服務，包括提款、轉賬及餘額查詢等交易。</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 客戶可攜同個人身份證明文件（如：港澳居民來往內地通行証）及「中銀財互通」卡，親身前往中國銀行深圳市分行辦理取消內地「活期一本通」賬戶，客戶於「中銀財互通」服務終止後，仍可前往該分行辦理銷戶及取回賬戶餘額。(適用於中銀香港發卡)</p>
+<p>&nbsp;</p>
+<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 客戶可繼續於中銀香港個人網上銀行/手機銀行使用有關「中銀財互通」卡內之中銀香港港幣賬戶，客戶亦可為該賬戶申請辦理「中銀卡」。</p>
+<p>&nbsp;</p>
+<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中國銀行個人網上銀行之中銀香港港幣賬戶/中國銀行發出的「中銀財互通」卡的聯動及相關服務<sup>2</sup>亦取消，詳情請向中國銀行查詢。</p>
+<p>&nbsp;</p>
+<p>如有查詢，請於辦公時間（星期一至五上午9時至下午6時，星期六上午9時至下午1時）內致電中銀香港客戶服務熱線 (852) &nbsp;&nbsp;3988 2333，瀏覽<a href="http://www.bochk.com/">www.bochk.com</a>或親臨中銀香港任何一家分行查詢。有關中國銀行賬戶/服務的查詢，可直接聯繫中國銀行分行或致電該行客戶服務熱線(86)&nbsp;&nbsp; 755-95566。</p>
+<p>&nbsp;</p>
+<p><b>中國銀行(香港)有限公司</b>謹啓</p>
+<p>2023年 4月 20日</p>
+<p>&nbsp;</p>
+<p>註：</p>
+<p><sup>1&nbsp;</sup>在「中銀財互通」服務終止後，中銀香港港幣賬戶的交易紀錄及匯款交易紀錄仍然保留，客戶可於中銀香港個人網上銀行查閱有關交易記錄 (理財&gt;我的賬戶&gt;交易記錄) 或 匯款交易記錄 (理財&gt;匯款&gt;交易記錄/匯出匯款查詢/匯入匯款查詢)。</p>
+<p>&nbsp;</p>
+<p><sup>2&nbsp;</sup>中國銀行發出的「中銀財互通」卡聯動及相關服務包括︰自動櫃員機提現及查詢中銀香港賬戶之服務及消費聯動服務。中國銀行個人網上銀行「中銀財互通」項下服務包括︰賬戶概覽、賬戶交易紀錄、匯款至內地、匯款至香港和匯款交易紀錄等交易。</p>
+<p>&nbsp;</p>
+<p>本函的中英文文本如有歧義，概以中文文本為準。</p>
+							</div>
+							<div class="its_news_line" id = "line_5"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_6" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_6','content_6','images_up_6','images_down_6')">
+								<div class="its_news_title" id="title_6">投資市場風險提示</div>
+								<div class="publishDate" id="publishDate_6">
+										2023-03-20
+								</div>
+								<div class="images_up" id = "images_up_6" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_6" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_6" style="display:none;">
+								因應近日瑞士個別主要銀行風險事件，或增加市場波動性，敬請閣下密切留意相關投資及其風險。投資涉及風險，如欲知悉最新市況，歡迎與本行職員聯絡。
+							</div>
+							<div class="its_news_line" id = "line_6"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_7" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_7','content_7','images_up_7','images_down_7')">
+								<div class="its_news_title" id="title_7">有關警方推出一站式詐騙陷阱搜尋器「防騙視伏APP」流動應用程式  </div>
+								<div class="publishDate" id="publishDate_7">
+										2023-03-13
+								</div>
+								<div class="images_up" id = "images_up_7" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_7" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_7" style="display:none;">
+								<img width="323" src="https://www.bochk.com/dam/document/platforms/personal/20230315.jpg" alt=""><br>
+<br>
+為打擊電訊及網上騙案，警方推出一站式詐騙陷阱搜尋器「防騙視伏APP」流動應用程式，協助公眾辨識詐騙及網絡陷阱。如遇到可疑來電、網購賣家、交友邀請、招聘廣告、投資網站，公眾均可在「防騙視伏APP」輸入相關平台賬戶名稱或號碼、收款賬戶、電話號碼、電郵地址、網址等，以評估詐騙及網絡安全風險。<br>
+<br>
+客戶可善用警方有關搜尋器，提防詐騙，保障自身利益。<br>
+<br>
+相關警方防騙資訊請見以下網頁連結:<br>
+https://cyberdefender.hk/
+							</div>
+							<div class="its_news_line" id = "line_7"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_8" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_8','content_8','images_up_8','images_down_8')">
+								<div class="its_news_title" id="title_8">投資市場風險提示</div>
+								<div class="publishDate" id="publishDate_8">
+										2023-03-13
+								</div>
+								<div class="images_up" id = "images_up_8" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_8" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_8" style="display:none;">
+								因應近日美國個別銀行風險事件，或增加市場波動性，敬請閣下密切留意相關投資及其風險。投資涉及風險，如欲知悉最新市況，歡迎與本行職員聯絡。
+							</div>
+							<div class="its_news_line" id = "line_8"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_9" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_9','content_9','images_up_9','images_down_9')">
+								<div class="its_news_title" id="title_9">認可作押股票調整通知</div>
+								<div class="publishDate" id="publishDate_9">
+										2023-02-17
+								</div>
+								<div class="images_up" id = "images_up_9" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_9" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_9" style="display:none;">
+								<p>感謝您使用中國銀行(香港)有限公司（「本行」）的「財富組合融資」透支授信 / 一般銀行貸款 (股票抵押貸款)服務。<br>
+<br>
+本行已完成認可作押股票名單（「名單」）的定期重檢，名單將於2023年2月27日生效（「生效日」）。調整名單如下：<br>
+&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="0" width="340">
+<tbody><tr><td width="64" rowspan="2" valign="top"><p>變化</p>
+</td>
+<td width="293" rowspan="2" valign="top"><p>股票號碼/<br>
+股票名稱</p>
+</td>
+<td width="208" colspan="2" valign="top"><p>貸款比例(作押比率)</p>
+</td>
+</tr><tr><td width="104" valign="top"><p>生效前</p>
+</td>
+<td width="104" valign="top"><p>生效後</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>13/和黃醫藥中國有限公司</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>20/商湯集團股份有限公司</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>178/莎莎國際</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>412/山高控股</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>520/呷哺呷哺</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>546/阜豐集團</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>1179/華住集團有限公司</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>1672/歌禮制藥</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>1873/維亞生物</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>1880/中國中免</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>2096/先聲藥業</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>2162/康諾亞</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>2252/上海微創醫療機器人（集團）股份有限公司</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>2273/固生堂</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>2378/保誠</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>3668/兗煤澳大利亞</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>6606/諾輝健康</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>6699/時代天使</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>6821/凱萊英</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>6855/亞盛醫藥</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>9696/天齊鋰業</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>9869/海倫司</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="bottom"><p>9961/攜程集團</p>
+</td>
+<td width="104" valign="bottom"><p>0%</p>
+</td>
+<td width="104" valign="bottom"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>580/賽晶科技</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>665/海通國際</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>1121/金陽新能源</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>1521/方達控股</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>1866/中國心連心化肥</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>2130/嘉泓物流</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>2342/京信通信</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>剔除</p>
+</td>
+<td width="293" valign="top"><p>2727/上海電氣</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>4/九龍倉集團</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>19/太古股份公司</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>81/中國海外宏洋集團</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>220/統一企業中國</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>293/國泰航空</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>302/中手游</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>322/康師傅控股</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>323/馬鞍山鋼鐵股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>345/VITASOY INT'L</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>347/鞍鋼股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>358/江西銅業股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>384/中國燃氣</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>425/敏實集團</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>551/裕元集團</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>586/海螺創業</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>587/中國海螺環保控股有限公司</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>694/北京首都機場股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>696/中國民航信息網絡</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>753/中國國航</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>819/天能動力</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>855/中國水務</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>867/康哲藥業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>874/白雲山</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>956/新天綠色能源</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>966/中國太平</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>991/大唐發電</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1071/華電國際電力股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1072/東方電氣</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1108/洛陽玻璃股份</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1157/中聯重科</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1193/華潤燃氣</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1199/中遠海運港口</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1208/五礦資源</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1268/美東汽車</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1302/先健科技</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1310/香港寬頻</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1357/美圖公司</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1359/中國信達</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1515/華潤醫療</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1530/三生製藥</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1558/東陽光藥</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1585/雅迪控股</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1776/廣發証券</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1787/山東黃金</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1789/愛康醫療</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1798/大唐新能源</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1800/中國交通建設</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1816/中廣核電力</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1833/平安好醫生</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1882/海天國際</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1896/貓眼娛樂</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1919/中遠海控</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1958/北京汽車</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1972/太古地產</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1988/民生銀行</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1999/敏華控股</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2005/石四藥集團</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2009/金隅集團</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2018/瑞聲科技</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2186/綠葉製藥</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2314/理文造紙</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2357/中航科工</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2611/國泰君安</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2666/環球醫療</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2689/玖龍紙業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3331/維達國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3799/達利食品</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3808/中國重汽</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3868/信義能源</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3898/時代電氣</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3908/中金公司</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3933/聯邦制藥</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3958/東方證券</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3998/波司登</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6049/保利物業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6690/海爾智家</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6881/中國銀河</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9926/康方生物</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9969/諾誠健華</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr></tbody></table>
+<p><br>
+<br>
+由於上述重檢可能涉及作押股票及/或貸款比例(作押比率)的調整，亦可能對您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)之貸款額度造成影響。如您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)的實際用款超出本行調整貸款比例(作押比率)後的額度，您有可能被要求於短時間內存入額外的資金以回復額內用款。假如未能在本行指定時間內回復額內用款，本行有權把您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)賬戶中抵押給本行的證券出售，而無需給予事先通知。<br>
+<br>
+您可於生效日起在本行官方網站(www.bochk.com)瀏覽詳情。如有任何查詢，請親臨任何一家分行或致電 (852) 3988 2388。</p>
+<p><br>
+為免生疑問，相關融資/貸款的條款和條件適用，本行在該等條款和條件下的權利均不受影響。</p>
+<p><br>
+中國銀行(香港)有限公司</p>
+<p><br>
+中英文文本如有歧義，概以英文本為準。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+							</div>
+							<div class="its_news_line" id = "line_9"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_10" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_10','content_10','images_up_10','images_down_10')">
+								<div class="its_news_title" id="title_10">慎防被盜用個人資料進行遙距開戶及申請貸款的重要提示</div>
+								<div class="publishDate" id="publishDate_10">
+										2023-02-14
+								</div>
+								<div class="images_up" id = "images_up_10" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_10" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_10" style="display:none;">
+								<p>中國銀行（香港）（「中銀香港」） 提醒客戶及公眾人士，慎防被盜用個人資料於網上銀行進行遙距開戶及申請貸款。</p>
+<p>近日有騙徒以不同藉口盜取個人資料，並於網上銀行進行遙距開戶，甚至申請貸款，例如冒充銀行職員在街檔吸引路人遙距開戶，用以誘騙他人拍攝面容影像，並提供身分證、住址証明、財務檔以申請銀行戶口及貸款。另外亦有騙徒訛稱需要測試新手機應用程式拍照變臉功能等，然後盜用他人的證件及文件去申請網上銀行戶口及貸款。</p>
+<p>本行呼籲客戶提高警覺，慎防受騙:</p>
+<p>．請小心保護個人資料，切勿向任何人提供或透露敏感個人資料，包括面容影像、身分證、住址証明、財務文件等；</p>
+<p>．必須使用自己的手提電話或電子裝置進行銀行賬戶遙距開戶及設立密碼；</p>
+<p>．切勿使用第三者提供的手提電話或電子裝置進行銀行賬戶遙距開戶及設立密碼；</p>
+<p>．如對任何銀行職員身份有懷疑，請聯絡相關銀行或根據香港銀行公會網頁上載之熱線致電核實。</p>
+<p>本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。</p>
+							</div>
+							<div class="its_news_line" id = "line_10"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_11" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_11','content_11','images_up_11','images_down_11')">
+								<div class="its_news_title" id="title_11">提防釣魚訊息 保障信用卡安全</div>
+								<div class="publishDate" id="publishDate_11">
+										2023-02-14
+								</div>
+								<div class="images_up" id = "images_up_11" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_11" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_11" style="display:none;">
+								<p>中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士，慎防意圖騙取個人資料及信用卡資料的釣魚電郵/短訊。</p>
+<p>近日有騙徒偽冒網購平台/積分獎賞平台/郵政服務/速遞公司/銀行發出釣魚電郵或短訊，以不同藉口要求客戶點擊電郵或短訊內的超連結進行驗證、付費或個人資料更新，例如訛稱平台需客戶更新資料才能繼續提供服務，或客戶有包裹因故無法派遞而需更新資料及/或額外付費，誘騙客戶在該超連結的偽冒網站內輸入個人及信用卡資料。</p>
+<p>這些虛假電郵、短訊及偽冒網站的超連結會以不同組合，甚至仿似相關機構真正網址的網域名稱（如以類似的英文字母、數字或符號取代）出現，而虛假短訊的發送人名稱有機會與真實商戶名稱相同，導致虛假短訊與過往來自真實商戶的短訊共同顯示，企圖誤導客戶及盜取客戶的個人及信用卡資料，從而用於非法用途，包括<b>綁定流動支付及服務</b>後，在本地或海外進行未經授權簽賬，或<b>直接以盜取的資料進行未經授權的網上交易</b>。</p>
+<p>中銀香港重申不會以電話、電話錄音、電郵、短訊、超連結、二維碼或附件等方式，索取客戶的敏感個人資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、一次性密碼或信用卡號碼/保安碼。</p>
+<p>本行呼籲客戶提高警覺，慎防受騙:</p>
+<p>．請小心保護個人資料，切勿向任何人透露敏感個人資料、信用卡資料、及任何密碼，包括短訊一次性密碼。</p>
+<p>．儘管現時流動裝置具備自動填寫一次性密碼的功能(AutoFill)，請於輸入有關一次性密碼以進行任何交易授權前，小心核對一次性密碼短訊的內容及交易資料(例如︰商戶名稱、交易類別、交易金額及貨幣)是否與實際進行的用途或交易相符。</p>
+<p>．輸入任何資料或進行交易前，須檢視該網頁地址是否真確與可信。</p>
+<p>．切勿打開來歷不明的電郵、短訊、附件或超連結及下載可疑的應用程式。如有懷疑，請即停止操作，切勿輸入任何資料，關閉視窗，並向本行查詢，或透過真實商戶的官方聯絡途徑核實。</p>
+<p>．如客戶曾向懷疑偽冒網站提供資料，請即致電客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2），並向警方舉報。&nbsp;</p>
+<p>．如客戶收到有關綁定流動支付及服務或網上交易的可疑訊息，請立即報警求助及與本行聯絡。</p>
+<p>．經常透過網上銀行、手機銀行或月結單檢查信用卡交易紀錄以檢查是否有任何可疑或未經授權的交易。</p>
+<p>本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。</p>
+							</div>
+							<div class="its_news_line" id = "line_11"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_12" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_12','content_12','images_up_12','images_down_12')">
+								<div class="its_news_title" id="title_12">有關香港投資者識別碼制度正式實施之重要通知</div>
+								<div class="publishDate" id="publishDate_12">
+										2022-12-23
+								</div>
+								<div class="images_up" id = "images_up_12" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_12" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_12" style="display:none;">
+								感謝閣下使用中國銀行(香港)有限公司(「本行」)的證券服務。<br>
+<br>
+茲通知證券及期貨事務監察委員會(「證監會」) 於2022年12月12日宣佈香港投資者識別碼制度(「港股實名制」）將於2023年3月20日正式實施 (「實施日」)。<br>
+<br>
+於實施日後，本行及/或相關經紀(「經紀」)須為每位客戶編配唯一的券商客戶編碼，並與客戶的識別信息配對，包括身份證明文件上的全名、簽發國家/地區或司法管轄區、類別及號碼，並附加於客戶的股票買賣交易指令或股票提存指示，以向香港聯合交易所（「聯交所」）及/或證監會作出申報。<br>
+<br>
+<b><i>就個人客戶、獨資及合夥商號（「相關客戶」）而言：</i></b><br>
+<b>• 盡快提交同意授權及確保最新和優先的客戶識別信息</b><br>
+請相關客戶盡快向本行提交同意聲明，並確認客戶所給予本行及/或經紀的客戶識別信息均屬有效、真實、完整、準確及最新，以及符合證監會要求的身份證明文件排序表^，<b>否則於實施日後不能買入、將股份轉入或將實體證書存入賬戶內</b>，惟只可出售、轉出或提取現有的證券持倉（如有）。若相關客戶於實施日後提交同意，本行將於收妥相關客戶的同意聲明後，預計兩個交易日內生效。<br>
+<br>
+<b>• 提交同意授權的方式</b><br>
+如相關客戶仍未提交同意聲明，持有本行手機銀行或網上銀行服務的合資格單名或聯名賬戶#，請盡快於手機銀行(登入 &gt; 投資 &gt; 證券)或網上銀行(登入 &gt; 港股證券 &gt; 香港投資者識別碼制度個人資料使用授權) 提交同意，其他相關客戶亦可前往本行任何一家分行辦理。<br>
+<br>
+<b><i>就公司客戶（不適用於獨資及合夥商號）而言：</i></b><br>
+<b>• 確保最新和優先的客戶識別信息</b><br>
+請公司客戶盡快檢視及確認客戶所給予本行及/或經紀的客戶識別信息均屬有效、真實、完整、準確及最新，並符合證監會要求的身份證明文件排序表^，<b>如客戶識別信息有所更改及/或有更優先的身份證明文件，請於2023年2月20日前通知本行，否則本行及/或經紀將按照客戶現行紀錄作為最新及優先的資料，以向聯交所及/或證監會作出申報。</b>請注意，為確保資料最新及準確，本行將暫不會為由2019年11月1日起至實施日未曾敘做股票交易的公司客戶編配券商客戶編碼，如相關公司客戶於實施日後欲進行股票買入、將股份轉入或將實體證書存入賬戶交易，請先聯絡本行，本行將另行跟進。此外，公司客戶為相關受規管中介人(例如券商)，本行將另行通知有關安排。<br>
+<br>
+如有任何查詢，歡迎致電本行個人客戶服務熱線（852） 3988 2388或企業客戶服務熱線（852）3988 2288。<br>
+<br>
+備註：<br>
+^ 身份證明文件排序表：<br>
+(i) 就相關客戶而言將按以下優先次序︰(1)香港身份證；(2)國民身份證明文件；(3)護照<br>
+(註：不接受往來港澳通行證、前往港澳通行證及香港特別行政區簽證身份書)<br>
+(ii) 就公司客戶而言將按以下優先次序：(1)法律實體識別編碼（legal entity identifier，簡稱LEI）登記文件；(2)公司注冊證明書；(3)商業登記證；(4)其他同等文件<br>
+# 該同意書適用於相關客戶名下的所有證券賬戶（包括但不限於聯名賬戶）。如屬聯名賬戶，所有相關客戶均須各自提供同意，方可執行買入指令或交易，或將股份轉入或將實體證書存入賬戶內。如屬獨資及合夥商號，則須與個人賬戶分開提交同意書。<br>
+- 如中英版本有任何歧異，概以中文版本為準。<br>
+							</div>
+							<div class="its_news_line" id = "line_12"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_13" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_13','content_13','images_up_13','images_down_13')">
+								<div class="its_news_title" id="title_13">中銀信用卡溫馨提示</div>
+								<div class="publishDate" id="publishDate_13">
+										2022-12-13
+								</div>
+								<div class="images_up" id = "images_up_13" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_13" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_13" style="display:none;">
+								本行設有嚴謹的機制保障閣下之中銀信用卡。凡不屬您授權的網上交易，經調查核實後，您毋須為有關交易負責。<br>
+<br>
+倘懷疑信用卡出現未經授權交易：<br>
+<br>
+1. 請您登入手機銀行或網上銀行，將該信用卡的網上消費限額調整至0元，直至您認為安全時可隨時提高限額。設定步驟如下：<br>
+<br>
+<b>手機銀行</b><br>
+右下角「選單」＞設定＞設定網上消費限額<br>
+<br>
+<b>網上銀行</b><br>
+個人設定＞信用卡每月網上消費限額設定<br>
+<br>
+您亦可透過手機銀行或網上銀行的在線客服（Online Chat）辦理暫停或報失卡服務；<br>
+<br>
+2. 如您沒有開立手機銀行或網上銀行，可致電中銀信用卡24小時客戶服務熱線(852) 2853 8828或中銀信用卡24小時報失熱線(852) 2544 2222。<br>
+<br>
+請儘量保留有關截圖 / 憑證（如適用）以向本行提出跟進。詳情可參閱以下網址：<br>
+www.bochk.com/tc/creditcard/service/chargeback.html<br>
+							</div>
+							<div class="its_news_line" id = "line_13"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_14" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_14','content_14','images_up_14','images_down_14')">
+								<div class="its_news_title" id="title_14">認可作押股票調整通知</div>
+								<div class="publishDate" id="publishDate_14">
+										2022-12-02
+								</div>
+								<div class="images_up" id = "images_up_14" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_14" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_14" style="display:none;">
+								<p>感謝您使用中國銀行(香港)有限公司（「本行」）的「財富組合融資」透支授信 / 一般銀行貸款 (股票抵押貸款)服務。<br>
+<br>
+本行已完成認可作押股票名單（「名單」）的定期重檢，名單將於2022年12月12日生效（「生效日」）。調整名單如下：</p>
+<table border="1" cellspacing="0" cellpadding="0" width="340">
+<tbody><tr><td rowspan="2" width="40">變化</td>
+<td rowspan="2" valign="top">股票號碼/ 股票名稱</td>
+<td width="208" colspan="2" valign="top">貸款比例(作押比率)</td>
+</tr><tr><td valign="top">生效前</td>
+<td valign="top">生效後</td>
+</tr><tr><td width="64" valign="top"><p>新增</p>
+</td>
+<td width="293" valign="top"><p>1252/中國天瑞水泥</p>
+</td>
+<td width="104" valign="top"><p>0%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>83/信和置業</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>135/昆侖能源</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>144/招商局港口</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>151/中國旺旺</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>168/青島啤酒股份</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>268/金蝶國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>270/粵海投資</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>285/比亞迪電子</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>293/國泰航空</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>322/康師傅控股</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>336/華寶國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>30%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>354/中國軟件國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>358/江西銅業股份</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>384/中國燃氣</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>425/敏實集團</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>522/ASMPT Ltd</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>586/海螺創業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>728/中國電信</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>753/中國國航</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>772/閱文集團</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>780/同程旅行</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>788/中國鐵塔</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>836/華潤電力</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>853/微創醫療</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>902/華能國際電力股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>914/海螺水泥</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>916/龍源電力</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>998/中信銀行</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1024/快手</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1066/威高股份</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1099/國藥控股</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1138/中遠海能</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1171/兗礦能源</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1193/華潤燃氣</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1209/華潤萬象生活</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1268/美東汽車</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1288/農業銀行</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1308/海豐國際</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1313/華潤水泥控股</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1336/新華保險</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1339/中國人民保險集團</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1347/華虹半導體</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1368/特步國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1385/復旦微電</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1548/金斯瑞生物科技</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1579/頤海國際</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1585/雅迪控股</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1658/郵儲銀行</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1772/贛鋒鋰業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1776/廣發証券</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1799/新特能源</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1800/中國交通建設</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1801/信達生物</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1816/中廣核電力</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1818/招金礦業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1821/ESR GROUP LTD</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1877/君實生物</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1898/中煤能源</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1910/新秀麗</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1919/中遠海控</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1988/民生銀行</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>1999/敏華控股</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2196/復星醫藥</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2208/金風科技</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2238/廣汽集團</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2328/中國財險</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2333/長城汽車</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2338/濰柴動力</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2359/藥明康德</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2380/中國電力</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2600/中國鋁業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2601/中國太保</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2618/京東物流</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2800/香港盈富基金</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2828/恒生中國企業指數上市基金</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2883/中海油田服務</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2888/渣打集團</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>2899/紫金礦業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3311/中國建築國際</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3320/華潤醫藥</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3323/中國建材</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3328/交通銀行</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3347/泰格醫藥</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3606/福耀玻璃</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3759/康龍化成</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3800/協鑫科技</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3888/金山軟件</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3898/時代電氣</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3908/中金公司</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3993/洛陽鉬業</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>3998/波司登</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6030/中信証券</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6060/眾安在線</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6078/海吉亞醫療</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6110/滔搏</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6160/百濟神州</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6185/康希諾</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6186/中國飛鶴</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6618/京東健康</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6690/海爾智家</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6823/香港電訊－ＳＳ</p>
+</td>
+<td width="104" valign="top"><p>60%</p>
+</td>
+<td width="104" valign="top"><p>55%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>6865/福萊特玻璃</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9626/嗶哩嗶哩</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9698/萬國數據</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>40%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9922/九毛九</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9987/百勝中國</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9992/泡泡瑪特</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr><tr><td width="64" valign="top"><p>調整</p>
+</td>
+<td width="293" valign="top"><p>9995/榮昌生物</p>
+</td>
+<td width="104" valign="top"><p>50%</p>
+</td>
+<td width="104" valign="top"><p>45%</p>
+</td>
+</tr></tbody></table>
+<p><br>
+<br>
+由於上述重檢可能涉及作押股票及/或貸款比例(作押比率)的調整，亦可能對您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)之貸款額度造成影響。如您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)的實際用款超出本行調整貸款比例(作押比率)後的額度，您有可能被要求於短時間內存入額外的資金以回復額內用款。假如未能在本行指定時間內回復額內用款，本行有權把您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)賬戶中抵押給本行的證券出售，而無需給予事先通知。<br>
+<br>
+您可於生效日起在本行官方網站(www.bochk.com)瀏覽詳情。如有任何查詢，請親臨任何一家分行或致電 (852) 3988 2388。 為免生疑問，相關融資/貸款的條款和條件適用，本行在該等條款和條件下的權利均不受影響。<br>
+<br>
+中英文文本如有歧義，概以英文本為準。</p>
+							</div>
+							<div class="its_news_line" id = "line_14"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_15" style="display: block;" onclick="DisplayNewsContent_onclick('subheader_15','content_15','images_up_15','images_down_15')">
+								<div class="its_news_title" id="title_15">孖展九九金及公斤條轉價通知</div>
+								<div class="publishDate" id="publishDate_15">
+										2022-11-28
+								</div>
+								<div class="images_up" id = "images_up_15" style="display: block;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_15" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_15" style="display:none;">
+								請注意，客戶持有的孖展九九金（99G）及孖展公斤條（KLG）合約將於 2022年 12 月 30 日以金銀業貿易場在 2022 年 12 月 30 日下午釐定的結算價作公價轉價。任何因此造成的盈虧連同倉費及宿倉費，將經客戶的貴金屬及外匯孖展買賣賬戶存入或扣除。如有任何查詢， 請致電本行投資服務熱線（852）3988 2688。
+							</div>
+							<div class="its_news_line" id = "line_15"  style="display: block;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_16" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_16','content_16','images_up_16','images_down_16')">
+								<div class="its_news_title" id="title_16">警方防騙宣傳《喜怒哀「落」》</div>
+								<div class="publishDate" id="publishDate_16">
+										2022-11-14
+								</div>
+								<div class="images_up" id = "images_up_16" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_16" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_16" style="display:none;">
+								警方反詐騙協調中心開展新一浪防騙宣傳活動《喜怒哀「落」》，以剖析騙徒在電話騙案、求職騙案、網戀騙案、投資騙案中使用的心理技巧，及其他行騙伎倆，以提醒市民避免墮入騙局。<br>
+<br>
+相關警方反詐騙協調中心防騙資訊及短片請見以下網頁:<br>
+https://www.adcc.gov.hk/zh-hk/emotional-tolls.html
+							</div>
+							<div class="its_news_line" id = "line_16"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_17" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_17','content_17','images_up_17','images_down_17')">
+								<div class="its_news_title" id="title_17">防範「網絡釣魚」攻擊：數碼KEY 睇緊啲，撳 LINK 前要三思</div>
+								<div class="publishDate" id="publishDate_17">
+										2022-09-06
+								</div>
+								<div class="images_up" id = "images_up_17" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_17" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_17" style="display:none;">
+								<img width="311" src="https://www.bochk.com/dam/document/platforms/personal/Pishingnotice20220914.jpg" alt=""><br>
+<br>
+1. 網上銀行的登入資料（包括賬戶號碼、使用者名稱、登入密碼和一次性密碼）在互聯網世界就等如家裏門匙一樣重要，必須妥善保管。<br>
+<br>
+2. 中銀香港不會透過短訊或電郵超連結、二維條碼或附件，引導客戶到本行網站或流動應用程式進行交易，更不會透過超連結要求客戶提供個人資料（包括登入密碼和一次性密碼），也不會透過預錄語音訊息聯絡客戶。<br>
+<br>
+3. 如客戶收到聲稱由本行發出的可疑手機短訊或電郵，要求點擊內附的超連結提供任何個人資料，必須馬上提高警覺，應「三思而後行」。如有懷疑，可致電本行客戶服務熱線(852) 3988 2388以辨別短訊真偽。<br>
+<br>
+4. 切勿下載來歷不明的流動應用程式，客戶應透過官方應用程式商店或本行官方網站下載手機銀行及BoC Pay流動應用程式。<br>
+<br>
+<br>
+相關香港金融管理局防騙資訊請見以下超連結:<br>
+<br>
+https://www.youtube.com/watch?v=GTa6BbFJWPw (30秒版本)<br>
+<br>
+https://www.youtube.com/watch?v=vmxPqh2xwas (足本版)<br>
+<br>
+							</div>
+							<div class="its_news_line" id = "line_17"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_18" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_18','content_18','images_up_18','images_down_18')">
+								<div class="its_news_title" id="title_18">有關偽冒銀行職員來電或電話訊息的重要提示</div>
+								<div class="publishDate" id="publishDate_18">
+										2022-09-01
+								</div>
+								<div class="images_up" id = "images_up_18" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_18" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_18" style="display:none;">
+								中國銀行（香港）（「中銀香港」） 提醒客戶及公眾人士，慎防冒充中銀香港的詐騙來電或電話訊息，意圖騙取客戶的個人資料或金錢。<br>
+<br>
+近日有客戶收到冒認中銀香港職員的來電或電話訊息，並附上偽冒中銀香港的名片，訛稱可向客戶提供低息借貸、按揭或信用卡申請等優惠，意圖誘騙客戶向其透露身份證及銀行戶口等敏感資料。不法之徒可能會要求客戶下載不明來歷的應用程式或於偽冒網站輸入個人資料，甚至欺騙客戶存入款項至指定戶口，作為申請貸款、按揭或信用卡之保證金。<br>
+<br>
+中銀香港重申不會以電話，或電郵、短訊、網上超連結、二維條碼或附件等方式，索取客戶的敏感個人資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、單次密碼或信用卡號碼。如客戶收到可疑來電、電郵或短訊，請馬上提高警覺，應致電本行以辨別真偽。<br>
+<br>
+本行呼籲客戶提高警覺，慎防受騙:<br>
+<br>
+•&nbsp; 請小心保護個人資料，切勿向任何人透露個人資料及密碼，包括電話短訊的單次密碼。<br>
+•&nbsp; 切勿下載/安裝不明來歷的應用程式，及將任何資料輸入到不明來歷的應用程式或網址。<br>
+•&nbsp; 如客戶收到懷疑冒認本行職員的詐騙電話，請保持冷靜，並即時掛斷電話及聯絡中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 8）以核實來電者身份。<br>
+•&nbsp; 如客戶曾向來電者提供資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2），並向警方舉報。若客戶曾向來電者透露密碼，請立即作出更改。<br>
+<br>
+本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+							</div>
+							<div class="its_news_line" id = "line_18"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_19" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_19','content_19','images_up_19','images_down_19')">
+								<div class="its_news_title" id="title_19">提防網上投資騙案</div>
+								<div class="publishDate" id="publishDate_19">
+										2022-08-31
+								</div>
+								<div class="images_up" id = "images_up_19" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_19" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_19" style="display:none;">
+								<p><img width="311" src="https://www.bochk.com/dam/document/platforms/personal/FMLIT_20220914.jpg" alt=""><br>
+<br>
+中國銀行（香港）（「中銀香港」）提醒客戶，提防網上投資騙案。<br>
+<br>
+近日，有騙徒發佈虛假網上投資廣告或財務消息並載有高官及名人相片，誘使客戶點擊，繼而連接到可疑交易平台。<br>
+<br>
+本行呼籲客戶提高警覺，慎防受騙:<br>
+• 如發現有關名人的財務消息或投資成功的報導/廣告，應主動核實其真偽。切勿點擊該報導/廣告或所附連結；<br>
+• 請小心保護個人資料，切勿向任何人透露個人資料及密碼，包括網上銀行賬戶資料、信用卡資料或電話短訊的一次性密碼；<br>
+• 切勿打開來歷不明的電郵、附件或超連結。如有懷疑，請即停止操作，切勿輸入任何資料，關閉視窗，並向銀行查詢；<br>
+• 切勿將任何資料輸入到不明來歷的應用程式或網址；<br>
+• 虛假投資網站一般有錯別字、無效連結或語法不通等問題，客戶應多加留意；<br>
+• 如聲稱「投資公司」為透過個人銀行賬戶或電子錢包收取投資資金，客戶應多加留意，慎防受騙；<br>
+• 如客戶曾登入懷疑偽冒網站並提供資料，請即致電客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2），並向警方舉報。若客戶曾透露密碼，請立即作出更改。<br>
+<br>
+相關警方防騙資訊請見以下網頁:</p>
+<p>https://www.adcc.gov.hk/zh-hk/anti-deception-month-detail-05.html</p>
+<p>https://www.adcc.gov.hk/zh-hk/alerts-detail/alerts-1541618242942144513.html</p>
+<p>https://cyberdefender.hk/investment_fraud/</p>
+							</div>
+							<div class="its_news_line" id = "line_19"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_20" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_20','content_20','images_up_20','images_down_20')">
+								<div class="its_news_title" id="title_20">便宜莫貪 勿賣Account</div>
+								<div class="publishDate" id="publishDate_20">
+										2022-08-03
+								</div>
+								<div class="images_up" id = "images_up_20" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_20" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_20" style="display:none;">
+								<p><img src="https://www.bochk.com/dam/document/platforms/personal/sellacc_20220914.jpg" alt=""><br>
+<br>
+中銀香港提醒客戶，提高防範意識，保障自身利益。犯罪集團會透過傳銷電話或社交平台，以「搵快錢」吸引客戶出售或借出戶口，又或者利用客戶的個人資料來開戶，然後用這些「傀儡戶口」收取騙款或其他犯罪得益。<br>
+<br>
+中銀香港呼籲客戶切勿出售或借出戶口予他人，因為戶口可能會被操控用作非法用途，對客戶構成洗黑錢罪，最高刑罰為監禁14年及罰款港幣500萬。<br>
+<br>
+有關詳情，請見香港金融管理局相關網頁:</p>
+<p>https://www.hkma.gov.hk/chi/smart-consumers/dont-lend-sell-your-account/&nbsp;</p>
+							</div>
+							<div class="its_news_line" id = "line_20"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_21" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_21','content_21','images_up_21','images_down_21')">
+								<div class="its_news_title" id="title_21">有關外匯掛鈎投資的電子結單及電子通知書服務通知</div>
+								<div class="publishDate" id="publishDate_21">
+										2022-07-18
+								</div>
+								<div class="images_up" id = "images_up_21" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_21" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_21" style="display:none;">
+								為提供更好的網上投資服務，由2022年7月24日起，中國銀行(香港)有限公司(「本行」)將推出外匯掛鈎投資的電子結單及電子通知書服務 。本行個人客戶可透過本行手機銀行或網上銀行 登記投資產品電子結單及電子通知書服務(統稱「電子結單服務」)。客戶成功登記電子結單服務後，可登入本行手機銀行或網上銀行查閱或下載投資產品的電子結單及電子通知書。另外，本行會透過電郵通知客戶新結單或 通知書已上載至本行手機銀行及網上銀行。<br>
+<br>
+若客戶於2021年11月21日或之後已成功登記使用投資產品電子結單服務，屆時外匯掛鈎投資的結單及通知書便會自動轉為電子版本 ，不會郵寄實物結單及通知書予客戶。客戶可透過本行手機銀行或網上銀行取消電子結單服務 並登記收取投資產品實物結單及通知書。<br>
+<br>
+上述產品及服務受條款約束 。<br>
+<br>
+如有查詢，請聯絡我們的在線客服或客戶服務熱線(852) 3988 2388/私人銀行客戶服務熱線(852) 3982 6988。
+							</div>
+							<div class="its_news_line" id = "line_21"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_22" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_22','content_22','images_up_22','images_down_22')">
+								<div class="its_news_title" id="title_22">有關客戶遺失或被盜銀行密碼及支票而衍生被冒用風險的重要提示</div>
+								<div class="publishDate" id="publishDate_22">
+										2022-07-08
+								</div>
+								<div class="images_up" id = "images_up_22" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_22" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_22" style="display:none;">
+								中國銀行（香港）（「中銀香港」） 提醒客戶，提防遺失或被盜銀行密碼及支票而衍生被冒用風險。<br>
+<br>
+本行呼籲客戶須採取以下合理步驟及措施以妥善保管任何銀行密碼及支票以防止欺詐行為：<br>
+• 銷毀印有其銀行密碼的文件。<br>
+<br>
+• 切勿讓任何人士使用其銀行密碼。<br>
+<br>
+• 不應直接寫下或記錄銀行密碼，而不加掩藏。尤其是連同其他銀行資料(如賬戶號碼等)一併保存。<br>
+<br>
+• 定期更改密碼及避免用出生日期或電話號碼。<br>
+<br>
+• 不應在不同機構的賬戶及/或網上平台共用同一組密碼作登入或認證。<br>
+<br>
+• 客戶應小心保管支票簿，支票簿應存放在可上鎖的抽屜或保險箱內及鎖好，鎖匙不應放在任何人均能取得的地方。<br>
+<br>
+• 如遺失已簽名的支票、空白支票或支票簿，應盡快報失，以便在支票被提交兌現之前停止付款。<br>
+<br>
+• 客戶亦不應預先簽署空白支票。<br>
+<br>
+• 若損失是因客戶嚴重疏忽，客戶可能須要承擔所有損失，嚴重疏忽情況可能包括：<br>
+- 在知情情況下容許他人使用其銀行密碼或支票簿；<br>
+- 沒有採取合理步驟及措施以妥善保管任何銀行密碼/支票簿；<br>
+- 在知情情況下容許第三方手機應用程式使用其銀行密碼或在第三方手機應用程式輸入了其銀行密碼而導致銀行密碼遭泄露；<br>
+- 發覺或相信其銀行密碼遭泄露或支票簿遭遺失或被盜用，又或其賬戶曾錄得未經授權交易後，未能在合理切實可行的情況下盡快通知銀行。<br>
+<br>
+• 客戶若遺失或懷疑其銀行資料包括密碼及支票可能或已被盜竊，應立即致電本行客戶服務熱線 3988 2388 尋求協助及立即更改密碼。<br>
+<br>
+本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽<br>
+www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。有關中銀卡的保安資訊，請瀏覽<br>
+www.bochk.com/tc/more/boccard/card_security.html。
+							</div>
+							<div class="its_news_line" id = "line_22"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_23" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_23','content_23','images_up_23','images_down_23')">
+								<div class="its_news_title" id="title_23">中國銀行（香港）殷切提醒客戶: 慎防領取消費券相關詐騙</div>
+								<div class="publishDate" id="publishDate_23">
+										2022-06-22
+								</div>
+								<div class="images_up" id = "images_up_23" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_23" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_23" style="display:none;">
+								BoC Pay獲香港特區政府甄選為新一輪消費券計劃第二階段的儲值支付工具之一(此計劃)。中國銀行（香港）（「中銀香港」）現殷切提醒客戶及公眾人士，慎防與領取消費券相關的詐騙。<br>
+<b><br>
+ 有關消費券的防騙提示<br>
+ <br>
+ </b>• 請在登記領取消費券時，小心填寫及核對所提交的資料，包括政府消費券特定識別號碼，確保消費券款項正確存入您所設定的賬戶中；<br>
+<br>
+•&nbsp;謹記切勿向陌生人透露個人資料，包括姓名、身份證號碼、銀行戶口號碼、網上及手機銀行賬戶及密碼、以及BoC Pay應用程式密碼；<br>
+<br>
+•&nbsp;如您發現身份被盜用作登記領取消費券，請即致電中銀香港查詢熱線(電話號碼: (852) 3988 1822)及消費券計劃熱線(電話號碼: (852) 185000)通知計劃秘書處；<br>
+<br>
+•&nbsp;請查看您透過BoC Pay消費券賬戶進行的交易紀錄，並請保存有關商戶發出的購物單據。日後如與商戶有任何交易爭議，可憑單據與商戶進行磋商；<br>
+<br>
+•&nbsp;消費券必須用於本地零售、餐飲及服務業商戶，包括其實體店舖及網店；有關消費券使用詳情請瀏覽www.consumptionvoucher.gov.hk；<br>
+<br>
+•&nbsp;商戶不可以向使用消費券的客戶收取額外手續費或設定最低消費金額，消費券亦不可以用作兌換現金。<br>
+<b><br>
+ 其他防騙提示<br>
+ <br>
+ </b>中銀香港重申不會以電話，網上超連結、二維條碼，或以電郵或短訊內附件等方式，索取客戶的敏感個人資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、一次性密碼或信用卡號碼。客戶請提高警覺，慎防受騙:<br>
+<br>
+•&nbsp;請小心保護個人資料，切勿向任何人透露個人資料及密碼，包括電話短訊的一次性密碼。<br>
+<br>
+•&nbsp;切勿打開來歷不明的電郵、附件或超連結。切勿下載/安裝不明來歷的應用程<a name="_Hlk106284943" id="_Hlk106284943"></a>式，及將任何資料輸入到不明來歷的應用程式或網址。如有懷疑，請即停止操作，切勿輸入任何資料，關閉視窗/應用程式，並向銀行查詢。<br>
+<br>
+•&nbsp;如您收到有關綁定流動支付服務或網上銀行的可疑訊息，請立即報警求助及與本行聯絡。<br>
+<br>
+•&nbsp;如您收到懷疑冒認本行職員的詐騙電話，請保持冷靜，並即時掛斷電話及致電中銀香港客戶服務熱線 (852) 3988 2388（選取語言後，按 8）核實來電者身份。<br>
+<br>
+•&nbsp;如您曾登入懷疑偽冒網站並提供資料或曾向來電者提供資料，請即致電中銀香港客戶服務熱線 (852) 3988 2388（選取語言後，按 3、#、2），並向警方舉報。若您曾透露密碼，請立即作出更改。<br>
+<br>
+中銀香港會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。
+							</div>
+							<div class="its_news_line" id = "line_23"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_24" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_24','content_24','images_up_24','images_down_24')">
+								<div class="its_news_title" id="title_24">有關實施香港投資者識別碼制度及場外證券交易匯報制度之重要通知</div>
+								<div class="publishDate" id="publishDate_24">
+										2022-05-29
+								</div>
+								<div class="images_up" id = "images_up_24" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_24" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_24" style="display:none;">
+								感謝閣下使用中國銀行(香港)有限公司(「本行」)的證券服務。<br>
+<br>
+茲通知證券及期貨事務監察委員會(「證監會」)所制定之香港投資者識別碼制度及場外證券交易匯報制度(「匯報制度」)預期分別於2022年下半年及2023年上半年實施^。<br>
+<br>
+在匯報制度下，本行及/或相關經紀(「經紀」)須為每位客戶編配唯一的券商客戶編碼，並與客戶的識別信息配對，包括身份證明文件上的全名、簽發國家/地區或司法管轄區、類別及號碼，以向香港聯合交易所（「聯交所」）提交配對檔案。本行及/或經紀必須將客戶之券商客戶編碼附加於客戶的股票買賣交易指令或股票提存指示，以向聯交所及/或證監會作出申報。<br>
+<br>
+就個人客戶、獨資及合夥商號（「相關客戶」）而言，由於上述程序涉及收集、儲存、處理、使用、披露及轉移與相關客戶有關的個人資料，本行須就上述程序獲取相關客戶書面同意聲明。如相關客戶未有提交同意聲明，則於匯報制度實施後不能買入、將股份轉入或將實體證書存入帳戶內，惟只可出售、轉出或提取現有的證券持倉（如有），直至提交同意聲明為止。<br>
+<br>
+根據聯交所與證監會的規則和規定，客戶應知悉及理解有關身份證明文件排序表，並根據排序表提供所需的身份證明文件（如尚未提供）或身份證明文件的更新資料（如適用），以遵從匯報制度的規定。客戶的客戶識別信息應收集自以下清單首述的身份證明文件，除非客戶並無持有該文件，則應使用所提述的下一份文件，如此類推：<br>
+(i) 就個人客戶而言將按以下優先次序︰(1)香港身份證；或(2)國民身份證明文件；或(3)護照；(註：不接受往來港澳通行證、前往港澳通行證及香港特別行政區簽證身份書)<br>
+(ii) 就公司客戶而言將按以下優先次序：(1)法律實體識別編碼（legal entity identifier，簡稱LEI）登記文件；或(2)公司注冊證明書；或(3)商業登記證；或(4)其他同等文件；<br>
+(iii) 就信托而言，(i)或(ii)（視情況而定）的受托人資料。然而，若信托是一個投資基金，則應收集該信托在本行開立交易帳戶的資產管理公司或個別基金（視何者適用而定）的客戶識別信息；<br>
+<br>
+客戶須確認就客戶賬戶及各項交易給予銀行及/或經紀的所有資料(包括客戶識別信息）均屬有效、真實、完整、準確及最新，如客戶識別信息或其他資料有所更改及/或有更優先的身份證明文件，客戶應從速通知銀行。<br>
+<br>
+由5月29日起，持有本行手機銀行或網上銀行服務的合資格單名或聯名賬戶#，請盡快登入手機銀行或網上銀行服務詳閱「香港投資者識別碼制度下的個人資料/其他客戶資料收集聲明」(「收集聲明」) 並提交同意，相關客戶亦可前往本行任何一家分行辦理。相關客戶日後可隨時透過書面通知本行撤回有關收集聲明。<br>
+<br>
+就相關客戶而言，如本行於匯報制度實施日前仍未收到相關客戶的同意聲明，本行只能接受該客戶的沽出股票指示或股票提取指示。<br>
+<br>
+如有任何查詢，歡迎致電3988 2388 與我們聯絡。<br>
+<br>
+備註：<br>
+^ 確實日期有待證監會公布為準，有關詳情請參閱證監會網站。<br>
+# 該同意書適用於相關客戶名下的所有證券賬戶（包括但不限於聯名賬戶）。如屬聯名賬戶，所有相關客戶均須各自提供同意，方可執行買入指令或交易，或將股份轉入或將實體證書存入帳戶內。如屬獨資及合夥商號，則須與個人賬戶分開提交同意書。<br>
+- 本行收妥相關客戶的同意聲明後，預計兩個交易日內生效。<br>
+- 如中英版本有任何歧異，概以中文版本為準。
+							</div>
+							<div class="its_news_line" id = "line_24"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_25" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_25','content_25','images_up_25','images_down_25')">
+								<div class="its_news_title" id="title_25">提防虛假招聘廣告詐騙手法</div>
+								<div class="publishDate" id="publishDate_25">
+										2022-05-26
+								</div>
+								<div class="images_up" id = "images_up_25" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_25" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_25" style="display:none;">
+								中銀香港提醒客戶提防虛假招聘廣告詐騙手法，提高防範意識，保障自身利益。<br>
+<br>
+相關警方防騙資訊及短片請見以下網頁連結:<br>
+<br>
+https://www.adcc.gov.hk/zh-hk/alerts-detail/alerts-1509000900093759490.html<br>
+https://www.adcc.gov.hk/zh-hk/alerts-detail/alerts-1504047794545315842.html<br>
+https://www.adcc.gov.hk/zh-hk/video-detail/video-1490531498432221185.html<br>
+							</div>
+							<div class="its_news_line" id = "line_25"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_26" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_26','content_26','images_up_26','images_down_26')">
+								<div class="its_news_title" id="title_26">關於《説明 - 貴金屬及外匯孖展》的更新通知</div>
+								<div class="publishDate" id="publishDate_26">
+										2022-05-20
+								</div>
+								<div class="images_up" id = "images_up_26" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_26" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_26" style="display:none;">
+								<p>感謝您對中國銀行（香港）有限公司（「本行」）的一貫支持。茲通知本行將於2022年6月21日對《説明 - 貴金屬及外匯孖展》*作出下列更新：<br>
+<br>
+更新部分<br>
+網上銀行貴金屬及外匯孖展服務時間<br>
+<br>
+更新內容<br>
+• 標題由 「網上銀行貴金屬及外匯孖展服務時間」更新至「網上/手機銀行貴金屬及外匯孖展服務時間」。<br>
+<br>
+• 註釋部份的第五點將被刪除：</p>
+<p>註<br>
+5.如星期六懸掛起黑色暴雨警告信號或八號烈風或暴風信號，將不提供有關涉及兌換的保證金調撥及保證金兌換服務；如該黑色暴雨警告信號於08:30或以後懸掛，則照常提供服務(特殊情況將另行通知)。<br>
+<br>
+*您可於登入本行的網上銀行後，於「貴金屬及外匯孖展」項下的「產品詳情」下載《説明 - 貴金屬及外匯孖展》<br>
+<br>
+如有任何查詢，歡迎致電客戶服務熱線 (852) 3669 3668。</p>
+							</div>
+							<div class="its_news_line" id = "line_26"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_27" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_27','content_27','images_up_27','images_down_27')">
+								<div class="its_news_title" id="title_27">有關投資產品及服務之電子結單／通知書服務通知</div>
+								<div class="publishDate" id="publishDate_27">
+										2022-04-29
+								</div>
+								<div class="images_up" id = "images_up_27" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_27" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_27" style="display:none;">
+								為提供更好的網上投資服務，由2022年6月3日起，指定客戶(即於2022年4月8日或之前已開立本行網上銀行戶口並收取郵寄版投資產品及服務通知書及已向本行提供有效的電郵地址或手提電話號碼的客戶)首次前往網上銀行「投資」&gt;「交易或相關」版面或手機銀行「投資」&gt;「交易或相關」版面，即代表同意以電子結單/通知書代替郵寄版收取投資產品及服務之結單／通知書的服務(「取覽服務」)。客戶登入上述版面後，本行將向客戶發出電郵或短訊確認及通知取覽服務之生效日期，亦會述明客戶撤銷對取覽服務的同意之方法。<br>
+<br>
+上述產品及服務受條款約束。<br>
+<br>
+如有查詢，請聯絡我們的在線客服或客戶服務熱線(852) 3988 2388 / 私人銀行客戶服務熱線(852) 3982 6988。
+							</div>
+							<div class="its_news_line" id = "line_27"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_28" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_28','content_28','images_up_28','images_down_28')">
+								<div class="its_news_title" id="title_28">認可作押股票調整通知</div>
+								<div class="publishDate" id="publishDate_28">
+										2022-04-08
+								</div>
+								<div class="images_up" id = "images_up_28" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_28" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_28" style="display:none;">
+								<p>感謝您使用中國銀行(香港)有限公司（「本行」）的「財富組合融資」透支授信 / 一般銀行貸款 (股票抵押貸款)服務（「該服務」）。<br>
+<br>
+為符合監管規定，本行將對該服務認可作押股票進行以下調整，並將於2022年4月14日生效（「生效日」）：<br>
+</p>
+<table border="1" cellspacing="0" cellpadding="0">
+<tbody><tr><td width="204" rowspan="2" valign="top"><br>
+股票號碼/<br>
+<br>
+股票名稱<br>
+</td>
+<td width="361" colspan="2" valign="top"><br>
+貸款比例(作押比率)<br>
+</td>
+</tr><tr><td width="185" valign="top"><br>
+於生效日之前<br>
+已存入押記予本行之證券賬戶或已押記予本行之股票<br>
+</td>
+<td width="176" valign="top"><br>
+生效日當日或之後存入押記予本行之證券賬戶的股票（無論新買入或新存入之股票）<br>
+</td>
+</tr><tr><td width="234" valign="top"><br>
+3988/中國銀行<br>
+</td>
+<td width="170" valign="top"><br>
+60% (維持不變)<br>
+</td>
+<td width="161" valign="top"><br>
+0%<br>
+</td>
+</tr></tbody></table>
+<p><br>
+按上述修訂，任何於生效日當日或之後存入押記予本行之證券賬戶的3988/中國銀行股票（無論新買入或新存入之股票）將不會被押記予本行。於生效日之前已存入押記予本行或已押記予本行之證券賬戶的3988/中國銀行股票將仍然繼續押記予本行，有關押記安排維持不變。<br>
+<br>
+由於上述修訂可能涉及作押股票及/或貸款比例(作押比率)的調整，亦可能對您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)服務之貸款額度造成影響。如您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)服務的實際用款超出本行調整貸款比例(作押比率)後的額度，您有可能被要求於短時間內存入額外的資金以回復額內用款。假如未能在本行指定時間內回復額內用款，本行有權把您的「財富組合融資」透支授信及/或一般銀行貸款 (股票抵押貸款)服務賬戶中抵押給本行的證券出售，而無需給予事先通知。<br>
+<br>
+為免生疑問，相關融資/貸款的條款和條件適用，本行在該等條款和條件下的權利均不受影響。本行保留隨時更改作押股票及有關抵押率資料的權利，而無需給予事先通知。<br>
+<br>
+您可於本行網頁瀏覽最新就該服務認可作押股票名單及作押比率。<br>
+<br>
+如有任何查詢，請親臨本行任何一家分行或致電本行客戶服務熱線 (852) 3988 2388。</p>
+							</div>
+							<div class="its_news_line" id = "line_28"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_29" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_29','content_29','images_up_29','images_down_29')">
+								<div class="its_news_title" id="title_29">提防新近詐騙手法</div>
+								<div class="publishDate" id="publishDate_29">
+										2022-03-28
+								</div>
+								<div class="images_up" id = "images_up_29" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_29" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_29" style="display:none;">
+								中銀香港提醒客戶提防新近詐騙手法，提高防範意識，保障自身利益。<br>
+<br>
+相關警方防騙資訊及短片請見以下網頁<br>
+<br>
+https://www.adcc.gov.hk/zh-hk/anti-deception-month.html
+							</div>
+							<div class="its_news_line" id = "line_29"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_30" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_30','content_30','images_up_30','images_down_30')">
+								<div class="its_news_title" id="title_30">風險管理提示</div>
+								<div class="publishDate" id="publishDate_30">
+										2022-02-25
+								</div>
+								<div class="images_up" id = "images_up_30" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_30" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_30" style="display:none;">
+								鑒於俄羅斯及烏克蘭局勢升級，市場波動性大幅增加，敬請閣下密切留意相關投資項目及其風險。投資涉及風險，如欲知悉最新市況，歡迎與本行職員聯絡。資料只供參考。
+							</div>
+							<div class="its_news_line" id = "line_30"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_31" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_31','content_31','images_up_31','images_down_31')">
+								<div class="its_news_title" id="title_31">有關偽冒電郵的聲明</div>
+								<div class="publishDate" id="publishDate_31">
+										2022-01-29
+								</div>
+								<div class="images_up" id = "images_up_31" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_31" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_31" style="display:none;">
+								<p>中國銀行(香港)有限公司 (「中銀香港」) 提醒客戶及公眾人士，慎防以下偽冒由中銀香港發出的虛假電子郵件，電郵地址如下：</p>
+<p>privatebanking @bochk-invest.com</p>
+<p>該偽冒電郵意圖騙取客戶的金錢。中銀香港特此聲明與該偽冒電郵沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。</p>
+<p>中銀香港建議客戶應先核實任何聲稱由中銀香港發出的電郵，切勿開啟可疑電郵及其附件，並應即時將其刪除。如客戶曾收到上述偽冒電郵，並付款或提供個人資料，請即致電中銀香港客戶服務熱線 (852) 3988 2388（選取語言後，按 3、#、2）。</p>
+							</div>
+							<div class="its_news_line" id = "line_31"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_32" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_32','content_32','images_up_32','images_down_32')">
+								<div class="its_news_title" id="title_32">切勿借/賣戶口</div>
+								<div class="publishDate" id="publishDate_32">
+										2021-12-30
+								</div>
+								<div class="images_up" id = "images_up_32" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_32" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_32" style="display:none;">
+								<b>切勿貪心搵快錢<br>
+ 戶口借人洗黑錢</b><br>
+<br>
+中銀香港提醒客戶，提高防範意識，保障自身利益。犯罪集團會透過傳銷電話或社交平台，以「搵快錢」吸引客戶出售或借出戶口，又或者利用客戶的個人資料來開戶，然後用這些「傀儡戶口」收取騙款或其他犯罪得益。<br>
+<br>
+中銀香港呼籲客戶切勿出售或借出戶口予他人，因為戶口可能會被操控用作非法用途，對客戶構成洗黑錢罪，最高刑罰為監禁14年及罰款500萬港元。<br>
+<br>
+請見香港金融管理局相關網頁:<br>
+https://www.hkma.gov.hk/chi/smart-consumers/dont-lend-sell-your-account/
+							</div>
+							<div class="its_news_line" id = "line_32"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_33" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_33','content_33','images_up_33','images_down_33')">
+								<div class="its_news_title" id="title_33">關於徵收財務匯報局(“財匯局”)交易徵費</div>
+								<div class="publishDate" id="publishDate_33">
+										2021-12-01
+								</div>
+								<div class="images_up" id = "images_up_33" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_33" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_33" style="display:none;">
+								財匯局將於2022年1月1日起收取交易徵費(經中華通服務交易證券除外) 。證券買賣雙方須分別繳納每宗交易金額0.00015%的財匯局交易徵費 (計至最接近的仙位數)，詳情請瀏覽財匯局『經費來源及徵費』網頁。
+							</div>
+							<div class="its_news_line" id = "line_33"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_34" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_34','content_34','images_up_34','images_down_34')">
+								<div class="its_news_title" id="title_34">有關結構性投資、貴金屬存摺賬戶及新股融資還款記錄通知書的電子通知書服務通知</div>
+								<div class="publishDate" id="publishDate_34">
+										2021-12-01
+								</div>
+								<div class="images_up" id = "images_up_34" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_34" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_34" style="display:none;">
+								中國銀行(香港)有限公司(「本行」)現推出結構性投資及貴金屬存摺賬戶的電子通知書服務。本行個人客戶可透過本行電子渠道登記投資產品電子結單及電子通知書服務(統稱「電子結單服務」)。客戶成功登記電子結單服務後，可隨時隨地登入本行電子渠道查閱或下載投資產品的電子結單及電子通知書。新服務設有免費電郵及/或短訊提示，通知新結單及/或通知書亦會上載至本行電子渠道。<br>
+<br>
+原有的“新股融資還款記錄通知書”亦同時新增了電子通知書服務，客戶若已登記使用證券電子結單服務，此通知書便會自動轉為電子通知書，不會郵寄實物通知書予客戶。<br>
+<br>
+上述產品及服務受條款約束。<br>
+<br>
+如有查詢，請聯絡我們的在線客服或客戶服務熱線(852) 3988 2388。
+							</div>
+							<div class="its_news_line" id = "line_34"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_35" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_35','content_35','images_up_35','images_down_35')">
+								<div class="its_news_title" id="title_35">切勿貪心搵快錢  戶口借人洗黑錢</div>
+								<div class="publishDate" id="publishDate_35">
+										2021-09-10
+								</div>
+								<div class="images_up" id = "images_up_35" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_35" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_35" style="display:none;">
+								中銀香港提醒客戶及公眾人士，提高防範意識，保障自身利益。近日，有不法之徒透過傳銷電話及社交平台，以「搵快錢」吸引客戶出售或借出銀行戶口，或利用客戶的個人資料開戶，然後利用這些「傀儡戶口」收取騙款或其他犯罪得益，亦即是「洗黑錢」。<br>
+<br>
+中銀香港呼籲客戶切勿向他人出售或借出銀行戶口，因為有關戶口可能會被操控用作非法用途，而對客戶構成洗黑錢罪，最高刑罰為罰款港幣500萬元及監禁14年。
+							</div>
+							<div class="its_news_line" id = "line_35"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_36" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_36','content_36','images_up_36','images_down_36')">
+								<div class="its_news_title" id="title_36">有關虛假WhatsApp短訊和WhatsApp來電的聲明</div>
+								<div class="publishDate" id="publishDate_36">
+										2021-07-16
+								</div>
+								<div class="images_up" id = "images_up_36" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_36" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_36" style="display:none;">
+								中國銀行（香港）有限公司（「中銀香港」）提醒客戶及公眾人士，慎防冒充中銀香港和中銀信用卡的WhatsApp短訊和WhatsApp來電，意圖騙取客戶的個人資料。<br>
+<br>
+該等偽冒WhatsApp短訊和WhatsApp來電自稱是中銀香港或中銀信用卡職員，聲稱客戶有待領文件、要求客戶繳交內地信用卡欠款，或藉詞查詢信貸服務意見等，以不同藉口意圖騙取客戶的個人及銀行賬戶資料。中銀香港特此聲明與該等虛假短訊及來電沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港重申不會透過WhatsApp短訊及WhatsApp外撥電話向客戶索取個人資料，如銀行賬戶詳情、網上銀行用戶名稱及登入密碼等，或通知客戶其賬戶及信用卡出現異常情況，並於過程中要求客戶按鍵。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+客戶如懷疑受騙，請致電本行客戶服務熱線 (852) 3988 2388（選取語言後，按 3、#、2）及與香港警方聯絡。
+							</div>
+							<div class="its_news_line" id = "line_36"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_37" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_37','content_37','images_up_37','images_down_37')">
+								<div class="its_news_title" id="title_37">重要保安提示</div>
+								<div class="publishDate" id="publishDate_37">
+										2021-07-07
+								</div>
+								<div class="images_up" id = "images_up_37" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_37" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_37" style="display:none;">
+								<b>慎防偽冒銀行職員的騙徒<br>
+ 訛稱代為登記領取「香港特區政府港幣5,000元電子消費券」騙取個人及銀行賬戶資料</b><br>
+<br>
+提防受騙小貼士<br>
+• 切勿下載來歷不明的應用程式。<br>
+• 切勿開啟來歷不明的電郵及短訊内的超連結或附件。<br>
+• 切勿向他人透露個人及銀行賬戶資料，包括銀行賬戶資料、網上銀行用戶名稱、登入密碼、單次密碼或信用卡號碼。<br>
+<br>
+中銀香港<br>
+• 不會以電話、電話錄音、電郵、短訊、網上超連結、二維條碼或附件等方式，索取客戶的敏感個人資料。<br>
+<br>
+<b>銀行戶口咪亂借 銀行密碼切勿Share</b><br>
+<br>
+如有懷疑，請致電中銀香港客戶服務熱線(852) 3988 2388或警方「防騙易」熱線 (852) 18222。
+							</div>
+							<div class="its_news_line" id = "line_37"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_38" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_38','content_38','images_up_38','images_down_38')">
+								<div class="its_news_title" id="title_38">有關虛假短訊及偽冒網站的聲明</div>
+								<div class="publishDate" id="publishDate_38">
+										2021-06-21
+								</div>
+								<div class="images_up" id = "images_up_38" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_38" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_38" style="display:none;">
+								中國銀行（香港）有限公司（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https: // boc-hk-secure.com<br>
+<br>
+該虛假短訊及偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱及網上銀行密碼。中銀香港特此聲明與該短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱 線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_38"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_39" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_39','content_39','images_up_39','images_down_39')">
+								<div class="its_news_title" id="title_39">有關虛假短訊及偽冒網站的聲明</div>
+								<div class="publishDate" id="publishDate_39">
+										2021-06-18
+								</div>
+								<div class="images_up" id = "images_up_39" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_39" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_39" style="display:none;">
+								中國銀行（香港）有限公司（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https: // secure-boc-cn.com<br>
+<br>
+該虛假短訊及偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱及網上銀行密碼。中銀香港特此聲明與該短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_39"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_40" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_40','content_40','images_up_40','images_down_40')">
+								<div class="its_news_title" id="title_40">有關偽冒電郵的聲明</div>
+								<div class="publishDate" id="publishDate_40">
+										2021-06-07
+								</div>
+								<div class="images_up" id = "images_up_40" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_40" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_40" style="display:none;">
+								中國銀行(香港)有限公司 (「中銀香港」) 提醒客戶及公眾人士，慎防偽冒由中銀香港發出的虛假電子郵件，電郵地址為“bank.china.hongkong@ gmail.com”。<br>
+<br>
+中銀香港特此聲明與由該電郵地址發出的偽冒電郵沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶應先核實任何聲稱由中銀香港發出的電郵，切勿開啟可疑電郵及其附件，並應即時將其刪除。如客戶曾收到上述偽冒電郵，並付款或提供個人資料，請即致電中銀香港客戶服務熱線 (852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_40"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_41" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_41','content_41','images_up_41','images_down_41')">
+								<div class="its_news_title" id="title_41">有關偽冒電郵的聲明</div>
+								<div class="publishDate" id="publishDate_41">
+										2021-05-12
+								</div>
+								<div class="images_up" id = "images_up_41" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_41" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_41" style="display:none;">
+								中國銀行(香港)有限公司 (「中銀香港」) 提醒客戶及公眾人士，慎防偽冒由中銀香港私人銀行發出的虛假電子郵件，電郵域名為 “bochkprivatebank. com”。<br>
+<br>
+中銀香港特此聲明與由該域名發出的偽冒電郵沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶應先核實任何聲稱由中銀香港發出的電郵，切勿開啟可疑電郵及其附件，並應即時將其刪除。如客戶曾收到上述偽冒電郵，並付款或提供個人資料， 請即致電中銀香港客戶服務熱線 (852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_41"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_42" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_42','content_42','images_up_42','images_down_42')">
+								<div class="its_news_title" id="title_42">有關虛假短訊及偽冒網站的聲明（2021年4月18日）</div>
+								<div class="publishDate" id="publishDate_42">
+										2021-04-18
+								</div>
+								<div class="images_up" id = "images_up_42" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_42" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_42" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防虛假短訊及偽冒中銀香港網站。偽冒中銀香港網站網址如下：<br>
+<br>
+https: // www .itslbochk.com<br>
+<br>
+該等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等 短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_42"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_43" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_43','content_43','images_up_43','images_down_43')">
+								<div class="its_news_title" id="title_43">有關虛假短訊及偽冒網站的聲明（2021年4月17日）</div>
+								<div class="publishDate" id="publishDate_43">
+										2021-04-17
+								</div>
+								<div class="images_up" id = "images_up_43" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_43" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_43" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防虛假短訊及偽冒中銀香港網站。偽冒中銀香港網站網址如下：<br>
+<br>
+https: // www .itsabochk.com<br>
+<br>
+該等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等 短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_43"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_44" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_44','content_44','images_up_44','images_down_44')">
+								<div class="its_news_title" id="title_44">有關虛假短訊及偽冒網站的聲明（2021年4月16日）</div>
+								<div class="publishDate" id="publishDate_44">
+										2021-04-16
+								</div>
+								<div class="images_up" id = "images_up_44" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_44" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_44" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防虛假短訊及偽冒中銀香港網站。偽冒中銀香港網站網址如下：<br>
+<br>
+https: // www .itsxbochk.com<br>
+<br>
+該等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等 短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_44"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_45" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_45','content_45','images_up_45','images_down_45')">
+								<div class="its_news_title" id="title_45">有關虛假短訊及偽冒網站的聲明（2021年4月16日）</div>
+								<div class="publishDate" id="publishDate_45">
+										2021-04-16
+								</div>
+								<div class="images_up" id = "images_up_45" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_45" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_45" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防虛假短訊及偽冒中銀香港網站。偽冒中銀香港網站網址如下：<br>
+<br>
+https: // www .itsnbochk.com<br>
+<br>
+該等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等 短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_45"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_46" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_46','content_46','images_up_46','images_down_46')">
+								<div class="its_news_title" id="title_46">有關虛假短訊及偽冒網站的聲明</div>
+								<div class="publishDate" id="publishDate_46">
+										2021-04-15
+								</div>
+								<div class="images_up" id = "images_up_46" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_46" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_46" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊（請見截圖）及偽冒中銀香港網站：<br>
+<br>
+https://www.itssbochk.com<br>
+<br>
+https://www.itsobochk.com<br>
+<br>
+該等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等 短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽 http://www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_46"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_47" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_47','content_47','images_up_47','images_down_47')">
+								<div class="its_news_title" id="title_47">有關偽冒網站的聲明</div>
+								<div class="publishDate" id="publishDate_47">
+										2021-03-19
+								</div>
+								<div class="images_up" id = "images_up_47" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_47" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_47" style="display:none;">
+								<p>中國銀行（香港）有限公司（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：</p>
+<p>http: // <a href="http://www.bankofchina100.com">www.bankofchina100.com</a></p>
+<p>上述偽冒網站訛稱為中銀香港海外諮詢介紹，並提供一系列服務，如香港及新加坡銀行開戶及公司註冊、審計、海外商標註冊及移民等。</p>
+<p>中銀香港特此聲明及澄清與該網站及中銀香港海外諮詢介紹沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。客戶如懷疑受騙，請即致電中銀香港客戶熱線 (852) 3988 2388 （選取語言後，按 3、#、2）查詢及與香港警方聯絡。</p>
+							</div>
+							<div class="its_news_line" id = "line_47"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_48" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_48','content_48','images_up_48','images_down_48')">
+								<div class="its_news_title" id="title_48">有關偽冒網站的聲明</div>
+								<div class="publishDate" id="publishDate_48">
+										2021-03-17
+								</div>
+								<div class="images_up" id = "images_up_48" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_48" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_48" style="display:none;">
+								<p>中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：</p>
+<p>http: // www.hkxxwo.com / static / bb / index.html</p>
+<p>上述偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼、姓名、身份證號碼、手機號碼及驗證碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。</p>
+<p>偽冒網站通常會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料。中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。</p>
+<p>本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。</p>
+<p>任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。</p>
+							</div>
+							<div class="its_news_line" id = "line_48"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_49" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_49','content_49','images_up_49','images_down_49')">
+								<div class="its_news_title" id="title_49">有關偽冒網站的聲明（2021年3月5日）</div>
+								<div class="publishDate" id="publishDate_49">
+										2021-03-05
+								</div>
+								<div class="images_up" id = "images_up_49" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_49" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_49" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：<br>
+<br>
+https://www.bochkg.com<br>
+<br>
+https://www.bochkj.com<br>
+<br>
+https://www.bochkgd.com<br>
+<br>
+https://www.bochkgj.com<br>
+<br>
+https://www.bochkgk.com<br>
+<br>
+https://www.bochkgo.com<br>
+<br>
+https://www.bochkgu.com<br>
+<br>
+此偽冒網站會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_49"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_50" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_50','content_50','images_up_50','images_down_50')">
+								<div class="its_news_title" id="title_50">有關虛假短訊及偽冒網站的重要提示</div>
+								<div class="publishDate" id="publishDate_50">
+										2021-03-05
+								</div>
+								<div class="images_up" id = "images_up_50" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_50" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_50" style="display:none;">
+								近日有騙徒發出附有偽冒中國銀行(香港) （「本行」）網站超連結的虛假短訊，訛稱客戶戶口設定出現異常或驗證未成功等，要求客戶點擊短訊內的超連結進行驗證或申請三重驗證，誘騙客戶在偽冒網站內輸入個人資料，如網上銀行號碼/用戶名稱、網上銀行密碼及單次短訊密碼等。本行已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+這些虛假短訊及偽冒網站的超連結會以不同網域名稱出現，或在本行官方網址www.bochk.com上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料。<br>
+<br>
+<b>下列為一些偽冒短訊的常見特徵</b>：<br>
+<br>
+• 偽冒短訊一般使用與本行極為相近的發送人名稱或號碼。<br>
+• 內容通常涉及本行的重要訊息，或要求收件人提供個人資料以核實賬戶，例如︰大額轉賬的交易通知或須啟用新的安全功能的通知，並要求收件人點擊超連結或開啟附件。<br>
+<br>
+本行呼籲客戶提高警覺，慎防受騙。本行重申不會以手機短訊、電郵、網上的超連結、二維條碼或附件，要求客戶登入賬戶或提供任何個人資料，包括賬戶號碼、網上銀行號碼/用戶名稱、登入密碼和單次短訊密碼，也不會透過預錄語音訊息聯絡客戶。如您收到聲稱由本行發出的可疑銀行短訊，要求點擊內附的超連結及提供任何個人資料，應先聯絡本行以辨別短訊真偽。此外，在登入網上銀行時，請注意登入版面有否出現任何異常情況。如有懷疑，請即停止操作，切勿輸入任何資料，並請關閉視窗及與本行聯絡。<br>
+<br>
+本行建議您經電子渠道進行交易時，應在瀏覽器直接輸入本行官方網址（www.bochk.com），或透過官方應用程式商店或可信來源下載的中銀香港流動應用程式，登入網上銀行或手機銀行賬戶。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+如您曾登入懷疑偽冒網站並提供資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_50"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_51" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_51','content_51','images_up_51','images_down_51')">
+								<div class="its_news_title" id="title_51">有關虛假短訊及偽冒網站的聲明（2021年3月4日）</div>
+								<div class="publishDate" id="publishDate_51">
+										2021-03-04
+								</div>
+								<div class="images_up" id = "images_up_51" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_51" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_51" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊（請見截圖）及偽冒中銀香港網站：<br>
+<br>
+https://www.bochkoa.com<br>
+<br>
+此虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子 銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱 線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_51"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_52" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_52','content_52','images_up_52','images_down_52')">
+								<div class="its_news_title" id="title_52">有關偽冒網站的聲明（2021年3月4日）</div>
+								<div class="publishDate" id="publishDate_52">
+										2021-03-04
+								</div>
+								<div class="images_up" id = "images_up_52" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_52" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_52" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：<br>
+<br>
+https://www.bochkgs.com<br>
+<br>
+此偽冒網站會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新有關詐騙資訊提示，詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_52"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_53" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_53','content_53','images_up_53','images_down_53')">
+								<div class="its_news_title" id="title_53">有關虛假短訊及偽冒網站的聲明（2021年3月3日）</div>
+								<div class="publishDate" id="publishDate_53">
+										2021-03-03
+								</div>
+								<div class="images_up" id = "images_up_53" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_53" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_53" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https://bit.ly/3bZeuuS<br>
+<br>
+https://www.malaysiamay.com/static/bb/index.html<br>
+<br>
+此等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客 戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等短訊及網站沒有任何關係，並已將有關情況知會香港金 融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用 程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新 有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_53"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_54" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_54','content_54','images_up_54','images_down_54')">
+								<div class="its_news_title" id="title_54">有關虛假短訊及偽冒網站的聲明（2021年3月3日）</div>
+								<div class="publishDate" id="publishDate_54">
+										2021-03-03
+								</div>
+								<div class="images_up" id = "images_up_54" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_54" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_54" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https://www.bochkoa.com<br>
+<br>
+https://www.bochkos.com<br>
+<br>
+https://www.bochkow.com<br>
+<br>
+https://www.bohkc.com<br>
+<br>
+此等虛假短訊及偽冒網站會以不同網域名稱出現，或在中銀香港官方網址www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客 戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等短訊及網站沒有任何關係，並已將有關情況知會香港金 融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用 程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。本行會不時於本行網頁更新 有關詐騙資訊提示，詳情請瀏覽 www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_54"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_55" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_55','content_55','images_up_55','images_down_55')">
+								<div class="its_news_title" id="title_55">有關偽冒網站的聲明（2021年3月2日）</div>
+								<div class="publishDate" id="publishDate_55">
+										2021-03-02
+								</div>
+								<div class="images_up" id = "images_up_55" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_55" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_55" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：<br>
+<br>
+https://www.bochkeg.com<br>
+<br>
+https://www.bochkf.com<br>
+<br>
+此等偽冒網站會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號，企圖誤導客戶及盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用 程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。有關電子銀行服務的保安資 訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_55"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_56" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_56','content_56','images_up_56','images_down_56')">
+								<div class="its_news_title" id="title_56">有關虛假短訊及偽冒網站的聲明（2021年3月2日）</div>
+								<div class="publishDate" id="publishDate_56">
+										2021-03-02
+								</div>
+								<div class="images_up" id = "images_up_56" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_56" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_56" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士，近日有騙徒發出附有偽 冒中銀香港網站超連結的虛假短訊，訛稱客戶戶口設定出現異常或驗證未成功等，要求客戶點擊短訊內的超連結，誘騙客戶在偽冒網站內輸入個人資料，如網上銀行號碼 / 用戶名稱、網上銀行密碼及電話短訊單次密碼等。中銀香港特此聲明與該等短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+該等虛假短訊內偽冒網站的超連結會以不同網域名稱出現，或在中銀香港官方網址 www.bochk.com 上稍作改動，如加上不同組合的英文字母、數字或符號（如下），企圖誤導客戶。<br>
+<br>
+https://www.bochkee.com<br>
+<br>
+https://www.bochkem.com<br>
+<br>
+https://www.bochkeo.com<br>
+<br>
+https://www.bochkep.com<br>
+<br>
+https://www.bochkeu.com<br>
+<br>
+https://www.bochkew.com<br>
+<br>
+本行呼籲客戶提高警覺，慎防受騙。中銀香港重申不會以手機短訊、電郵、網上 的超連結、二維條碼或附件，要求客戶提供任何敏感的個人資料，包括賬戶號碼、網 上銀行用戶名稱、登入密碼和單次短訊密碼，也不會透過預錄語音訊息聯絡客戶。客戶切勿透過手機短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個 人資料（包括密碼）。客戶如收到聲稱由本行發出的可疑銀行短訊，要求點擊內附的 超連結提供任何個人資料，請馬上提高警覺，應致電本行以辦別短訊真偽。<br>
+<br>
+本行建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址 （www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程 式，接駁至網上銀行或手機銀行賬戶。本行會不時於本行網頁更新有關詐騙資訊提示， 詳情請瀏覽www.bochk.com/tc/aboutus/fraudalert.html。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱 線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_56"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_57" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_57','content_57','images_up_57','images_down_57')">
+								<div class="its_news_title" id="title_57">有關偽冒網站的聲明（2021年2月28日）</div>
+								<div class="publishDate" id="publishDate_57">
+										2021-02-28
+								</div>
+								<div class="images_up" id = "images_up_57" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_57" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_57" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：<br>
+<br>
+https: // www.bochkva.com<br>
+<br>
+https: // www.bochkvd.com<br>
+<br>
+https: // www.bochkvf.com<br>
+<br>
+上述偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_57"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_58" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_58','content_58','images_up_58','images_down_58')">
+								<div class="its_news_title" id="title_58">有關虛假短訊及偽冒網站的聲明（2021年2月27日）</div>
+								<div class="publishDate" id="publishDate_58">
+										2021-02-27
+								</div>
+								<div class="images_up" id = "images_up_58" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_58" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_58" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https: // www.bochkx.com<br>
+<br>
+https: // www.bochkn.com<br>
+<br>
+https: // www.bochkv.com<br>
+<br>
+https: // www.bochkvo.com<br>
+<br>
+https: // www.bochkvp.com<br>
+<br>
+https: // www.bochkvw.com<br>
+<br>
+該等虛假短訊及偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與該等短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_58"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_59" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_59','content_59','images_up_59','images_down_59')">
+								<div class="its_news_title" id="title_59">有關偽冒網站的聲明（2021年2月27日）</div>
+								<div class="publishDate" id="publishDate_59">
+										2021-02-27
+								</div>
+								<div class="images_up" id = "images_up_59" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_59" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_59" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下偽冒中銀香港網站：<br>
+<br>
+https: // www.bochkm.com<br>
+<br>
+https: // www.bochkp.com<br>
+<br>
+https: // www.bochkq.com<br>
+<br>
+https: // www.bochks.com<br>
+<br>
+https: // www.bochkt.com<br>
+<br>
+https: // www.bochku.com<br>
+<br>
+上述偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱、網上銀行密碼及電話短訊單次密碼。中銀香港特此聲明與上述網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_59"  style="display: none;"></div>
+						
+							<div class="its_news_subheader" id = "subheader_60" style="display: none;" onclick="DisplayNewsContent_onclick('subheader_60','content_60','images_up_60','images_down_60')">
+								<div class="its_news_title" id="title_60">有關虛假短訊及偽冒網站的聲明（2021年2月26日）</div>
+								<div class="publishDate" id="publishDate_60">
+										2021-02-26
+								</div>
+								<div class="images_up" id = "images_up_60" style="display: none;" >
+									<img src="images/tr-down.png"/>
+								</div>
+								<div class="images_down" id = "images_down_60" style="display:none;">
+									<img src="images/tr-up.png"/>
+								</div>
+							</div>
+							<div class="its_news_content" id="content_60" style="display:none;">
+								中國銀行（香港）（「中銀香港」）提醒客戶及公眾人士慎防以下虛假短訊及偽冒中銀香港網站：<br>
+<br>
+https : // bit.ly/ 2P4beXo<br>
+<br>
+http : // www.malaysiamam.com/static/bb/index.html<br>
+<br>
+該等虛假短訊及偽冒網站意圖盜取客戶的資料，如網上銀行號碼/用戶名稱、密碼、卡號、客戶姓名、身份證號碼、手機號碼、驗證碼及由流動保安編碼所產生的單次密碼。中銀香港特此聲明與該等短訊及網站沒有任何關係，並已將有關情況知會香港金融管理局及香港警方。<br>
+<br>
+中銀香港建議客戶經電子銀行服務進行交易時，應在瀏覽器直接輸入中銀香港網址（www.bochk.com），或經官方應用程式商店或可信來源下載的中銀香港流動應用程式，接駁至網上銀行或手機銀行賬戶，切勿透過短訊、電郵、網上的超連結、二維條碼或附件登入該等賬戶或提供個人資料（包括密碼）。有關電子銀行服務的保安資訊，請瀏覽 www.bochk.com/tc/security.html。<br>
+<br>
+任何人士如曾登入上述偽冒網站並提供客戶資料，請即致電中銀香港客戶服務熱線(852) 3988 2388（選取語言後，按 3、#、2）。
+							</div>
+							<div class="its_news_line" id = "line_60"  style="display: none;"></div>
+						
+						
+							<br>
+							<div class="moreCount"><a class="more_btn_right" id="moreCount_btn" onclick="DisplaySubheader_more('60')"></a></div>
+						
+					</div>
+				
+					<ul id="iconbtn">
+						<li>
+							<a class="more" href="javascript:openHelp('/cmm.before_commonInformation.do?langType=C&bkCode=012&title=security')"><span class="more-left"></span><span class="more-right"></span><span class="icon-1"></span><span>保安資訊</span></a>
+							<p>如何確保您的網上交易安全穩妥？請<a href="javascript:openHelp('/cmm.before_commonInformation.do?langType=C&bkCode=012&title=security')">按此</a>。<p>
+						</li>
+						<li>
+							<a class="more" href="https://its.bochk.com/reg.entry.do?langType=C&amp;bkCode=012"><span class="more-left"></span><span class="more-right"></span><span class="icon-2"></span><span>登記信用卡網上服務</span></a>
+							<p>如您持有信用卡賬戶，可使用此功能登記信用卡網上服務。</p>
+						</li>
+						<li>
+							<a id="SysUS" class="more" href="javascript:openHelp('/cmm.maintenanceSchedule.do?langType=C',550,400)"><span class="more-left"></span><span class="more-right"></span><span class="icon-3"></span><span>系統提升時間表</span></a>
+							<p>客戶服務熱線：<br>+852 3988 2388</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<div id="footer">
+		<div id="footer-nav">
+			<img src="images/ie6/best-choice-icon.png" alt="">
+			<ul id="nav-bottom">
+				<li><a href="javascript:openHelp('/cmm.before_commonInformation.do?langType=C&bkCode=012&title=importantnotice')" title="重要聲明及私隱政策聲明">重要聲明及私隱政策聲明</a></li>
+				<li><a href="javascript:openHelp('/cmm.before_commonInformation.do?langType=C&bkCode=012&title=conditionsforservices')" title="服務條款">服務條款</a></li>
+				<li><a href="javascript:openHelp('/information/faq/faq_main_c.html')" title="常見問題">常見問題</a></li>
+				<li><a href="javascript:openHelp('/cmm.before_commonInformation.do?langType=C&bkCode=012&title=hyperlinkpolicy')" title="超連結政策">超連結政策</a></li>
+				<li><a href="javascript:openHelp('https://www.bochk.com/tc/servicecharge.html')" title="一般銀行服務收費表">一般銀行服務收費表</a></li>
+			</ul>
+			<div>© 中國銀行(香港)有限公司。版權所有。</div>
+		</div> 
+	</div>
+	<div id = 'captchaWrapper'>&nbsp;</div>
+	<bgsound id="bgSoundAudioCaptcha" src="ibs_lgn_index_c.jsp" loop="1" autostart="false">
+<script type="text/javascript">
+ 
+	ibsInitOcs(012,'https://ocs.bochk.com/webchat/webchat.html?pageFlage=IBS','https://ocs.bochk.com/dbsrv/','C','lgn.index','lgn/index');
+ 
+		
+
+	var latestNewsListSize = 60;
+	showNewsBtn(latestNewsListSize);
+
+
+	showImportInfoContent();
+
+
+	changeImage();
+
+</script>
+</body>
+</html>
+

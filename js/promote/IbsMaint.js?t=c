@@ -1,0 +1,168 @@
+<!--
+var isNoMaintValue = true;
+
+var maintDate_e = new Array();
+var maintDate_s = new Array();
+var maintDate_t = new Array();
+
+var maintTime_e = new Array();
+var maintTime_s = new Array();
+var maintTime_t = new Array();
+
+var maintReason_e = new Array();
+var maintReason_s = new Array();
+var maintReasin_t = new Array();
+
+var maintRowSpan_e = new Array();
+var maintRowSpan_s = new Array();
+var maintRowSpan_t = new Array();
+
+var maintDate = new Array();
+var maintTime = new Array();
+var maintReason = new Array();
+var maintRowSpan = new Array();
+
+//###Gen result - don't edit 
+//~!@#$%Start
+// Generate date time is 2023-05-14 04:38:41.936
+
+isNoMaintValue = false;
+maintDate_e[0] = '<P>Every Tuesday to Saturday##02:30-06:30##Internet / Mobile Banking Securities Account Details and Transaction Record</P>';
+maintDate_e[1] = 'Every Sunday##02:30-08:30##Internet / Mobile Banking / Mobile Application / WeChat Official Account';
+maintDate_t[0] = '<P>逢星期二至星期六##02:30-06:30##網上 / 手機銀行證券賬戶資料及交易紀錄</P>';
+maintDate_t[1] = '逢星期日##02:30-08:30##網上 / 手機銀行 / 流動應用程式 / 微信官號';
+maintDate_s[0] = '<P>逢星期二至星期六##02:30-06:30##网上 / 手机银行证券账户资料及交易纪录</P>';
+maintDate_s[1] = '逢星期日##02:30-08:30##网上 / 手机银行 / 流动应用程式 / 微信官号';
+maintRowSpan_t[0] = '1';
+maintRowSpan_t[1] = '1';
+maintRowSpan_s[0] = '1';
+maintRowSpan_s[1] = '1';
+maintRowSpan_e[0] = '1';
+maintRowSpan_e[1] = '1';
+
+//~!@#$%End
+//###Gen result - don't edit 
+
+function isNoMaint()
+{
+   return isNoMaintValue;
+}
+
+function initMaint(lang)
+{
+	
+	if(lang == 'C')
+	{
+	
+            maintDate = maintDate_t;
+            maintTime = maintDate_t;
+            maintReason = maintDate_t;
+            maintRowSpan = maintRowSpan_t;
+  
+	}
+	else if(lang == 'S')
+	{
+	
+            maintDate = maintDate_s;
+            maintTime = maintDate_s;
+            maintReason = maintDate_s;
+            maintRowSpan = maintRowSpan_s;
+  
+	}
+	else		
+	{
+	
+            maintDate = maintDate_e;
+            maintTime = maintDate_e;
+            maintReason = maintDate_e;
+            maintRowSpan = maintRowSpan_e;
+  
+	}
+	
+
+}
+
+
+function getMaintDate(ip_Str)
+{
+    var endIndex = ip_Str.indexOf("##");    
+        
+    return  ip_Str.substring(0, endIndex);       
+}
+
+function getMaintTime(ip_Str)
+{
+    var stIndex = ip_Str.indexOf("##") + 2;         
+    var endIndex = ip_Str.lastIndexOf("##"); 
+            
+    return  ip_Str.substring(stIndex, endIndex);       
+}
+
+function getMaintReason(ip_Str)
+{
+    var stIndex = ip_Str.lastIndexOf("##") + 2;    
+        
+    return  ip_Str.substring(stIndex ,ip_Str.length);
+}
+
+function getDate(lang){
+
+  var maintDate = new Array();
+  if(lang == 'C') {
+    maintDate = maintDate_t;
+  } else
+	if(lang == 'S') {
+		maintDate = maintDate_s;
+  } else {
+  	maintDate = maintDate_e;  	
+  }
+
+	var result = new Array();
+	for (i in maintDate){
+		var endIndex = maintDate[i].indexOf("##");            
+		result[i]=maintDate[i].substring(0, endIndex);     
+	}
+	return result; 
+}
+
+function getReason(lang){
+
+	var maintDate = new Array();
+  if(lang == 'C') {
+    maintDate = maintDate_t;
+  } else
+	if(lang == 'S') {
+		maintDate = maintDate_s;
+  } else {
+  	maintDate = maintDate_e;  	
+  }
+
+	var result = new Array();
+	for (i in maintDate){
+		var stIndex = maintDate[i].lastIndexOf("##") + 2;    
+    result[i]=  maintDate[i].substring(stIndex ,maintDate[i].length);
+	}
+	return result;
+}
+
+function getTime(lang){
+	
+	var maintDate = new Array();
+  if(lang == 'C') {
+    maintDate = maintDate_t;
+  } else
+	if(lang == 'S') {
+		maintDate = maintDate_s;
+  } else {
+  	maintDate = maintDate_e;  	
+  }
+
+	var result = new Array();
+	for (i in maintDate){
+		var stIndex = maintDate[i].indexOf("##") + 2;         
+    var endIndex = maintDate[i].lastIndexOf("##"); 
+    result[i]=  maintDate[i].substring(stIndex, endIndex);   
+	}
+	return result;
+}
+//-->

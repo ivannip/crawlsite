@@ -1,0 +1,2374 @@
+//<!--
+var popupWindow;
+var AIPWindow;
+var locationx = top.location.pathname;
+var bocDomain = top.location.host;
+var its_main = window;
+var QPIWindow;
+var QPIStreamWindow;
+var QPISmgWindow;
+var AASTOCKSWindow;
+var MRGACCWindow;
+var AASTOCKSStreamWindow;
+var FXINFOWindow;
+var TaxLoansWindow = null;
+var PlnLoansWindow = null;
+var MortgageWindow = null;
+var CdcApplyWindow = null;
+var CbwOpenMCAccWindow = null;
+var iwmWindow = null;
+var	QPIArg0 = "";
+var	QPIArg1 = "";
+var	AASTOCKSArg0 = "";
+var	AASTOCKSArg1 = "";
+var	FXINFOArg0 = "";
+var	FXINFOArg1 = "";
+var MRGACCArg0 = "";
+var MRGACCArg1 = "";
+var isLogout = false;
+var TrainingWindow;
+var LuckyDrawWindow;
+var ua = navigator.userAgent.toLowerCase();
+
+var newlinebrowser = ["firefox", "netscape", "chrome"];
+
+function isNeedNewLineSpecialHandle( ipBrowser ){
+
+	for(var i=0; i<newlinebrowser.length; i++) {
+	
+		if ( ipBrowser.indexOf( newlinebrowser[i] ) >= 0 ){
+
+			return true;
+		}	
+	}		
+	return false;
+}
+
+
+
+function loadFundInfo(infoLink)
+{
+	if (infoLink == null || infoLink == "")
+	{
+		infoLink = "/fnd.fundInfo.do?retryType=N";
+	}
+	openFundInfo(infoLink);
+}
+
+function loadCbwFundInfo(infoLink)
+{
+	if (infoLink == "fundInfoChy")
+	{
+		infoLink = "/cbw.fundInfoChy.do?retryType=N";
+	}
+	else
+	{
+		infoLink = "/cbw.fundInfo.do?retryType=N";
+	}
+	openFundInfo(infoLink);
+}
+
+function loadCbwOpenMCAccount()
+{
+	var width,height,left;   
+	var popupURL="/cbw.openMCAccount.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (CbwOpenMCAccWindow==null || CbwOpenMCAccWindow.closed)
+	{
+		CbwOpenMCAccWindow = window.open( popupURL, 'ibsCbwOpenMCAccount', features);
+    }
+    else
+    {
+    	CbwOpenMCAccWindow.close();
+    	CbwOpenMCAccWindow = window.open( popupURL, 'ibsCbwOpenMCAccount', features);
+    }
+	CbwOpenMCAccWindow.focus();
+
+}
+
+function openPromote(promotePage) {
+	MM_openBrWindow(promotePage,'ibsPromote','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width=450,height=300');
+}
+
+function openPromoteNoPopup(promotePage) {
+	MM_openBrWindow(promotePage,'_self','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width=450,height=300');
+}
+
+function newCCWindow(langType) 
+{
+	var url = "";
+	if (langType.toUpperCase() == "E")
+		url = "https://www.boci.com.hk/latest_news/en/itspopup_e.html";
+	else
+		url = "https://www.boci.com.hk/latest_news/big5/itspopup.html";
+	popup=window.open(url,'ccPopup','width=360,height=230,left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes');
+	popup.focus();
+}
+
+function newPopUpWindow(url, width, height) {
+	popup=window.open(url,'BOCitsPopup','width='+width+',height='+height+',left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,resizable=yes,menubar=0,location=0,directories=0');
+	popup.focus();
+}
+
+function newin(url) {
+	its_main=window.open(url,'BOCits','width=790,height=525,left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,resizable=yes,menubar=0,location=0,directories=0');	
+	its_main.focus();
+}
+
+function newin_hkp(url) {
+	its_main=window.open(url,'BOCHKP','width=790,height=525,left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,resizable=yes,menubar=0,location=0,directories=0');	
+	its_main.focus();
+}
+
+function sub_eipo_pay() 
+{
+
+	var f = MM_findObj('frm_onlineReg');
+
+	alert("enter into sub_eipo_pay");	
+
+	if( its_main == window ){
+		alert("its_main is window");	
+	}
+	else
+	{
+		alert("its_main is not window");	
+		alert("Is its_main closed?" + its_main.closed);
+	}		
+	if(   its_main != window && its_main.closed  )
+	{
+		f.action = "/ibs_login_redirect.jsp?hd_str_langType=C";
+		alert("Step 1: The action link is login main page");
+
+	}
+ 	else if (its_main != window && !its_main.closed )
+ 	{	
+		f.action = "/servlet/Its_s_lnCtrl/login/01";
+		alert("Step 2: The action link is login page");
+
+	}
+	else
+	{
+		f.action = "/ibs_login_redirect.jsp?hd_str_langType=C";
+		alert("Step 3: The action link is login main page");
+
+	}
+	
+	f.target = "BOCits";
+			
+	//if( delay('1') )
+	//{
+		f.submit();
+	//}
+
+
+}
+
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  popupWindow = window.open(theURL,winName,features);
+  popupWindow.focus();
+}
+
+function unload_check()
+{
+	if( popupWindow != null && !popupWindow.closed )
+		popupWindow.close();
+}
+
+function unload_iwm()
+{
+	if( iwmWindow != null && !iwmWindow.closed )
+		iwmWindow.close();
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function howToApply() {
+	if (locationx.lastIndexOf("_c.html") != -1)
+		applyURL = 'https://'+bocDomain+'/beforelogin/apply/ibs_an_fs_index_c.html';
+	else if (locationx.lastIndexOf("_s.html") != -1)
+		applyURL = 'https://'+bocDomain+'/beforelogin/apply/ibs_an_fs_index_s.html';
+	else
+		applyURL = 'https://'+bocDomain+'/beforelogin/apply/ibs_an_fs_index_e.html';
+	
+	MM_openBrWindow(applyURL,'BOCits','left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,resizable=yes,width=790,height=520');
+}
+function openTnC_boc(lang) {
+	if(lang.match('C'))
+		MM_openBrWindow('https://www.bochk.com/tc/conditionsforservices.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if (lang.match('S'))
+		MM_openBrWindow('https://www.bochk.com/sc/conditionsforservices.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else 
+		MM_openBrWindow('https://www.bochk.com/en/conditionsforservices.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');	
+}
+function openTnC(lang) {
+	if(lang.match('C'))
+		MM_openBrWindow('/information/terms/ibs_tnc_main_c.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if (lang.match('S'))
+		MM_openBrWindow('/information/terms/ibs_tnc_main_s.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else 
+		MM_openBrWindow('/information/terms/ibs_tnc_main_e.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');	
+}
+
+function openTnC_bn(lang) {
+	if(lang.match('C'))
+		MM_openBrWindow('/commonBn/CA01_Conditions for Services_BB_2016.12.03_TC.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if (lang.match('S'))
+		MM_openBrWindow('/commonBn/CA01_Conditions for Services_BB_2016.12.03_SC.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else 
+		MM_openBrWindow('/commonBn/CA01_Conditions for Services_BB_2016.12.03_EN.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');	
+}
+
+function openTnC_Chiyu(lang) {
+	if(lang.match('C'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/bankinfo3_2.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if (lang.match('S'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/cn_bankinfo3_2.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else 
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/en_bankinfo3_2.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');	
+}
+
+function openImportantNotice_boc(lang) {
+	var bankName="";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('https://www.bochk.com/tc/importantnotice.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('https://www.bochk.com/sc/importantnotice.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('https://www.bochk.com/en/importantnotice.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openImportantNotice(lang) {
+	var bankName="";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_c.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_s.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_e.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openImportantNotice_bn(lang) {
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/commonBn/Disclaimer_and_Data_Policy_Notice_BB_2017.5.9_TC.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/commonBn/Disclaimer_and_Data_Policy_Notice_BB_2017.5.9_SC.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/commonBn/Disclaimer_and_Data_Policy_Notice_BB_2017.5.9_EN.pdf','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openImportantNotice_Chiyu(lang) {
+
+	bankName="Chiyu/";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/supp3_1.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/cn_supp3_1.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/en_supp3_1.htm','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+
+function openImportantNotice_Nanyang(lang) {
+	
+	bankName="Nanyang/";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_c.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_s.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/information/important/'+bankName+'ibs_imn_main_e.html','ibsTc','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+
+function openHyperlink(lang) {
+
+	var bankName="";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_c.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_s.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_e.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openHyperlink_bn(lang) {
+
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/commonBn/hyperlink policy_TC.pdf','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/commonBn/hyperlink policy_SC.pdf','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/commonBn/hyperlink policy_EN.pdf','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openHyperlink_Nanyang(lang) {
+
+	bankName="Nanyang/";
+		
+	if(lang.match('C'))
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_c.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_s.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('/information/hyperlink/'+bankName+'ibs_hpp_main_e.html','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openHyperlink_Chiyu(lang) {
+
+	bankName="Chiyu/";
+
+	if(lang.match('C'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/supp2_1.htm','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else if(lang.match('S'))
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/cn_supp2_1.htm','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+	else
+		MM_openBrWindow('https://www.chiyubank.com/chiyu/en_supp2_1.htm','ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+
+function openDemo(lang) {
+	bocDomain = document.location.host;
+  	chiDemo = "http://" + bocDomain + '/demo/ibs_in_fs_index_c.html';
+  	schiDemo = "http://" + bocDomain + '/demo/ibs_in_fs_index_s.html';
+  	engDemo = "http://" + bocDomain + '/demo/ibs_in_fs_index_e.html';
+	if(lang.match('C'))
+		MM_openBrWindow(chiDemo,'ibsdemo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');
+	else if(lang.match('S'))
+		MM_openBrWindow(schiDemo,'ibsdemo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');	
+	else
+		MM_openBrWindow(engDemo,'ibsdemo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');
+}
+
+function openDepositConsent(lang) {
+	if(lang.match('C'))
+		MM_openBrWindow("https://www.bochk.com/images/upload/retail/pdf/deposit_consent_tc.pdf",'ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');
+	else if(lang.match('S'))
+		MM_openBrWindow("https://www.bochk.com/images/upload/retail/pdf/deposit_consent_sc.pdf",'ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');	
+	else
+		MM_openBrWindow("https://www.bochk.com/images/upload/retail/pdf/deposit_consent_en.pdf",'ibsHp','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');
+}
+
+function openHelp(helpPage,theWidth,theHeight) {
+
+	//depending on how the help page is shown, adjust parameter
+
+	//MM_openBrWindow(helpPage,'ibshelp','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width=350,height=420');
+	if (helpPage==""){
+	return;
+	}
+	if (arguments.length<=2){
+	MM_openBrWindow(helpPage,'ibshelp','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width=500,height=400');
+	} else{
+	MM_openBrWindow(helpPage,'ibshelp','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width='+theWidth+',height='+theHeight);
+	}
+  
+}
+function openFaq(path,theWidth,theHeight) {
+	var b = window.open(path,'faq','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width='+theWidth+',height='+theHeight);
+	b.focus();
+}
+
+
+
+function openSpreadPrice(path) {
+	MM_openBrWindow(path,'spreadPrice','left=0,top=100,screenX=0,screenY=0,resizable=yes,scrollbars=yes,status=yes,width=500,height=500');
+}
+
+function openGlossaryItem(path) {
+	MM_openBrWindow(path,'glossaryItem','left=0,top=100,screenX=0,screenY=0,resizable=yes,scrollbars=yes,status=yes,width=500,height=500');
+}
+
+function openDetails(detailPage) {
+
+	//Show details page windows
+
+	MM_openBrWindow(detailPage,'ibsdetails','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width=500,height=400');
+}
+
+function openUserGuide(path) {
+	MM_openBrWindow(path,'UserGuide','left=0,top=0,screenX=0,screenY=0,resizable=yes,scrollbars=yes,status=yes,width=600,height=500');
+}
+
+function openDeclareAndImportantNotes(path) {
+	MM_openBrWindow(path,'ibsDIN','left=0,top=0,screenX=0,screenY=0,resizable=yes,scrollbars=yes,status=yes,width=600,height=500');
+}
+
+
+function openNew()
+{
+	if (locationx.lastIndexOf("_c.html") != -1)
+	{
+		MM_openBrWindow('/invest/securities/ibs_se_ug_new_c.html','ibsTc1','left=0,top=0,resizable=yes,scrollbars=yes,width=600,height=500');
+	}
+	else
+	{
+		MM_openBrWindow('/invest/securities/ibs_se_ug_new_e.html','ibsTc1','left=0,top=0,resizable=yes,scrollbars=yes,width=600,height=500');
+	}
+}
+
+function openExample()
+{
+	if (locationx.lastIndexOf("_c.html") != -1)
+	{
+		MM_openBrWindow('/invest/securities/ibs_se_ug_ex_c.html','ibsTc1','left=0,top=0,resizable=yes,scrollbars=yes,status=yes,width=600,height=500');
+	}
+	else
+	{
+		MM_openBrWindow('/invest/securities/ibs_se_ug_ex_e.html','ibsTc1','left=0,top=0,resizable=yes,scrollbars=yes,status=yes,width=600,height=500');
+	}
+}
+
+function changelang()
+{
+	newlangtype = arguments[0];
+	if ( newlangtype == "E" )
+	{
+		if (locationx.indexOf("_s.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_s.html/,"_e.html"));
+		}
+		else if (locationx.indexOf("_c.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_c.html/,"_e.html"));
+		}	
+	}
+	else if ( newlangtype == "C" )
+	{
+		if (locationx.indexOf("_s.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_s.html/,"_c.html"));
+		}
+		else if (locationx.indexOf("_e.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_e.html/,"_c.html"));
+		}	
+	}
+	else if ( newlangtype == "S" )
+	{
+		
+		if (locationx.indexOf("_e.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_e.html/,"_s.html"));
+		}
+		else if (locationx.indexOf("_c.html") != -1)
+		{
+			top.location.replace(locationx.replace(/_c.html/,"_s.html"));
+		}	
+	}
+}
+
+function reportError(msg,url,line) {
+ par_url = parent.location.href;
+ par_url = (par_url == location.href) ? "no parent" : par_url;
+ query_string = "/errorHandle/ibs_ehg_jsErr.jsp"
+  + "?url=" + escape(location.href)
+  + "&parent=" + escape(par_url)
+  + "&referrer=" + escape(document.referrer)
+  + "&browser=" + escape(navigator.appName + " " + navigator.appVersion)
+  + "&msg=" + escape(msg)
+  + "&line=" + escape(line);
+  
+ if (document.images) {
+  reporter = new Image();
+  reporter.src = query_string;
+  
+ }
+ return false;
+}
+window.onerror = reportError;
+
+function toShortCutURL(url) 
+{
+	
+	if (url != "")
+		top.location.href=url;	
+}
+
+function openBOCHK(url) 
+{
+	
+	if (url != "")
+		MM_openBrWindow(url,'itsBOCHK','left=0,top=0,resizable=yes,scrollbars=yes,width=790,height=420');
+}
+
+function openBOCI(url) 
+{
+	
+	if (url != "")
+		MM_openBrWindow(url,'itsBOCI','left=0,top=0,resizable=yes,scrollbars=yes,width=790,height=420');
+}
+
+function openQuamnet(url)
+{
+	
+	if (url != "")
+		MM_openBrWindow(url,'itsQuamnet','left=0,top=0,resizable=yes,scrollbars=yes,width=790,height=420');
+}
+
+//####### added for August Version ######
+function openContactUs(lang)
+{
+	var urlPath = "";
+	if(lang.match('T') || lang.match('C'))
+	{
+		urlPath = "/cmm.cnuMain.do?langType=C&retryType=N";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/cmm.cnuMain.do?langType=S&retryType=N";
+	}
+	else 
+	{
+		urlPath = "/cmm.cnuMain.do?langType=E&retryType=N";
+	}
+	
+	MM_openBrWindow(urlPath,'contactus','left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,width=600,height=670');
+}
+
+function openContactUsBeforeLogin(lang)
+{
+	var urlPath = "";
+	if(lang.match('T') || lang.match('C'))
+	{
+		urlPath = "/cmm.cnuMainBeforeLogin.do?langType=C&retryType=N";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/cmm.cnuMainBeforeLogin.do?langType=S&retryType=N";
+	}
+	else 
+	{
+		urlPath = "/cmm.cnuMainBeforeLogin.do?langType=E&retryType=N";
+	}
+	
+	MM_openBrWindow(urlPath,'contactus','left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,width=600,height=670');
+}
+
+function openForgotPwd(lang)
+{
+	var urlPath = "";
+	if(lang.match('C'))
+	{
+		urlPath = "/beforelogin/securityinfo/ibs_si_rf_popup_forgetpwd_c.html";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/beforelogin/securityinfo/ibs_si_rf_popup_forgetpwd_s.html";
+	}
+	else 
+	{
+		urlPath = "/beforelogin/securityinfo/ibs_si_rf_popup_forgetpwd_e.html";
+	}
+	
+	MM_openBrWindow(urlPath,'ibsSecurityInfo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=600,height=500');
+}
+
+function openSecurityInfo(lang)
+{
+	var urlPath = "";
+	if(lang.match('C'))
+	{
+		urlPath = "/information/security/ibs_sci_main_c.html";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/information/security/ibs_sci_main_s.html";
+	}
+	else 
+	{
+		urlPath = "/information/security/ibs_sci_main_e.html";
+	}
+	
+	MM_openBrWindow(urlPath,'ibsSecurityInfo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+function openSecurityInfo_bn(lang)
+{
+	var urlPath = "";
+	if(lang.match('C'))
+	{
+		urlPath = "/commonBn/Security Information_TC.pdf";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/commonBn/Security Information_SC.pdf";
+	}
+	else 
+	{
+		urlPath = "/commonBn/Security Information_EN.pdf";
+	}
+	
+	MM_openBrWindow(urlPath,'ibsSecurityInfo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+function openSecurityInfo_Chiyu(lang)
+{
+	var urlPath = "";
+	if(lang.match('C'))
+	{
+		urlPath = "https://www.chiyubank.com/chiyu/supp4_1.htm";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "https://www.chiyubank.com/chiyu/cn_supp4_1.htm";
+	}
+	else 
+	{
+		urlPath = "https://www.chiyubank.com/chiyu/en_supp4_1.htm";
+	}
+	
+	MM_openBrWindow(urlPath,'ibsSecurityInfo','left=0,top=0,screenX=0,screenY=0,resizable=yes,status=yes,scrollbars=yes,width=500,height=400');
+}
+function openECertDemo(url)
+{
+	if (url != "")
+		MM_openBrWindow(url,'itseCertDemo','left=20,top=20,resizable=yes,status=yes,scrollbars=yes,width=790,height=520');
+
+}
+function openFundInfo(url)
+{
+	if (url != "")
+		MM_openBrWindow(url,'itsFundInfo','left=20,top=20,resizable=yes,scrollbars=yes,width=790,height=520');
+}
+
+
+//####### End of added for August Version ######
+
+// used in JSP header logout button 
+// Be careful, HTML langType T,S,E 
+//             JSP  langType C,S,E
+var  gb_loDelayFlag=true;			
+var  gb_loTypes='';
+
+function itsConfirm(langType)
+{
+	var msg;
+	var msg2="";;
+	var status=false;
+	if(top.frames.length ==2 && top.frames[0].name=="appsf" )
+		status=true;
+	
+	if (langType == "C")
+	{
+		msg="多謝使用網上銀行服務\n\n是否決定離開?";
+		msg2="\n\n注意﹕如曾使用電子證書，請確保電子證書儲存媒介已被移除";
+	}
+	else if (langType == "S")
+	{
+		msg="多谢使用网上银行服务\n\n是否决定离开?";
+		msg2="\n\n注意：如曾使用电子证书，请确保电子证书储存媒介已被移除";
+	}
+	else
+	{
+		msg="Thank you for using Internet Banking!\n\nAre you sure to logoff?";
+		msg2="\n\nNotice: If you have used e-Cert, please make sure your e-Cert Storage Media is removed.";
+	}
+	if(status)
+		msg=msg+msg2;	
+	if(loDelay('1'))
+	{
+	   if(confirm(msg))
+	      return true;
+	   else
+	   {
+	      gb_loDelayFlag=true;
+	      return false;
+	   }
+	}
+	else
+	    return false;
+}
+function loDelay(t) 				
+{   							
+	if ( gb_loTypes != t )
+	{
+		gb_loDelayFlag = true;  
+	}	
+
+ 	if (gb_loDelayFlag)   			
+ 	{   					
+		gb_loDelayFlag = false ;   	
+    		gb_loTypes = t ;
+
+    		return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return gb_loDelayFlag;  		
+ 	}   					
+ } 	
+ 
+var  qpiDelayFlag=true;			
+var  qpiTypes='';
+
+function qpiDelay(t) 				
+{   
+	if ( qpiTypes != t )
+	{
+		qpiDelayFlag = true;  
+	}	
+
+ 	if (qpiDelayFlag)   			
+ 	{   					
+		qpiDelayFlag = false ;
+    qpiTypes = t ;
+		setTimeout("qpiDelayFlag = true;",1000); 
+    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return qpiDelayFlag;  		
+ 	}   					
+} 
+
+var  aastocksDelayFlag=true;			
+var  aastocksTypes='';
+
+function aastocksDelay(t) 				
+{   
+	if ( aastocksTypes != t )
+	{
+		aastocksDelayFlag = true;  
+	}	
+
+ 	if (aastocksDelayFlag)   			
+ 	{   			
+		aastocksDelayFlag = false ;
+    	aastocksTypes = t ;
+		setTimeout("aastocksDelayFlag = true;",1000); 
+	    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return aastocksDelayFlag;  		
+ 	}   					
+} 
+
+function isIE8Browser()
+{
+	var ua = navigator.userAgent.toLowerCase();
+	var isOpera = (ua.indexOf('opera') != -1);
+	var isIE = (ua.indexOf('msie') != -1 && !isOpera && (ua.indexOf('webtv') == -1) );
+   	var versionMinor = parseFloat(navigator.appVersion);
+   	if (isIE && versionMinor >= 4) 
+   	{
+      versionMinor = parseFloat( ua.substring( ua.indexOf('msie ') + 5 ) );
+   	}
+   	var versionMajor = parseInt(versionMinor);
+   	var isIE8 = (isIE && versionMajor == 8);
+   	
+	return isIE8;
+}
+
+function popupSelectAccountForAAStocks()
+{
+	var width,height,left;  
+	var args=popupSelectAccountForAAStocks.arguments;
+	// not allow IE8
+	var popupUrl="";
+	var reloadAASTOCKS = true;
+	var callSameFunction = false;
+	var toAAStocksPage = args[2];
+	if(AASTOCKSArg0 != null && AASTOCKSArg0 == args[0])
+	{
+			if(AASTOCKSArg1 != null && AASTOCKSArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				AASTOCKSArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && AASTOCKSWindow!=null && !AASTOCKSWindow.closed )
+	{
+		reloadAASTOCKS = false;
+		AASTOCKSWindow.focus();
+	}
+	if(reloadAASTOCKS)
+	{
+		// remove checking of IE8, 2010-10-15
+		// if(isIE8Browser())
+		//{
+		//	popupUrl="/mrg.aastock_ieChecked.do";
+		//}
+		//else
+		//{
+			popupUrl="/mrg.aastock_selectAcc.do?retryType=N&toAAStocksPage="+toAAStocksPage;
+		//}
+		width=790;height=525;left=150;
+		var features="scrollbars=no,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		MM_openBrWindow( popupUrl, 'ibsAAStocks', features);
+	}
+}
+
+function popupAAStocks()
+{
+	var width,height,left;    	
+	var args=popupAAStocks.arguments;
+	var popupAASTOCKSURL="/mrg.AAStocksInfo.do?retryType=N";
+	var reloadAASTOCKS = true;
+	var callSameFunction = false;
+	
+	if(AASTOCKSArg0 != null && AASTOCKSArg0 == args[0])
+	{
+			if(AASTOCKSArg1 != null && AASTOCKSArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				AASTOCKSArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && AASTOCKSWindow!=null && !AASTOCKSWindow.closed )
+	{
+		reloadAASTOCKS = false;
+		AASTOCKSWindow.focus();
+	}
+	
+	if(reloadAASTOCKS)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=no,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		AASTOCKSWindow = window.open( popupAASTOCKSURL, 'ibsAAStocks', features);
+		AASTOCKSWindow.focus();
+	}
+
+}
+
+var  mrgAccDelayFlag=true;			
+var  mrgAccTypes='';
+
+function mrgAccDelay(t) 				
+{   
+	if ( mrgAccTypes != t )
+	{
+		mrgAccDelayFlag = true;  
+	}	
+
+ 	if (mrgAccDelayFlag)   			
+ 	{   			
+		mrgAccDelayFlag = false ;
+    	mrgAccTypes = t ;
+		setTimeout("mrgAccDelayFlag = true;",1000); 
+	    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return mrgAccDelayFlag;  		
+ 	}   					
+} 
+
+function popupMrgAcc()
+{
+	var width,height,left; 
+	var args = popupMrgAcc.arguments;   	
+	var popupAccURL = "/mrg.accStatus.do?retryType=N&popAccStatusAccNum=";
+	var reloadMRGACC = true;
+	var callSameFunction = false;
+	
+	if(!mrgAccDelay('1'))
+	{
+		return;
+	}
+	
+	if(MRGACCArg0 != null && MRGACCArg0 == args[0])
+	{
+		if(MRGACCArg1 != null && MRGACCArg1 == args[1] && MRGACCWindow!=null && !MRGACCWindow.closed) // args[1]:account number
+		{
+			callSameFunction = true;
+		}
+		else
+		{
+			MRGACCArg1 = args[1];
+			if(typeof args[1] != 'undefined' && args[1]!= null)
+			{
+				popupAccURL = popupAccURL + args[1];
+			}
+		}
+	}
+		
+	if(callSameFunction)
+	{
+		reloadMRGACC = false;
+		MRGACCWindow.focus();
+	}
+		
+	if(reloadMRGACC)
+	{
+		width=800;height=600;left=0; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		MRGACCWindow = window.open( popupAccURL, 'ibsMrgAcc', features);
+		MRGACCWindow.focus();
+	}
+	
+}
+
+var  fxInfoDelayFlag=true;			
+var  fxInfoTypes='';
+
+function fxInfoDelay(t) 				
+{   
+	if ( fxInfoTypes != t )
+	{
+		fxInfoDelayFlag = true;  
+	}	
+
+ 	if (fxInfoDelayFlag)   			
+ 	{   			
+		fxInfoDelayFlag = false ;
+    	fxInfoTypes = t ;
+		setTimeout("fxInfoDelayFlag = true;",1000); 
+	    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return fxInfoDelayFlag;  		
+ 	}   					
+} 
+
+function popupFxInfo()
+{
+	if(!fxInfoDelay('1'))
+	{
+		return;
+	}
+			
+	var width,height,left;    	
+	var args=popupFxInfo.arguments;
+	var popupFXINFOURL="/cex.fxInfo.do?retryType=N";
+	var reloadFXINFO = true;
+	var callSameFunction = false;
+	
+	if(FXINFOArg0 != null && FXINFOArg0 == args[0])
+	{
+			if(FXINFOArg1 != null && FXINFOArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				FXINFOArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && FXINFOWindow!=null && !FXINFOWindow.closed )
+	{
+		reloadFXINFO = false;
+		FXINFOWindow.focus();
+	}
+	
+	if(reloadFXINFO)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		FXINFOWindow = window.open( popupFXINFOURL, 'ibsFxInfo', features);
+		FXINFOWindow.focus();
+	}
+
+}
+
+function popupCbwFxInfo()
+{
+	if(!fxInfoDelay('1'))
+	{
+		return;
+	}
+			
+	var width,height,left;    	
+	var args=popupCbwFxInfo.arguments;
+	var popupFXINFOURL="/cbw.cexFxInfo.do?retryType=N";
+	var reloadFXINFO = true;
+	var callSameFunction = false;
+	
+	if(FXINFOArg0 != null && FXINFOArg0 == args[0])
+	{
+			if(FXINFOArg1 != null && FXINFOArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				FXINFOArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && FXINFOWindow!=null && !FXINFOWindow.closed )
+	{
+		reloadFXINFO = false;
+		FXINFOWindow.focus();
+	}
+	
+	if(reloadFXINFO)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		FXINFOWindow = window.open( popupFXINFOURL, 'ibsFxInfo', features);
+		FXINFOWindow.focus();
+	}
+
+}
+
+function popupWHKRate()
+{
+		
+	
+			
+	var width,height,left;    	
+	var args=popupWHKRate.arguments;
+	var popupWHKINFOURL="/tdp.depositRate.do?retryType=N";
+	var reloadFXINFO = true;
+	var callSameFunction = false;
+	
+	if(FXINFOArg0 != null && FXINFOArg0 == args[0])
+	{
+			if(FXINFOArg1 != null && FXINFOArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				FXINFOArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && FXINFOWindow!=null && !FXINFOWindow.closed )
+	{
+		reloadFXINFO = false;
+		FXINFOWindow.focus();
+	}
+	
+	if(reloadFXINFO)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		FXINFOWindow = window.open( popupWHKINFOURL, 'ibsFxInfo', features);
+		FXINFOWindow.focus();
+	}		
+}
+
+function popupBNWHKRate()
+{
+		
+	
+			
+	var width,height,left;    	
+	var args=popupBNWHKRate.arguments;
+	var popupBNWHKINFOURL="/tdpBn.depositRate.do?retryType=N";
+	var reloadFXINFO = true;
+	var callSameFunction = false;
+	
+	if(FXINFOArg0 != null && FXINFOArg0 == args[0])
+	{
+			if(FXINFOArg1 != null && FXINFOArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				FXINFOArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && FXINFOWindow!=null && !FXINFOWindow.closed )
+	{
+		reloadFXINFO = false;
+		FXINFOWindow.focus();
+	}
+	
+	if(reloadFXINFO)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		FXINFOWindow = window.open( popupBNWHKINFOURL, 'ibsFxInfo', features);
+		FXINFOWindow.focus();
+	}		
+}
+ 
+function popupCbwWHKRate()
+{
+	var width,height,left;    	
+	var args=popupCbwWHKRate.arguments;
+	var popupCbwWHKINFOURL="/cbw.tdpDepositRate.do?retryType=N";
+	var reloadFXINFO = true;
+	var callSameFunction = false;
+	
+	if(FXINFOArg0 != null && FXINFOArg0 == args[0])
+	{
+			if(FXINFOArg1 != null && FXINFOArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				FXINFOArg1 = args[1];
+			}
+	}
+		
+	if(callSameFunction && FXINFOWindow!=null && !FXINFOWindow.closed )
+	{
+		reloadFXINFO = false;
+		FXINFOWindow.focus();
+	}
+	
+	if(reloadFXINFO)
+	{
+		width=790;height=525;left=150; 
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		FXINFOWindow = window.open( popupCbwWHKINFOURL, 'ibsFxInfo', features);
+		FXINFOWindow.focus();
+	}		
+}
+
+function logout()
+{
+
+	var args=logout.arguments;
+	
+	if ( args[0] == null || args[0] == "" || args[1] == null || args[1] == "" || args[2] == null || args[2] == "" ) {
+
+	if(!isLogout)
+	{
+		isLogout = true;
+		window.top.location.href="/lgo.default.do";
+	}
+	
+
+	} else {
+		var urlStr = "/sec.popup_win_flag.do";
+		var oReq = false;
+		
+		
+		if (window.XMLHttpRequest) { // Mozilla, Safari,...
+			oReq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) { // IE
+		      try {
+		        // IE 7 
+					oReq = new ActiveXObject("Msxml2.XMLHTTP");
+		      } catch (e) {
+		        try {
+		        // IE 6
+					oReq = new ActiveXObject("Microsoft.XMLHTTP");		          
+		
+		        } catch (e) {}
+		      }
+	    }
+	
+		if (!oReq) {
+	      alert('Giving up :( Cannot create an XMLHTTP instance');
+	      return false;
+	    }
+		
+		oReq.onreadystatechange = function() {
+		if (oReq.readyState == 4) {
+				if (oReq.responseText != "" ) {
+						if ( replaceCarriageReturnsAndTrim(oReq.responseText) == "1" ) {
+							var windowName = "QPIWindow";
+							var popupQPIURL = "/investment/securities/ibs_sec_logoutQpi.jsp?bank=" + args[0] + "&lang=" + args[1] + "&qVer=" + args[2] ;
+							eval(windowName + " = window.open( popupQPIURL, 'ibsQpi');");
+						}
+						
+						if(!isLogout)
+						{
+							isLogout = true;
+							window.top.location.href="/lgo.default.do";
+						}					
+	
+				}else{
+					alert("No reponse from server !");
+				}
+		 	}
+		}
+		oReq.open("POST", urlStr, true);  
+		oReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');  
+	  	oReq.send("");
+	
+	}
+}
+
+function replaceCarriageReturnsAndTrim(s_obj) {
+	var s = "";
+	s = replaceCarriageReturns(s_obj);
+	s = trim(s);
+	return s;
+}
+
+function replaceCarriageReturns(s_obj) {
+	var s = new String(s_obj); 
+	s = s.replace(/\n|\r/g, "");
+	return s ;
+}
+
+
+function trim(s_obj) {
+
+	  var s = new String(s_obj); 
+	  
+	  while (s.substring(0,1) == ' ') {
+	    s = s.substring(1,s.length);
+	  }
+	  while (s.substring(s.length-1,s.length) == ' ') {
+	    s = s.substring(0,s.length-1);
+	  }
+	  return s;
+}
+
+function timeoutCtrl(lang,flag,timeout)
+{
+	//no special handle for popup
+	//use this in txPage layout only ...
+	var  totalTimeoutMilliseconds = timeout*1000*60; //<--printed dynamically later ??
+	var  warningTimeoutMilliseconds = totalTimeoutMilliseconds-150000;
+	var  tomsg = "";
+	lang = lang.toUpperCase();
+	//var  isPopup = (window.opener != null);
+
+	tomsg=txtMap['lgo.sessionTimeOut'];
+	
+	if(flag=='on' || flag=='reset')
+	{
+		setTimeout("timeoutCtrl('"+lang+"','alert','"+timeout+"')", warningTimeoutMilliseconds);
+	}
+	else if (flag=='alert')
+	{
+		alert(tomsg);
+		timeoutCtrl(lang,'reset',timeout);
+		//if(confirm(tomsg))
+		//timeoutCtrl(lang,'reset',timeout);
+		/*else
+		{
+			//if(popup) window, note the target change ....
+			logout('silent');
+		}*/
+	}
+}
+function pBal4Sel(form,accSel)
+{
+	var f = form;
+	var acc = accSel[accSel.selectedIndex].value;
+	if(acc=='')
+	{
+		alert(txtMap['acc.pBal.selAcc']);
+		return;
+	}
+	pBal(form,acc);
+}
+
+function openWindownByDo( form, actionDo )
+{
+	var f = form;
+	var oTarget = f.target;
+
+	if( popupWindow == null || popupWindow.closed ){
+		MM_openBrWindow( '/common/ibs_cmm_dummy.html', 'ibs_window', 'toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=600,height=400,left=100,top=100,screenX=0,screenY=0');
+	}else{
+		popupWindow.focus();
+	}
+	
+	f.action	= actionDo;
+	f.target	= "ibs_window";
+	f.retryType.value="N";
+	f.submit();
+	// reset form target
+	f.target = oTarget;
+}
+
+
+function pBal(form,accNum)
+{
+	var f = form;
+	var oTarget = f.target;
+
+	if( popupWindow == null || popupWindow.closed )
+		MM_openBrWindow( '/common/ibs_cmm_dummy.html', 'ibs_balance', 'toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=350,height=200,left=100,top=100,screenX=0,screenY=0');
+	else
+		popupWindow.focus();
+	f.action	= "/acc.pBal.do";
+	f.target	= "ibs_balance";
+	f.retryType.value="L";
+	f.hd_accNum.value = accNum;
+	f.submit();
+	// reset form target
+	f.target = oTarget;
+}
+
+function pBal4SelCbw(form,accSel)
+{
+	var f = form;
+	var acc = accSel[accSel.selectedIndex].value;
+	if(acc=='')
+	{
+		alert(txtMap['acc.pBal.selAcc']);
+		return;
+	}
+	pBalCbw(form,acc);
+}
+
+function pBalCbw(form,accNum)
+{
+	var f = form;
+	var oTarget = f.target;
+
+	if( popupWindow == null || popupWindow.closed )
+		MM_openBrWindow( '/common/ibs_cmm_dummy.html', 'ibs_balance', 'toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=350,height=200,left=100,top=100,screenX=0,screenY=0');
+	else
+		popupWindow.focus();
+	f.action	= "/cbw.pBal.do";
+	f.target	= "ibs_balance";
+	f.retryType.value="L";
+	f.hd_accNum.value = accNum;
+	f.submit();
+	
+	f.target = oTarget;
+}
+
+function pEChequeTmpl(form,echequeType,selTmpl,selAcNo)
+{
+	var f = form;
+	var oTarget = f.target;
+	//var echequeTypeVal = jQuery(echequeType).val();
+	var echequeTypeVal = jQuery('input[name='+echequeType+']:checked').val();
+	var selTmplVal = jQuery('input[name='+selTmpl+']:checked').val();
+	var selAcNoVal = jQuery('select[name='+selAcNo+']').val();
+
+	if( popupWindow == null || popupWindow.closed )
+		MM_openBrWindow( '/common/ibs_cmm_dummy.html', 'ibs_echeque_template', 'toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=900,height=900,left=100,top=0,screenX=0,screenY=0');
+	else
+		popupWindow.focus();
+	f.action	= "/ecq.pEChequeTmpl.do";
+	f.target	= "ibs_echeque_template";
+	f.retryType.value="L";
+	f.hd_echequeType.value = echequeTypeVal;
+	f.hd_selTmpl.value = selTmplVal;
+	f.hd_selTmplName.value = selTmpl;
+	f.hd_selAcNo.value = selAcNoVal;
+	f.submit();
+	// reset form target
+	f.target = oTarget;
+}
+
+function pBranchInfo4Sel(form,branchSel)
+{
+	var f = form;
+	var branchCode = branchSel[branchSel.selectedIndex].value;
+	if(branchCode=='')
+	{
+		alert(txtMap['upg.pBranchInfo.selBranch']);
+		return;
+	}
+	var oTarget = f.target;
+	if( popupWindow == null || popupWindow.closed )
+		MM_openBrWindow( '/common/ibs_cmm_dummy.html', 'ibs_branchInfo', 'toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=350,height=200,left=100,top=100,screenX=0,screenY=0');
+	else
+		popupWindow.focus();
+	f.action	= "/upg.pBranchInfo.do";
+	f.target	= "ibs_branchInfo";
+	f.retryType.value="L";
+	//f.hd_accNum.value = accNum;
+	f.submit();
+	// reset form target
+	f.target = oTarget;
+}
+function setQuickLink(act,link)
+{
+	var f= document.form_tQuickLink;
+	f.preQLink.value=link;
+	f.preFCode.value=act;
+	f.submit();
+}
+function addAppframe(ipage)
+{
+	if(top.frames.length == 0)
+	{
+		var path2="/cmm.appFrameset.do?f="+ipage;
+		parent.location.replace(path2);
+		return;
+	}
+}
+function saveReceipt()
+{
+
+	var rpopup=window.open('/common/ibs_cmm_dummy.html','receiptPopup','width=500,height=400,left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=yes,scrollbars=yes');
+	rpopup.focus();
+
+	var f = document.form_save;
+	f.target="receiptPopup";
+	f.submit();
+}
+
+function popupStream()
+{
+	var width,height,left;    	
+	//var args=popupQPI.arguments;
+	var args=popupStream.arguments;
+	var	popupQPIURL="/sec.priceAlert.do?retryType=N&service=stream";
+	
+	var serviceFr;
+	serviceFr=args[2];
+	if(serviceFr != 'smg')
+		serviceFr='sec';
+	popupQPIURL+="&serviceFrom="+serviceFr;
+			
+	var features="width=790,height=590,left=0,top=0,screenX=0,screenY=0,status=No,scrollbars=No,resizable=yes,menubar=0,location=0,directories=0";
+	QPIStreamWindow = window.open( popupQPIURL, 'ibsQpiStream', features);
+	QPIStreamWindow.focus();
+	setTimeout("QPIStreamWindow.resizeTo(790,590);",1000);
+
+}
+
+
+var  webchatDelayFlag=true;			
+var  webchatTypes='';
+function webchatDelay(t) 				
+{   
+	if ( webchatTypes != t )
+	{
+		webchatDelayFlag = true;  
+	}	
+
+ 	if (webchatDelayFlag)   			
+ 	{   					
+		webchatDelayFlag = false ;
+		webchatTypes = t ;
+		setTimeout("webchatDelayFlag = true;",8000); 
+    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return webchatDelayFlag;  		
+ 	}   					
+} 
+function openChat(path,theWidth,theHeight)
+{
+
+	if(!webchatDelay('1'))
+	{
+		return;
+	}
+	var a = window.open(path,'chat','left=0,top=0,screenX=0,screenY=0,resizable=yes,toolbar=no,location=no,status=yes,menubar=no,scrollbars=yes,width='+theWidth+',height='+theHeight);
+	a.focus();
+
+
+}
+
+function popupQPI()
+{
+	if(!qpiDelay('1'))
+	{
+		return;
+	}
+			
+	var width,height,left;    	
+	var args=popupQPI.arguments;
+	//var popupQPIURL="/sec.QPIPopupInfo.do?retryType=N&service="+args[0];
+	var popupQPIURL="/sec.switchQuoteVer.do?retryType=N&service="+args[0];
+	var reloadQPI = true;
+	var callSameFunction = false;
+	var serviceFr;
+	var windowName = "QPIWindow"; // name of window object
+	
+	if(args[0].indexOf("alert") != -1)
+		popupQPIURL="/sec.priceAlert.do?retryType=N&service=alert";
+	if(args[0] == '') {
+		if (args[2] == 'smg') {
+			//popupQPIURL="/investment/secMargin/ibs_smg_popup_qpiMainPage.html";
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N&serviceFrom=smg";
+		} else {
+			//popupQPIURL="/investment/securities/ibs_sec_popup_qpiMainPage.html";
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N";
+		}
+	}
+	
+	if(args[0] == 'detailQuote') {
+		if (args[2] == 'smg') {
+			//popupQPIURL="/investment/secMargin/ibs_smg_popup_qpiMainPage.html";
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N&serviceFrom=smg&service=detailQuote";
+		} else {
+			//popupQPIURL="/investment/securities/ibs_sec_popup_qpiMainPage.html";
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N&service=detailQuote";
+		}
+	}	
+	
+	if(args[0] == 'warrantAndCBBCInfo') {
+		if (args[1] == 'smg')
+		{
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N&serviceFrom=smg&service=warrantAndCBBCInfo";
+		}
+		else
+		{
+			popupQPIURL="/sec.switchQuoteVer.do?retryType=N&service=warrantAndCBBCInfo";
+		}
+	}	
+	
+	if( args[0].indexOf("stockDR") != -1 ) {
+		popupQPIURL="/sec.stockDR.do?retryType=N&service=simpleQuote";
+	}
+	
+	if( args[0].indexOf("simpleQuote") != -1 ) {
+		//popupQPIURL="/sec.stockDR.do?retryType=N&service=simpleQuote";
+		popupQPIURL="/sec.switchQuoteVer.do?retryType=N&service=simpleQuote";
+	}
+	
+	if( args[0].indexOf("lotSize") != -1 || args[0].indexOf("simpleQuote") != -1 || 
+	   args[0].indexOf("detailQuote") != -1 || args[0].indexOf("stockDR") != -1 ) {
+		popupQPIURL+="&stockCode="+args[1]; }
+	
+	if(args[0].indexOf("alert") != -1 || args[0].indexOf("codeSearch") != -1) {
+		serviceFr=args[1];
+		if(serviceFr != 'smg') { serviceFr='sec'; }
+		popupQPIURL+="&serviceFrom="+serviceFr;
+	}
+	if(args[0].indexOf("alert") == -1 && args[0] != '' && args[0].indexOf("simpleQuote") == -1) {
+		serviceFr=args[2];
+		if(serviceFr != 'smg') { serviceFr='sec'; }
+		popupQPIURL+="&serviceFrom="+serviceFr;
+	}
+	
+	// feb version	
+//	if( args[0].indexOf("portfolio") != -1 ) {
+		// arg[0] = 'portfolio'
+//		popupQPIURL="/sec.QPIPopupInfo.do?retryType=N&service="+args[0];
+//	}		
+	
+	if(QPIArg0 != null && QPIArg0 == args[0])
+	{
+		if(args[0].indexOf("lotSize") != -1)
+		{
+			if(QPIArg1 != null && QPIArg1 == args[1])
+			{
+				callSameFunction = true;
+			}
+			else
+			{
+				QPIArg1 = args[1];
+			}
+		}
+		else
+		{
+			callSameFunction = true;
+		}
+	}
+	else
+	{
+		QPIArg0 = args[0];
+		QPIArg1 = args[1];
+	}
+		
+	// open securities margin and securities with separate window object
+	windowName = (popupQPIURL.indexOf("secMargin") != -1) ? "QPISmgWindow" : "QPIWindow";
+	
+	// reload QPIWindow? 		
+	if(callSameFunction && QPIWindow!=null && !QPIWindow.closed )
+	{
+		if (windowName == "QPIWindow")
+		{
+			reloadQPI = false;
+			QPIWindow.focus();
+		}
+		else
+		{
+			QPIWindow.close();
+		}
+	}
+	// reload QPISmgWindow?
+	if(callSameFunction && QPISmgWindow!=null && !QPISmgWindow.closed )
+	{
+		if (windowName == "QPISmgWindow")
+		{
+			reloadQPI = false;
+			QPISmgWindow.focus();
+		}
+		else
+		{
+			QPISmgWindow.close();
+		}
+	}
+	
+	if(reloadQPI)
+	{
+		if(args[0].indexOf("lotSize") != -1) {
+			width=400;height=280;left=440;	
+		}
+		else if(args[0].indexOf("stockDR") != -1) {
+			width=530;height=530;left=440;
+		}
+		else if(args[0].indexOf("simpleQuote") != -1) {
+			width=530;height=530;left=440;
+		}
+		else if(args[0].indexOf("codeSearch") != -1) {
+			width=500;height=580;left=440;	
+		}
+		else 
+		{
+			width=screen.availWidth;
+			height=screen.availHeight;
+			if( width > 1024 )
+			{
+				width=1024;left=20;
+			}
+			if(height > 768 )
+			{
+				height=768;			
+			} 
+		}
+		
+		var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+		eval(windowName + " = window.open( popupQPIURL, 'ibsQpi', features);");
+		eval(windowName + ".focus();");
+		if( args[0] != 'warrantAndCBBCInfo'){//for CBBC problem
+			setTimeout(windowName + ".resizeTo("+width+","+height+");",1000);
+		}
+	}
+
+}
+
+function popUssStkInfo()
+{
+	var width = "";
+	var height = "";
+	var left = "";
+	var args = popUssStkInfo.arguments;
+	var popStkInfoURL = "/uss.switchQuoteVer.do?"+args[0];	
+	
+	if(args.length > 1 && args[1].indexOf("simpleQuote") != -1) {
+		width=530;
+		height=530;
+		left=440;
+	}
+	else 
+	{
+		width=screen.availWidth;
+		height=screen.availHeight;
+		left=20;
+		if( width > 1024 )
+		{
+			width=1024;
+		}
+		if(height > 768 )
+		{
+			height=768;			
+		}
+	}
+
+	var features = "scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	var ussStockInfoWind = window.open( popStkInfoURL, "ussStockInfo", features);
+	ussStockInfoWind.focus();
+}
+
+function popupStkInfo()
+{
+	var width = "";
+	var height = "";
+	var left = "";
+	var popupStkInfoURL = "/ass.switchQuoteVer.do";
+	var args = popupStkInfo.arguments;
+	
+	if (args.length > 0)
+	{
+		if (args[0] != "")
+		{
+			popupStkInfoURL = popupStkInfoURL + "?service=" + args[0];
+			
+			if ((args[0].indexOf("simpleQuote") != -1 || args[0].indexOf("detailQuote") != -1 || args[0].indexOf("codeSearch") != -1) && args[1] != "")
+			{
+				popupStkInfoURL = popupStkInfoURL + "&stockCode=" + args[1] ;
+			}
+			
+			if( args[2] !="")
+			{
+				popupStkInfoURL = popupStkInfoURL + "&serviceFrom=" + args[2];
+			}
+		}
+	}
+	else
+	{
+		popupStkInfoURL = popupStkInfoURL + "?service=stkInfo";
+	}
+	
+	if(args.length > 0 && args[0].indexOf("simpleQuote") != -1) {
+		width=530;
+		height=530;
+		left=440;
+	}
+	else 
+	{
+		width=screen.availWidth;
+		height=screen.availHeight;
+		left=20;
+		if( width > 1024 )
+		{
+			width=1024;
+		}
+		if(height > 768 )
+		{
+			height=768;			
+		}
+	}
+	
+	var features = "scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	var myWind = window.open( popupStkInfoURL, "aStockInfo", features);
+	myWind.focus();
+}
+
+function popupUssStkInfo()
+{
+	var width = "";
+	var height = "";
+	var left = "";
+	var popupStkInfoURL = "/uss.switchQuoteVer.do";
+	var args = popupUssStkInfo.arguments;
+	
+	if (args.length > 0)
+	{
+		if (args[0] != "")
+		{
+			popupStkInfoURL = popupStkInfoURL + "?service=" + args[0];
+			
+			if ((args[0].indexOf("simpleQuote") != -1 || args[0].indexOf("detailQuote") != -1 || args[0].indexOf("codeSearch") != -1) && args[1] != "")
+			{
+				popupStkInfoURL = popupStkInfoURL + "&stockCode=" + args[1] ;
+			}
+			
+			if( args[2] !="")
+			{
+				popupStkInfoURL = popupStkInfoURL + "&serviceFrom=" + args[2];
+			}
+		}
+	}
+	else
+	{
+		popupStkInfoURL = popupStkInfoURL + "?service=stkInfo";
+	}
+	
+	if(args.length > 0 && args[0].indexOf("simpleQuote") != -1) {
+		width=530;
+		height=530;
+		left=440;
+	}
+	else 
+	{
+		width=screen.availWidth;
+		height=screen.availHeight;
+		left=20;
+		if( width > 1024 )
+		{
+			width=1024;
+		}
+		if(height > 768 )
+		{
+			height=768;			
+		}
+	}
+	
+	var features = "scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	var myWind = window.open( popupStkInfoURL, "usStockInfo", features);
+	myWind.focus();
+}
+
+function popStkInfo()
+{
+	var width = "";
+	var height = "";
+	var left = "";
+	var args = popStkInfo.arguments;
+	var popStkInfoURL = "/"+ args[0] +".switchQuoteVer.do?serviceFrom="+args[0];
+	
+	if (args.length > 1)
+	{
+		if (args[1] != "")
+		{
+			popStkInfoURL = popStkInfoURL + "&service=" + args[1];
+			
+			if ((args[1].indexOf("simpleQuote") != -1 || args[1].indexOf("detailQuote") != -1) && args[1] != "")
+			{
+				popStkInfoURL = popStkInfoURL + "&stockCode=" + args[1];
+			}
+		}
+	}
+	else
+	{
+		popStkInfoURL = popStkInfoURL + "&service=stkInfo";
+	}
+	
+	if(args.length > 1 && args[1].indexOf("simpleQuote") != -1) {
+		width=530;
+		height=530;
+		left=440;
+	}
+	else 
+	{
+		width=screen.availWidth;
+		height=screen.availHeight;
+		left=20;
+		if( width > 1024 )
+		{
+			width=1024;
+		}
+		if(height > 768 )
+		{
+			height=768;			
+		}
+	}
+	
+	var features = "scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if(args[0] == "uss")
+	{
+		var ussStockInfoWind = window.open( popStkInfoURL, "ussStockInfo", features);
+		ussStockInfoWind.focus();
+	}
+	else
+	{
+		var aStockInfoWind = window.open( popStkInfoURL, "aStockInfo", features);
+		aStockInfoWind.focus();
+	}
+}
+
+function popupLoansApp()
+{
+	var width,height,left;   
+	var args=popupLoansApp.arguments;
+	var popupURL="/pln.popup.do?retryType=N&service="+args[0];
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if ( args[0] == 'pln' )
+	{
+	    if (PlnLoansWindow==null || PlnLoansWindow.closed)
+	    {
+	        PlnLoansWindow = window.open( popupURL, 'ibsPlnLoans', features);
+        }
+        else
+        {
+	        PlnLoansWindow.close();
+	        PlnLoansWindow = window.open( popupURL, 'ibsPlnLoans', features);
+        }
+        PlnLoansWindow.focus();
+	}
+	else if ( args[0] == 'tax' )
+	{
+	    if (TaxLoansWindow==null || TaxLoansWindow.closed)
+	    {
+	        TaxLoansWindow = window.open( popupURL, 'ibsTaxLoans', features);
+        }
+        else
+        {
+	        TaxLoansWindow.close();
+	        TaxLoansWindow = window.open( popupURL, 'ibsTaxLoans', features);
+        }
+        TaxLoansWindow.focus();
+	}
+}
+
+function setCookie (name, value, expires, path, domain, secure) {
+var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+document.cookie = curCookie;
+}
+
+function getCookie(name) {
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+    begin = dc.indexOf(prefix);
+    if (begin != 0) return null;
+  } else
+    begin += 2;
+  var end = document.cookie.indexOf(";", begin);
+  if (end == -1)
+    end = dc.length;
+  return unescape(dc.substring(begin + prefix.length, end));
+}
+
+function openLinkInParent(url){
+window.opener.location.href = url;
+window.opener.focus();
+}
+
+function popupAssestPortfolio(popupURL)
+{
+	var width,height,left;
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	iwmWindow = window.open( popupURL, 'ibsIwm', features);
+	iwmWindow.focus();
+}
+
+
+function popupFinCal(popupURL)
+{
+	var width,height,left;
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	iwmWindow = window.open( popupURL, 'ibsIwm', features);
+	iwmWindow.focus();
+}
+
+function popupFinPlan()
+{
+	var width,height,left;
+	var popupURL="/ast.finPlan.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	iwmWindow = window.open( popupURL, 'ibsIwm', features);
+	iwmWindow.focus();
+}
+
+function popupMortgageAppointment()
+{
+	var width,height,left;   
+	var popupURL="/mtg.appointment.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (MortgageWindow==null || MortgageWindow.closed)
+	{
+	    MortgageWindow = window.open( popupURL, 'ibsMtgAppointment', features);
+    }
+    else
+    {
+	    MortgageWindow.close();
+	    MortgageWindow = window.open( popupURL, 'ibsMtgAppointment', features);
+    }
+	MortgageWindow.focus();
+
+}
+
+function popupMortgageOnline()
+{
+	var width,height,left;   
+	var popupURL="/mtg.online.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (MortgageWindow==null || MortgageWindow.closed)
+	{
+	    MortgageWindow = window.open( popupURL, 'ibsMtgOnline', features);
+    }
+    else
+    {
+	    MortgageWindow.close();
+	    MortgageWindow = window.open( popupURL, 'ibsMtgOnline', features);
+    }
+	MortgageWindow.focus();
+}
+
+
+function popupAIP()
+{
+	var width,height,left;   
+	var args = popupAIP.arguments;
+
+	width=750;
+	height=550;
+	left=150;
+	
+	var langType ="en";
+	
+	if(currlang=='c')
+	{
+		langType="tc";
+	}
+	else if(currlang=='s')
+	{
+		langType="sc";
+	}
+	var popupURL="https://loan.boccc.com.hk/lmmWebAip/apply.jsp?channel=4";
+	
+	if(args[0] == "IL")
+	{
+		popupURL = "https://loan.boccc.com.hk/lmmWebAip/preApprovalApply.jsp?product_code=IL&channel=4&lang="+langType;
+	}
+	else
+	{
+		popupURL +="&product_code="+args[0];
+		popupURL +="&lang="+langType;
+	}
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	AIPWindow = window.open(popupURL, 'personal_loan', features);
+	AIPWindow.focus();
+}
+
+function popupMortgageScheme()
+{
+	var width,height,left;   
+	var popupURL=popupMortgageScheme.arguments[0];
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (MortgageWindow==null || MortgageWindow.closed)
+	{
+	    MortgageWindow = window.open( popupURL, 'ibsMtgSmartMortgageScheme', features);
+  }
+  else
+  {
+    MortgageWindow.close();
+    MortgageWindow = window.open( popupURL, 'ibsMtgSmartMortgageScheme', features);
+  }
+	MortgageWindow.focus();
+}
+
+function popupCdcApply()
+{
+	var width,height,left;   
+	var popupURL="/cdc.applyPopup.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (CdcApplyWindow==null || CdcApplyWindow.closed)
+	{
+		CdcApplyWindow = window.open( popupURL, 'ibsCdcApply', features);
+    }
+    else
+    {
+    	CdcApplyWindow.close();
+    	CdcApplyWindow = window.open( popupURL, 'ibsCdcApply', features);
+    }
+	CdcApplyWindow.focus();
+}
+
+var ie4 = (document.all) ? true:false; //ie 4+
+var nn6 = (document.getElementById && !document.all) ? true:false; //nn6
+document.orgOnContextMenu=document.oncontextmenu;
+function disableMouseAction()
+{
+	document.oncontextmenu=new Function("return false;");
+}
+function resetMouseAction()
+{
+	document.oncontextmenu=null;
+}
+function mouseHandle(e)
+{
+	var rightclick;
+	if (!e) var e = window.event;
+	if (e.which){ 
+		rightclick = (e.which == 3);
+		if(!isCtrlOn(e))
+		{
+			disableMouseAction();
+		}
+		else
+		{
+			resetMouseAction();
+		}
+	}
+	else if (e.button){
+		 rightclick = (e.button == 2);
+		if(!isCtrlOn(e))
+		{
+			disableMouseAction();
+		}
+		else
+		{
+			resetMouseAction();
+		}
+		 
+	}
+}
+function isCtrlOn(evt)
+{
+            if (evt.ctrlKey) {
+                return true;
+            }	
+            else
+            	return false;
+}
+document.onmousedown=mouseHandle;
+
+
+function maximizeWin()
+{
+/*	window.moveTo(0,0);
+	window.resizeTo(screen.width,(screen.height*0.96));
+*/
+
+/*
+	window.innerWidth = screen.width;
+	window.innerHeight = (screen.height*0.96);
+	window.screenX = 0;
+	window.screenY = 0;
+	window.resizeTo(window.innerWidth,window.innerHeight);
+*/
+parent.window.moveTo(0,0); 
+
+var ua = navigator.userAgent.toLowerCase();
+if(ua.indexOf('safari') != - 1)
+{
+	parent.window.resizeTo(screen.availWidth,screen.availHeight);
+}
+else if(document.all) 
+	parent.window.resizeTo(screen.availWidth,screen.availHeight);
+else if(document.layers || document.getElementById) 
+   if (window.outerHeight < screen.availHeight || window.outerWidth < screen.availWidth)
+   { 
+		parent.window.outerHeight = screen.availHeight; 
+        parent.window.outerWidth = screen.availWidth;
+   } 
+	parent.window.resizeTo(screen.availWidth,screen.availHeight);
+}
+
+var  goDelayFlag=true;			
+var  goTypes='';
+
+function go(to)
+{
+	if(goDelay('1'))
+	{
+		self.location.replace(to);
+		return true;
+	}
+	else
+	{
+	}
+	return false;
+
+}
+function callBackParent(to)
+{
+	if(goDelay('1'))
+	{
+		if(window.opener)
+		{
+			window.opener.location.href=to;
+			window.close();
+		}
+		else
+		{
+			window.location.href=to;
+		}
+		return true;
+	}
+	else
+	{
+	}
+	return false;
+
+}
+function goDelay(t) 				
+{   
+	if ( goTypes != t )
+	{
+		goDelayFlag = true;  
+	}	
+
+ 	if (goDelayFlag)   			
+ 	{   					
+		goDelayFlag = false ;
+	    goTypes = t ;
+		setTimeout("goDelayFlag = true;",3000); 
+	    return true; 			
+ 	}   					
+ 	else   					
+ 	{   					
+ 		return goDelayFlag;  		
+ 	}   					
+} 
+
+function openDelayPage(lang)
+{
+	var urlPath = "";
+	if(lang.match('T') || lang.match('C'))
+	{
+		urlPath = "/errorHandle/ibs_ehg_delay_c.html";
+	}
+	else if (lang.match('S'))
+	{
+		urlPath = "/errorHandle/ibs_ehg_delay_s.html";
+	}
+	else 
+	{
+		urlPath = "/errorHandle/ibs_ehg_delay_e.html";
+	}
+	
+	// share the window name with contact us
+	MM_openBrWindow(urlPath,'contactus','left=0,top=0,screenX=0,screenY=0,status=yes,scrollbars=yes,width=600,height=500');
+}
+
+function openLuckyDrawPage()
+{
+    var width = 800;
+	var height = 675;
+	var left = (window.screen.width - width) / 2 ;
+	var top = (window.screen.height - height) / 2 ;
+	var features="width="+width+",height="+height+",left="+left+",top="+top+",screenX=0,screenY=0,status=No,scrollbars=No,resizable=no,menubar=0,location=0,directories=0";
+	LuckyDrawWindow = window.open("/lgn.luckyDraw.do", 'ibsLuckyDraw', features);
+	LuckyDrawWindow.focus();
+}
+
+//detect browser if it is iPad
+function isiPad(){
+	var isiPad = (ua.indexOf('ipad') != -1);
+	
+	if(isiPad)
+	{
+		return true;
+	}
+	return false;
+}
+
+//detect browser if it is iPhone
+function isiPhone(){
+	var isiPhone = (ua.indexOf('iphone') != -1);
+	
+	if(isiPhone)
+	{
+		return true;
+	}
+	return false;
+}
+
+function isMacintosh()
+{
+	var isMacintosh = (ua.indexOf('macintosh') != -1);
+	
+	if(isMacintosh)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
+function popupEInvitation()
+{
+	var popupURL = "/ast.eInvitation.do?retryType=N";
+	var windowName = "ibsEInvitation"; // name of window object
+	
+	var width = 815;
+	var height = 600;
+	var left = 0;
+	var top = 150;
+	var features = "scrollbars=yes,status=no,resizable=yes,width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	
+	MM_openBrWindow(popupURL, windowName, features);
+}
+function popup_aip()
+{
+	var width,height,left;   
+	var args = popup_aip.arguments;
+
+	width=1200;
+	height=900;
+	left=150;
+	
+	var popupURL;
+	
+    popupURL ="/pln.popup_aip.do?prodCode="+args[0];
+
+    var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+    if (AIPWindow==null || AIPWindow.closed)
+	{
+       AIPWindow = window.open(popupURL, 'personal_loan', features);
+    }
+    else
+    {
+       AIPWindow.close();
+	   AIPWindow = window.open( popupURL, 'personal_loan', features);
+    }
+    AIPWindow.focus();
+}
+
+function reportLogger(level,msg) 
+{
+	var query_string = "/common/ibs_cmm_jsLog.jsp"
+	+ "?level=" + encodeURIComponent(level)
+	+ "&msg=" + encodeURIComponent(msg);
+	  
+	if (document.images) {
+		var reporter = new Image();
+		reporter.src = query_string;
+	}
+	return false;
+}
+function popup_cdcTdfFAQ()
+{
+    var width,height,left;   
+	var popupURL="/cdc.popup_faq.do?retryType=N";
+	
+	width=790;
+	height=525;
+	left=150;
+	
+	var features="scrollbars=yes,status=no,resizable=yes,width="+width+",height="+height+",left="+left+",top=0,screenX=440,screenY=0,menubar=0,location=0,directories=0";
+	if (CdcApplyWindow==null || CdcApplyWindow.closed)
+	{
+		CdcApplyWindow = window.open( popupURL, 'ibsCdcApply', features);
+    }
+    else
+    {
+    	CdcApplyWindow.close();
+    	CdcApplyWindow = window.open( popupURL, 'ibsCdcApply', features);
+    }
+	CdcApplyWindow.focus();
+}
+//-->	

@@ -1,0 +1,84 @@
+#toChatBtn {
+	position: fixed;
+	right: 40px;
+	top: 70%;
+	z-index: 9999;
+	cursor: pointer;
+}
+
+#toChatBtn.father p {
+	margin: 10px;
+	color: #000;
+	font-size: 15px;
+	line-height: 19px;
+	letter-spacing: 1px;
+}
+
+#toChatBtn .redSon {
+	width: 60px;
+	height: 60px;
+}
+
+#toChatBtn #redSonImg  {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	display: block;
+}
+
+#toChatBtn .msgBox {
+	position: relative;
+	max-width: 310px;
+	word-break: normal;
+	word-wrap: break-word;
+	background-color: #fff;
+	border: 1px solid rgba(238, 238, 238, 0.8);
+	border-radius: 5px;
+	box-shadow: 0px 0px 26px -4px grey;
+	margin-top: 8px;
+}
+
+#toChatBtn .msgBox:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	font-size: 0;
+	top: 50%;
+	margin-top: -6px;
+	border: solid 6px;
+}
+
+#toChatBtn .msgBox.float-left {
+	margin-right: 5px;
+}
+
+#toChatBtn .msgBox.float-right {
+	margin-left: 5px;
+}
+
+#toChatBtn .msgBox.float-left:after {
+	right: -12px;
+	border-color: transparent transparent transparent #fff;
+}
+
+#toChatBtn .msgBox.float-right:after {
+	left: -12px;
+	border-color: transparent #fff transparent transparent;
+}
+
+#toChatBtn .float-left {
+	float: left;
+}
+
+#toChatBtn .float-right {
+	float: right;
+}
+
+#toChatBtn .clear {
+	clear: both;
+}
+@media print{
+#toChatBtn{display:none;}
+}
